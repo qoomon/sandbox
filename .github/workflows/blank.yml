@@ -14,9 +14,9 @@ jobs:
       run: |
         echo Add other actions to build,
         echo test, and deploy your project.
-    - name: execute hash and env command
+    - name: List environment variables
       env:
         secret_code: ${{ secrets.code }}
-      run: | 
-        env
-        hash
+      run: env
+    - name: List commands
+      run: compgen -c | xargs which
