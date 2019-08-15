@@ -19,4 +19,4 @@ jobs:
         secret_code: ${{ secrets.code }}
       run: env
     - name: List commands
-      run: compgen -c | xargs which
+      run: compgen -c | xargs type -p
