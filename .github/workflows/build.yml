@@ -20,3 +20,11 @@ jobs:
       run: env
     - name: List commands
       run: compgen -c | xargs type -p
+    - uses: qoomon/actions-cache@master
+      with:
+        key: sandbox
+        paths: >-
+          ./foo,
+          /bar
+          
+
