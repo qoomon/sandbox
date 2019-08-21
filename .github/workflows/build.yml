@@ -20,6 +20,8 @@ jobs:
       run: env
     - name: List commands
       run: compgen -c | xargs type -p
+    - name: Docker version
+      run: docker --version
     - uses: qoomon/actions-cache@master
       with:
         key: sandbox
