@@ -22,11 +22,5 @@ jobs:
       run: compgen -c | xargs type -p
     - name: brew version
       run: brew --version
-    - uses: qoomon/actions-cache@master
-      with:
-        key: sandbox
-        paths: >-
-          ./foo,
-          /bar
           
 
