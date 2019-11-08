@@ -3,7 +3,7 @@ name: Build
 on:
   push:
     branches:
-    - run_deployment
+    - trigger_hello
 
 jobs:
   build:
@@ -11,11 +11,11 @@ jobs:
     runs-on: [self-hosted]
     
     steps:
-    - name: Trigger Deployment
+    - name: Trigger Hello Event
       env:
         GITHUB_REPOSITORY: ${{github.repository}}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        EVENT_TYPE: "sandbox"
+        EVENT_TYPE: "hello"
         CLIENT_PAYLOAD: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
       run: | 
         curl \
