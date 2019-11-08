@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - name: List environment variables - ${{ github.ref }}
+    - name: List environment variables
       env:
         secret_code: ${{ secrets.code }}
       run: env
@@ -21,6 +21,8 @@ jobs:
       run: |
         echo Add other actions to build,
         echo test, and deploy your project.
+    - name: Dynamic step name example - ${{ github.ref }}
+      run: echo ${{ github.ref }}
 
           
 
