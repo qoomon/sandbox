@@ -17,7 +17,6 @@ jobs:
         DEPLOYMENT_SOURCE_BRANCH: master
         GITHUB_REPOSITORY: ${{github.repository}}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-       
       run: | 
         curl \
           -X POST \
