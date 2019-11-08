@@ -3,7 +3,7 @@ name: Build
 on:
   push:
     branches:
-    - trigger_deployment
+    - trigger-deployment
 
 jobs:
   build:
