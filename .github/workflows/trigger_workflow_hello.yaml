@@ -14,7 +14,8 @@ jobs:
     steps:
     - name: Trigger Hello Event
       env:
-        GITHUB_REPOSITORY: ${{github.repository}}
+        GITHUB_REPOSITORY: ${{ github.repository }}
+        GITHUB_ACTOR: ${{ github.actor }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         EVENT_TYPE: "hello"
         CLIENT_PAYLOAD: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
@@ -22,9 +23,8 @@ jobs:
         set -x 
         curl --fail \
           -X POST \
-          -H "Authorization: token ${GITHUB_TOKEN}" \
           -H "Accept: application/vnd.github.everest-preview+json" \
           -H "Content-Type: application/json" \
-          "https://api.github.com/repos/${GITHUB_REPOSITORY}/dispatches" \
+          "https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@api.github.com/repos/${GITHUB_REPOSITORY}/dispatches" \
           --data "{\"event_type\": \"${EVENT_TYPE}\", \"client_payload\": ${CLIENT_PAYLOAD}}"
 
