@@ -3,7 +3,7 @@ name: Build
 on:
   push:
     branches:
-    - trigger_hello
+    - trigger-hello
 
 jobs:
   build:
