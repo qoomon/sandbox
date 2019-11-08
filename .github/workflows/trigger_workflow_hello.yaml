@@ -4,6 +4,7 @@ on:
   push:
     branches:
     - trigger-hello
+    - master
 
 jobs:
   build:
@@ -16,9 +17,10 @@ jobs:
         GITHUB_REPOSITORY: ${{github.repository}}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         EVENT_TYPE: "hello"
-        CLIENT_PAYLOAD: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
-      run: | 
-        curl \
+        CLIENT_PAYLOAD: '{\"ref\": \"${{ github.ref }}\", \"sha\": \"${{ github.sha }}\"}'
+      run: |
+        set -x 
+        curl --fail \
           -X POST \
           -H "Authorization: token ${GITHUB_TOKEN}" \
           -H "Accept: application/vnd.github.everest-preview+json" \
