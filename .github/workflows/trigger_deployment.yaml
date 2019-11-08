@@ -25,4 +25,4 @@ jobs:
           -H "Accept: application/vnd.github.ant-man-preview+json" \
           -H "Content-Type: application/json" \
           "https://api.github.com/repos/${GITHUB_REPOSITORY}/deployments" \
-          --data '{"ref": "master", "${DEPLOYMENT_SOURCE_BRANCH}": [], "environment": "${DEPLOYMENT_TARGET_ENVIRONMENT}"}'
+          --data "{\"ref\": \"master\", \"${DEPLOYMENT_SOURCE_BRANCH}\": [], \"environment\": \"${DEPLOYMENT_TARGET_ENVIRONMENT}\"}"
