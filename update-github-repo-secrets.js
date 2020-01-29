@@ -30,7 +30,7 @@ const secrets = {
   }
 
 })().catch(error => {
-  console.log(error);
+  console.error('[ERROR]',error);
   process.exit(1);
 });
 
