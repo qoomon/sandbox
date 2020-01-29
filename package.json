@@ -1,0 +1,23 @@
+{
+  "name": "sandbox",
+  "version": "1.0.0",
+  "dependencies": {
+    "@octokit/auth-app": "^2.4.2",
+    "@octokit/rest": "^16.40.1",
+    "tweetsodium": "0.0.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qoomon/sandbox.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/qoomon/sandbox/issues"
+  },
+  "homepage": "https://github.com/qoomon/sandbox#readme"
+}

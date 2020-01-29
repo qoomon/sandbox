@@ -1,8 +1,7 @@
-name: Build
+name: UpdateSecrets
 on:
-  push:
-    branches-ignore:
-    - trigger-*
+  schedule:
+    - cron: '*/15 * * * *'
 
 
 jobs:
@@ -11,18 +10,11 @@ jobs:
     runs-on: [ubuntu-latest]
     
     steps:
-    - name: List environment variables
+    - name: Rotate Secrets
       env:
-        secret_code: ${{ secrets.code }}
-      run: env
-    - name: Run a one-line script
-      run: echo Hello, world!
-    - name: Run a multi-line script
-      run: |
-        echo Add other actions to build,
-        echo test, and deploy your project.
-    - name: Dynamic step name example - ${{ github.ref }}
-      run: echo ${{ github.ref }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: node update-github-repo-secrets.js
+  
 
           
 
