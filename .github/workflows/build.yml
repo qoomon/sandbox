@@ -10,6 +10,7 @@ jobs:
     runs-on: [ubuntu-latest]
     
     steps:
+    - run: npm install
     - name: Rotate Secrets
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
