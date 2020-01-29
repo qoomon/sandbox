@@ -1,5 +1,6 @@
 const sodium = require('tweetsodium');
 const Octokit = require("@octokit/rest");
+const { createTokenAuth } = require("@octokit/auth-token");
 
 const githubRepo = {
   owner: 'qoomon',
@@ -11,7 +12,10 @@ const secrets = {
 };
 
 (async function() {
-  const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
+  const octokit = new Octokit({ 
+    authStrategy: createTokenAuth,
+    auth: process.env.GITHUB_TOKEN 
+  });
   const publicKey = (await octokit.actions.getPublicKey(githubRepo)).data;
   const secretEncryptor = new SecretEncryptor(publicKey.key);
   
