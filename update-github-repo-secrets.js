@@ -18,8 +18,8 @@ console.log('process.env.GITHUB_TOKEN ', process.env.GITHUB_TOKEN.length, proces
     authStrategy: createTokenAuth,
     auth: process.env.GITHUB_TOKEN 
   });
-  const publicKey = (await octokit.actions.getPublicKey(githubRepo)).data;
-  const secretEncryptor = new SecretEncryptor(publicKey.key);
+  // const publicKey = (await octokit.actions.getPublicKey(githubRepo)).data;
+  // const secretEncryptor = new SecretEncryptor(publicKey.key);
   
   for (const [name, value] of Object.entries(secrets)) {
     console.log('update secret', name);
