@@ -1,11 +1,11 @@
-name: UpdateSecrets
+name: Update Secrets
 on:
   schedule:
     - cron: '*/15 * * * *'
 
 
 jobs:
-  build:
+  "Update Secrets":
 
     runs-on: [ubuntu-latest]
     
