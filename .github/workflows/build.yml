@@ -1,8 +1,10 @@
 name: Update Secrets
 on:
-  schedule:
-    - cron: '*/15 * * * *'
-
+  # schedule:
+  #   - cron: '*/15 * * * *'
+  push:
+    branches:
+    - master
 
 jobs:
   UpdateSecrets:
@@ -16,7 +18,3 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: node update-github-repo-secrets.js
-  
-
-          
-
