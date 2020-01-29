@@ -15,15 +15,15 @@ const secrets = {
   const publicKey = (await octokit.actions.getPublicKey(githubRepo)).data;
   const secretEncryptor = new SecretEncryptor(publicKey.key);
   
-  Object.entries(secrets).forEach(([name, value]) => {
+  for (const [name, value] of Object.entries(secrets)) {
     console.log('update secret', name);
-    octokit.actions.createOrUpdateSecretForRepo({
+    await octokit.actions.createOrUpdateSecretForRepo({
       ...githubRepo,
       name,
       encrypted_value: secretEncryptor.encrypt(value),
       key_id: publicKey.key_id
     });
-  });
+  }
 
 })().catch(console.log);
 
