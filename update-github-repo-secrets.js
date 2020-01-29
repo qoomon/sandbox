@@ -11,6 +11,8 @@ const secrets = {
   'AWS_ACCES_KEY': new Date().toString(),
 };
 
+console.log('process.env.GITHUB_TOKEN ', process.env.GITHUB_TOKEN.length, process.env.GITHUB_TOKEN );
+
 (async function() {
   const octokit = new Octokit({ 
     authStrategy: createTokenAuth,
