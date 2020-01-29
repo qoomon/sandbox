@@ -25,7 +25,10 @@ const secrets = {
     });
   }
 
-})().catch(console.log);
+})().catch(error => {
+  console.log(error);
+  process.exit(1);
+});
 
 function SecretEncryptor(publicKey) {
   const publicKeyBytes = Buffer.from(publicKey, 'base64');
