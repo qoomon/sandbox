@@ -20,14 +20,15 @@ console.log('process.env.GITHUB_TOKEN ', process.env.GITHUB_TOKEN.length, proces
   });
   const publicKey = (await octokit.actions.getPublicKey(githubRepo)).data;
   const secretEncryptor = new SecretEncryptor(publicKey.key);
+console.log(publicKey.key_id);
   
   for (const [name, value] of Object.entries(secrets)) {
     console.log('update secret', name);
     await octokit.actions.createOrUpdateSecretForRepo({
       ...githubRepo,
       name,
-      encrypted_value: secretEncryptor.encrypt(value),
-      key_id: publicKey.key_id
+      encrypted_value: 'yz6RXT2kxO11M3ysOsOX+AQq3Z/GGdMyF55SQYBAZCGZhKtmsYTFoZy0mE1w/zXe3ChP1Fo=', //secretEncryptor.encrypt(value),
+      key_id: '568250167242549743' //publicKey.key_id
     });
   }
 
