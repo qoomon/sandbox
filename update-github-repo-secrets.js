@@ -16,6 +16,7 @@ const secrets = {
   const secretEncryptor = new SecretEncryptor(publicKey.key);
   
   Object.entries(secrets).forEach(([name, value]) => {
+    console.log('update secret', name);
     octokit.actions.createOrUpdateSecretForRepo({
       ...githubRepo,
       name,
