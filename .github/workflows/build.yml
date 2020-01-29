@@ -10,11 +10,14 @@ jobs:
     runs-on: [ubuntu-latest]
     
     steps:
+    - run: |
+        pwd
+        ls
     - run: npm install
     - name: Rotate Secrets
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: node ./update-github-repo-secrets.js
+      run: node update-github-repo-secrets.js
   
 
           
