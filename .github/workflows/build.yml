@@ -10,9 +10,8 @@ jobs:
     runs-on: [ubuntu-latest]
     
     steps:
-    - run: |
-        pwd
-        ls
+    - run: pwd
+    - run: ls -la
     - run: npm install
     - name: Rotate Secrets
       env:
