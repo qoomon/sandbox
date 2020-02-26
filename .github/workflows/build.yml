@@ -1,4 +1,4 @@
-name: Update Secrets
+name: Playground
 on:
   # schedule:
   #   - cron: '*/15 * * * *'
@@ -14,9 +14,12 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - run: env | grep GITHUB
+    - run: echo ${{ github.event }}
+    - run: echo ${{ github.event_path }}
     - run: |
         curl --request GET \
         --url https://api.github.com/repos/${{ github.repository }}/check-runs/${{ github.run_id }} \
         --header 'authorization: Bearer ${{ github.token }}' \
         --header 'content-type: application/json' \
         --header 'accept: application/vnd.github.antiope-preview+json'
+         
