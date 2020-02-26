@@ -13,9 +13,4 @@ jobs:
     
     steps:
     - uses: actions/checkout@v1
-    - run: mvn -v
-    - run: npm install
-    - name: Rotate Secrets
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: node update-github-repo-secrets.js
+    - run: env | grep GITHUB
