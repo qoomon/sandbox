@@ -1,4 +1,4 @@
-name: Playground
+name: Build Playground
 
 on:
   # schedule:
