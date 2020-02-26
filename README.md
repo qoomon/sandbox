@@ -8,3 +8,6 @@ https://dependabot.com/docs/config-file/
 
 #### Stale Bot
 https://github.com/probot/stale
+
+#### Action Panel App
+https://actionspanel.app
