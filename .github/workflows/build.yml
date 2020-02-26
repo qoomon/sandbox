@@ -14,8 +14,8 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - run: env | grep GITHUB
-    - run: echo ${{ github.event }}
-    - run: echo ${{ github.event_path }}
+
+    - run: cat ${{ github.event_path }}
     - run: |
         curl --request GET \
         --url https://api.github.com/repos/${{ github.repository }}/check-runs/${{ github.run_id }} \
