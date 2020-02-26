@@ -1,0 +1,13 @@
+name: Playground
+
+on: repository_dispatch
+
+jobs:
+
+  playground:
+    if: github.event.action == 'run_playground'
+    runs-on: [ubuntu-latest]
+    
+    steps:
+    - uses: actions/checkout@v1
+    - run: echo "${{ github.event.client_payload.message }}"
