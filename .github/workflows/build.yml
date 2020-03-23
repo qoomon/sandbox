@@ -18,9 +18,9 @@ jobs:
     - run: cat $GITHUB_EVENT_PATH
     - run: |
         set -x;
-        curl -i --header "Authorization: token ${{ github.token }}" \
+        curl -v --header "Authorization: token ${{ github.token }}" \
           https://api.github.com;
         echo '--------------------------------------------'
         curl -i --header "Authorization: Bearer ${{ github.token }}" \
-          https://api.github.com;
+          https://api.github.com/user;
          
