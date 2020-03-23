@@ -18,8 +18,8 @@ jobs:
     - run: cat $GITHUB_EVENT_PATH
     - run: |
         set -x;
-        curl --request GET \
-        --url https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }} \
-        --header 'authorization: Bearer ${{ github.token }}' \
-        --header 'accept: application/vnd.github.antiope-preview+json'
+        curl --header "Authorization: token ${{ github.token }}" \
+          https://api.github.com
+        curl --header "Authorization: Bearer ${{ github.token }}" \
+          https://api.github.com
          
