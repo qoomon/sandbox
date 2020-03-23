@@ -17,9 +17,12 @@ jobs:
     - run: env | grep GITHUB
     - run: cat $GITHUB_EVENT_PATH
     - run: |
-        set -x;
         curl -i -XPOST \
           --header "Authorization: Bearer ${{ github.token }}" \
+          https://api.github.com/repos/${{ github.repository }}/git/commits;
+    - run: |
+        curl -i -XPOST \
+          --header "Authorization: Bearer ${{ github.token }}x" \
           https://api.github.com/repos/${{ github.repository }}/git/commits;
           
           
