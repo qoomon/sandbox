@@ -17,6 +17,6 @@ jobs:
     runs-on: [ubuntu-latest]
     
     steps:
-    - uses: actions/checkout@v2
-    - run: echo "Log level: ${{ github.event.inputs.logLevel }}"
+      - uses: actions/checkout@v2
+      - run: echo "Log level ${{ github.event.inputs.logLevel }}"
         
