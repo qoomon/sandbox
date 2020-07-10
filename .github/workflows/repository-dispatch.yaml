@@ -1,4 +1,4 @@
-name: Button Playground
+name: Repository Dispatch Playground
 
 on: repository_dispatch
 
