@@ -1,8 +1,0 @@
-buttons:
-  - title: Run Playground
-    action: "run_playground"
-    description: Run Playround Workflow
-    confirm: true
-    arguments:
-      - name: ref
-      - name: message
