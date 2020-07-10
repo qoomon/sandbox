@@ -17,7 +17,7 @@ jobs:
     runs-on: [ubuntu-latest]
     
     steps:
-      - run: echo "action ${{ github.event.action }}"
+      - run: echo "GITHUB_EVENT_NAME $GITHUB_EVENT_NAME"
       - uses: actions/checkout@v2
       - run: echo "Log level ${{ github.event.inputs.logLevel }}"
         
