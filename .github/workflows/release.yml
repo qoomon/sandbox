@@ -1,0 +1,16 @@
+name: Workflow Dispatch Playground
+
+on: 
+  release:
+    types: [published]
+
+jobs:
+
+  playground:
+    runs-on: [ubuntu-latest]
+    
+    steps:
+      - run: echo "GITHUB_EVENT_NAME $GITHUB_EVENT_NAME"
+      - uses: actions/checkout@v2
+      - run: echo "github.event.action ${{ github.event.action }}"
+        
