@@ -12,8 +12,4 @@ jobs:
       - uses: actions/checkout@v2
       - run: curl -L 'https://github.com/yulrizka/osx-push-to-talk/archive/v0.1.5.zip' -o 'SourceCode.zip'
       - run: unzip 'SourceCode.zip'
-      - run: >
-        xcodebuild 
-          -project "PushToTalk.xcodeproj" "CODE_SIGN_IDENTITY=-" 
-          -configuration "Release" "SYMROOT=build" 
-            prefix.install "build/Release/PushToTalk.app"
+      - run: xcodebuild -project "PushToTalk.xcodeproj" "CODE_SIGN_IDENTITY=-" -configuration "Release" "SYMROOT=build" prefix.install "build/Release/PushToTalk.app"
