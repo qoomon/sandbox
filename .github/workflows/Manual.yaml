@@ -20,8 +20,7 @@ jobs:
           rm "osx-push-to-talk-${VERSION}.zip"
           
       - run: >
-          xcodebuild 
-            -project 'PushToTalk.xcodeproj' 'CODE_SIGN_IDENTITY=-'
+          xcodebuild -project 'PushToTalk.xcodeproj' 'CODE_SIGN_IDENTITY=-'
             -configuration 'Release' 'SYMROOT=build' 
             prefix.install 'build/Release/PushToTalk.app'
             
