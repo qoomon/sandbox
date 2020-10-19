@@ -11,20 +11,17 @@ jobs:
       VERSION: 0.1.5
     steps:
       - uses: actions/checkout@v2
-        
-      - run: curl -L "https://github.com/yulrizka/osx-push-to-talk/archive/v${VERSION}.zip" -O -J
-      - run: |
-          unzip "osx-push-to-talk-${VERSION}.zip"
-          mv -v "osx-push-to-talk-${VERSION}"/* . 
-          rm -rf "osx-push-to-talk-${VERSION}"/
-          rm "osx-push-to-talk-${VERSION}.zip"
-          
+        with:
+          repository: yulrizka/osx-push-to-talk
+    
       - run: >
-          xcodebuild -project 'PushToTalk.xcodeproj' -configuration 'Release'
-          'SYMROOT=build' 'CODE_SIGN_IDENTITY=-'
+          xcodebuild -project 'PushToTalk.xcodeproj'
+          'CODE_SIGN_IDENTITY=-'
+          -configuration 'Release'
+          'SYMROOT=build'
       
-      - run: zip build/Release/PushToTalk.app.zip build/Release/PushToTalk.app 
+      - run: zip PushToTalk.app.zip build/Release/PushToTalk.app 
       - uses: actions/upload-artifact@v2
         with:
           name: PushToTalk.app.zip
-          path: build/Release/PushToTalk.app.zip
+          path: PushToTalk.app.zip
