@@ -22,7 +22,8 @@ jobs:
       - run: >
           xcodebuild -project 'PushToTalk.xcodeproj' -configuration 'Release'
           'SYMROOT=build' 'CODE_SIGN_IDENTITY=-'
-            
+      
+      - run: zip build/Release/PushToTalk.app.zip build/Release/PushToTalk.app 
       - uses: actions/upload-artifact@v2
         with:
           name: PushToTalk.app
