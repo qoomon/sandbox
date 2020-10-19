@@ -10,8 +10,12 @@ jobs:
     
     steps:
       - uses: actions/checkout@v2
-      - run: curl -L 'https://github.com/yulrizka/osx-push-to-talk/archive/v0.1.5.zip' -o 'SourceCode.zip'
-      - run: unzip 'SourceCode.zip'
+      - run: curl -L 'https://github.com/yulrizka/osx-push-to-talk/archive/v0.1.5.zip' -O -J
+      - run: >
+          unzip osx-push-to-talk-0.1.5.zip 
+          && mv -v osx-push-to-talk-0.1.5/* . 
+          && rm -rf osx-push-to-talk-0.1.5/
+          && rm osx-push-to-talk-0.1.5.zip
       - run: >
           xcodebuild 
             -project 'PushToTalk.xcodeproj' 'CODE_SIGN_IDENTITY=-'
