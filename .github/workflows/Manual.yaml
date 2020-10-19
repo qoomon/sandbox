@@ -26,5 +26,5 @@ jobs:
       - run: zip build/Release/PushToTalk.app.zip build/Release/PushToTalk.app 
       - uses: actions/upload-artifact@v2
         with:
-          name: PushToTalk.app
-          path: build/Release/PushToTalk.app
+          name: PushToTalk.app.zip
+          path: build/Release/PushToTalk.app.zip
