@@ -7,25 +7,18 @@ Workflow]]
 
 === Dependabot Configuratiorn File
 
-https://dependabot.com/docs/config-file/[https://dependabot.com/docs/config-file/]
+https://dependabot.com/docs/config-file/
 
 * *Example*
-https://github.com/qoomon/banking-swift-messages-java/blob/master/.dependabot/config.yaml[https://github.com/qoomon/banking-swift-messages-java/blob/master/.dependabot/config.yaml]
+https://github.com/qoomon/banking-swift-messages-java/blob/master/.dependabot/config.yaml
 
 === Stale Bot
 
-https://github.com/probot/stale[https://github.com/probot/stale]
+https://github.com/probot/stale
 
 * *Example*
 https://github.com/qoomon/sandbox/blob/master/.github/stale.yml[https://github.com/qoomon/sandbox/blob/master/.github/stale.yml]
 
-=== Action Panel App
-
-https://actionspanel.app[https://actionspanel.app]
-
-* *Example*
-https://github.com/qoomon/sandbox/blob/master/.actionspanel/buttons.yml[https://github.com/qoomon/sandbox/blob/master/.actionspanel/buttons.yml]
-
 === Webhooks
 
-https://putsreq.com/ryyaA0MvqXNbgEJrRNyZ[https://putsreq.com/ryyaA0MvqXNbgEJrRNyZ]
+https://putsreq.com/ryyaA0MvqXNbgEJrRNyZ
