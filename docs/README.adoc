@@ -18,7 +18,3 @@ https://github.com/probot/stale
 
 * *Example*
 https://github.com/qoomon/sandbox/blob/master/.github/stale.yml[https://github.com/qoomon/sandbox/blob/master/.github/stale.yml]
-
-=== Webhooks
-
-https://putsreq.com/ryyaA0MvqXNbgEJrRNyZ
