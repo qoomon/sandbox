@@ -2,8 +2,8 @@
 
 === GithHub Actions Badge
 
-https://github.com/qoomon/sandbox/actions[image:https://github.com/qoomon/sandbox/workflows/Build/badge.svg[Build
-Workflow]]
+
+image:https://github.com/qoomon/sandbox/workflows/Build/badge.svg[link="https://github.com/qoomon/sandbox/actions"]
 
 === Dependabot Configuratiorn File
 
@@ -17,4 +17,4 @@ https://github.com/qoomon/banking-swift-messages-java/blob/master/.dependabot/co
 https://github.com/probot/stale
 
 * *Example*
-https://github.com/qoomon/sandbox/blob/master/.github/stale.yml[https://github.com/qoomon/sandbox/blob/master/.github/stale.yml]
+https://github.com/qoomon/sandbox/blob/master/.github/stale.yml
