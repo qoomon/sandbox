@@ -19,4 +19,4 @@ https://github.com/probot/stale
 * *Example*
 https://github.com/qoomon/sandbox/blob/master/.github/stale.yml
 
-YOLO
+YOLO YOLO
