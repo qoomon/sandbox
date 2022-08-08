@@ -2,14 +2,18 @@ name: Manual
 
 on: 
   workflow_dispatch:
+  
+permissions:
+  id-token: write # required to request id-token
 
 jobs:
 
   run:
     runs-on: [ubuntu-latest]
     steps:
-      - uses: actions/checkout@v2
-      - run: |
-          cat .git/logs/HEAD
-      - run: |
-          cat .git/logs/HEAD
+      - uses: actions/github-script@v6
+        with:
+          script: |
+            await github.getIDToken
+      
+
