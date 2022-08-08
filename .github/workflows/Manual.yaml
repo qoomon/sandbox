@@ -2,7 +2,7 @@ name: Manual
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "master" ]
   
 permissions:
   id-token: write # required to request id-token
