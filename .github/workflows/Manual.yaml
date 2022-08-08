@@ -1,7 +1,7 @@
 name: Manual
 
 on: 
-  workflow_dispatch:
+  push: ['master']
   
 permissions:
   id-token: write # required to request id-token
