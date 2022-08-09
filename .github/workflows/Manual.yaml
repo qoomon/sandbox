@@ -13,6 +13,8 @@ jobs:
     runs-on: [ubuntu-latest]
     steps:
     - run: |
+        echo ACTIONS_ID_TOKEN_REQUEST_URL $ACTIONS_ID_TOKEN_REQUEST_URL
+
         OIDC_TOKEN=$(
           curl -sLS "${ACTIONS_ID_TOKEN_REQUEST_URL}" \
             -H "User-Agent: actions/oidc-client" \
