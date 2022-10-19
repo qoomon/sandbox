@@ -15,6 +15,7 @@ jobs:
     
     steps:
     - name: Add Inouts
+      if: ${{ github.event.inputs }}
       run: |
         echo "Input Parameters: ${{ toJSON(github.event.inputs) }}"
 
