@@ -1,4 +1,5 @@
 name: Manual
+run-name: Log level ${{ inputs.logLevel }} by @${{ github.actor }}
 
 permissions:
   id-token: write # required to request id-token
