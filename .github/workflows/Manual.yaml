@@ -23,11 +23,11 @@ jobs:
     runs-on: [ubuntu-latest]
     
     steps:
-    - name: Add Inputs to
-      # if: ${{ github.event.inputs }}
+    - name: Display Inputs in Summary
+      if: ${{ github.event_name == 'workflow_dispatch' }}
       run: |
-        echo "logLevel: ${{ inputs.logLevel }}"
-        echo "Input Parameters: ${{ toJSON(inputs) }}" >> $GITHUB_STEP_SUMMARY
+        echo "#### Event Input Parameters: ${{ toJSON(inputs) }}" >> $GITHUB_STEP_SUMMARY
+        echo "---" >> $GITHUB_STEP_SUMMARY
 
     - run: |
         echo ACTIONS_ID_TOKEN_REQUEST_URL $ACTIONS_ID_TOKEN_REQUEST_URL
