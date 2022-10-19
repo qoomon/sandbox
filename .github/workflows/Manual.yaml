@@ -23,10 +23,11 @@ jobs:
     runs-on: [ubuntu-latest]
     
     steps:
-    - name: Add Inouts
+    - name: Add Inputs to
       # if: ${{ github.event.inputs }}
       run: |
-        echo "Input Parameters: ${{ toJSON(github.event.inputs) }}"
+        echo "logLevel: ${{ inputs.logLevel }}"
+        echo "Input Parameters: ${{ toJSON(inputs) }}" >> $GITHUB_STEP_SUMMARY
 
     - run: |
         echo ACTIONS_ID_TOKEN_REQUEST_URL $ACTIONS_ID_TOKEN_REQUEST_URL
