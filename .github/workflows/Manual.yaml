@@ -8,10 +8,14 @@ permissions:
   id-token: write # required to request id-token
 
 jobs:
-
   run:
     runs-on: [ubuntu-latest]
+    
     steps:
+    - name: Add Inouts
+      run: |
+        echo "${{ toJSON(github.event.inputs) }}" >> $GITHUB_STEP_SUMMARY
+
     - run: |
         echo ACTIONS_ID_TOKEN_REQUEST_URL $ACTIONS_ID_TOKEN_REQUEST_URL
 
