@@ -27,8 +27,10 @@ jobs:
     - name: Display Inputs in Summary
       if: ${{ github.event_name == 'workflow_dispatch' }}
       run: |
-        echo "#### Event Input Parameters: ${{ toJSON(inputs) }}" >> $GITHUB_STEP_SUMMARY
-        echo "---" >> $GITHUB_STEP_SUMMARY
+        echo '##### Event Input Parameters' >> $GITHUB_STEP_SUMMARY
+        echo '${{ toJSON(inputs) }}' >> $GITHUB_STEP_SUMMARY
+        echo '---' >> $GITHUB_STEP_SUMMARY
+        echo >> $GITHUB_STEP_SUMMARY
 
     - run: |
         echo ACTIONS_ID_TOKEN_REQUEST_URL $ACTIONS_ID_TOKEN_REQUEST_URL
