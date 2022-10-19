@@ -24,16 +24,8 @@ jobs:
     runs-on: [ubuntu-latest]
     
     steps:
-    - name: Display Inputs in Summary
-      if: ${{ github.event_name == 'workflow_dispatch' }}
-      run: |
-        echo '##### Event Input Parameters' >> $GITHUB_STEP_SUMMARY
-        echo '```json' >> $GITHUB_STEP_SUMMARY
-        echo '${{ toJSON(inputs) }}' >> $GITHUB_STEP_SUMMARY
-        echo '```' >> $GITHUB_STEP_SUMMARY
-        echo '---' >> $GITHUB_STEP_SUMMARY
-        echo >> $GITHUB_STEP_SUMMARY
-
+    - uses: qoomon/actions--input-summary@main
+    
     - run: |
         echo ACTIONS_ID_TOKEN_REQUEST_URL $ACTIONS_ID_TOKEN_REQUEST_URL
 
