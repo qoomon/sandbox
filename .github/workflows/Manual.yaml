@@ -1,14 +1,23 @@
 name: Manual
 
+permissions:
+  id-token: write # required to request id-token
+
 on:
   push: 
     branches:    
       - master
   workflow_dispatch:
+    inputs:
+      logLevel:
+        description: Log level
+        type: choice
+        options:
+        - info
+        - warning
+        - debug 
+        default: warning 
   
-permissions:
-  id-token: write # required to request id-token
-
 jobs:
   run:
     runs-on: [ubuntu-latest]
