@@ -1,8 +1,6 @@
 name: Build Playground
 
 on:
-  # schedule:
-  #   - cron: '*/15 * * * *'
   push:
     branches:
     - master
@@ -14,17 +12,15 @@ jobs:
     
     steps:
     - uses: actions/checkout@v1
-    - run: set
     - run: env
+    - run: set
     - run: cat $GITHUB_EVENT_PATH
-    - run: |
-        curl -i -XGET \
-          --header "Authorization: Bearer ${{ github.token }}" \
-          https://api.github.com/repos/${{ github.repository }}/collaborators/${{ github.actor }}/permission
-    - run: |
-        curl -i -XPOST \
-          --header "Authorization: Bearer ${{ github.token }}" \
-          https://api.github.com/repos/${{ github.repository }}/git/commits
+    - uses: qoomon/github-actions-access-manager@v2
+      with:
+        repositories: |
+          qoomon/private-sandbox
+        permissions: |
+          packages:read
           
           
          
