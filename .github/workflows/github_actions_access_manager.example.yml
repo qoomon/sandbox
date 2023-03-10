@@ -1,0 +1,26 @@
+name: GitHub Actions Access Manager Example
+
+on:
+  workflow_dispatch:
+  # push:
+  #   branches:
+  #   - master
+
+permissions:
+  id-token: write # This is required for requesting the JWT
+  # contents: read  # This is required for actions/checkout
+
+jobs:
+  sandbox:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: qoomon/github-actions-access-manager@v2
+      with:
+        repositories: |
+          qoomon/private-sandbox
+        permissions: |
+          packages:read
+          
+          
+         
