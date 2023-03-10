@@ -1,0 +1,25 @@
+name: OpenID Connect Example
+on:
+  workflow_dispatch:
+  # push:
+  #   branches:
+  #   - master
+
+permissions:
+  id-token: write # This is required for requesting the JWT
+  contents: read  # This is required for actions/checkout
+  
+jobs:
+  IAMGetCallerIdentity:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git clone the repository
+        uses: actions/checkout@v3
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::856009282719:role/sandbox-github
+          role-session-name: example
+          aws-region: eu-central-1
+      - run: |
+          aws sts get-caller-identity
