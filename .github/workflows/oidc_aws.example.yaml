@@ -18,8 +18,9 @@ jobs:
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: arn:aws:iam::${{ secrets.SUPER_SECRET }}:role/sandbox-github
+          role-to-assume: arn:aws:iam::856009282719:role/sandbox-github
           role-session-name: example
           aws-region: eu-central-1
+          mask-aws-account-id: false
       - run: |
           aws sts get-caller-identity
