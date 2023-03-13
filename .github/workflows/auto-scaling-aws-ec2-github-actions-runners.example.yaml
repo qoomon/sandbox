@@ -1,0 +1,28 @@
+name: Auto Scaling AWS EC2 GitHub Actions Runners
+on:
+  workflow_dispatch:
+  # push:
+  #   branches:
+  #   - master
+
+permissions:
+  id-token: write # This is required for requesting the JWT
+  
+jobs:
+  IAMGetCallerIdentity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::856009282719:role/sandbox-github
+          role-session-name: example
+          aws-region: eu-central-1
+          mask-aws-account-id: false
+      - run: |
+          aws sts get-caller-identity
+  Main:
+    runs-on: [self-hosted, linux]
+    steps:
+      - run: |
+          echo "Hello World!"
