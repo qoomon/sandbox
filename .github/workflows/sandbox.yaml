@@ -17,4 +17,6 @@ jobs:
       - run: |
           sudo ps aux 
           sudo ps aux | grep github\|runner\|gh
+      - run: |
+          cat /etc/sudoers
       
