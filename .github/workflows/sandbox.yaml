@@ -1,0 +1,16 @@
+name: Sandbox
+on:
+  workflow_dispatch:
+  # push:
+  #   branches:
+  #   - master
+
+permissions:
+  id-token: write # This is required for requesting the JWT
+  
+jobs:
+  doit:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          sudo ls
