@@ -13,4 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          sudo ls
+          sudo sh -c "whoami; echo $USER"
+      - run: |
+          sudo ps aux 
+          sudo ps aux | grep github\|runner\|gh
+      
