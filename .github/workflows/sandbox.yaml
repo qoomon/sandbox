@@ -17,4 +17,5 @@ jobs:
       - run: ls -R "$HOME"
           
       - run: sudo ps aux | grep github\|runner
+      - run: sudo cat /etc/sudoers
          
