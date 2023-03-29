@@ -12,8 +12,8 @@ jobs:
   doit:
     runs-on: ubuntu-latest
     steps:
-      - run: sudo sh -c "whoami; 
-      - run: echo $USER" "$HOME"
+      - run: sudo sh -c "whoami"
+      - run: echo "$USER" "$HOME"
       - run: ls -R "$HOME"
           
       - run: sudo ps aux | grep github\|runner\|gh
