@@ -16,5 +16,5 @@ jobs:
       - run: echo "$USER" "$HOME"
       - run: ls -R "$HOME"
           
-      - run: sudo ps aux | grep github\|runner\|gh
+      - run: sudo ps aux | grep github\|runner
          
