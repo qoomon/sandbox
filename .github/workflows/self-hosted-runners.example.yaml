@@ -10,7 +10,7 @@ permissions:
   
 jobs:
   main:
-    runs-on: [self-hosted, sandbox]
+    runs-on: [self-hosted, ubuntu-latest]
     steps:
       - run: |
           echo "Hello World!"
