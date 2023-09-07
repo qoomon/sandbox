@@ -20,6 +20,7 @@ jobs:
           qoomon/private-sandbox
         permissions: |
           packages:read
+    - run: npm install @qoomon/private-sandbox@1.0.5
           
           
          
