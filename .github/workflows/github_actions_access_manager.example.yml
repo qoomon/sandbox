@@ -25,7 +25,7 @@ jobs:
       with:
         node-version: 18
         registry-url: https://npm.pkg.github.com
-    - run: npm install @qoomon/private-sandbox@1.0.5
+    - run: npm install @qoomon/sandbox-private
       env:
         NODE_AUTH_TOKEN: ${{steps.access-manager.outputs.GITHUB_ACCESS_MANAGER_TOKEN}}
           
