@@ -8,7 +8,7 @@ const githubRepo = {
 };
 
 const secrets = {
-  'AWS_ACCES_KEY': new Date().toString(),
+  'AWS_ACCESS_KEY': new Date().toString(),
 };
 
 console.log('process.env.GITHUB_TOKEN ', process.env.GITHUB_TOKEN.length, process.env.GITHUB_TOKEN );

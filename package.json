@@ -1,23 +1,49 @@
 {
   "name": "sandbox",
   "version": "1.0.0",
-  "dependencies": {
-    "@octokit/auth-app": "^2.4.2",
-    "@octokit/rest": "^16.40.1",
-    "tweetsodium": "0.0.4"
-  },
-  "devDependencies": {},
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "type": "module",
+  "author": "",
+  "license": "ISC",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/qoomon/sandbox.git"
   },
-  "author": "",
-  "license": "ISC",
+  "homepage": "https://github.com/qoomon/sandbox#readme",
   "bugs": {
     "url": "https://github.com/qoomon/sandbox/issues"
   },
-  "homepage": "https://github.com/qoomon/sandbox#readme"
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "scripts": {
+    "start": "ncc run src/action.ts",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "package": "ncc build src/action.ts",
+    "package:watch": "npm run package -- --watch"
+  },
+  "dependencies": {
+    "@actions/core": "^1.10.1",
+    "@aws-crypto/sha256-js": "^5.1.0",
+    "@aws-sdk/client-dynamodb": "^3.421.0",
+    "@aws-sdk/client-lambda": "^3.421.0",
+    "@aws-sdk/client-sts": "^3.421.0",
+    "@aws-sdk/credential-providers": "^3.421.0",
+    "@octokit/auth-app": "^6.0.1",
+    "@octokit/rest": "^20.0.2",
+    "@smithy/protocol-http": "^3.0.6",
+    "@smithy/signature-v4": "^2.0.10",
+    "aws-jwt-verify": "^4.0.0",
+    "aws-lambda": "^1.0.7",
+    "http-status-codes": "^2.3.0",
+    "ky": "^1.0.1",
+    "tweetsodium": "0.0.4",
+    "yaml": "^2.3.2"
+  },
+  "devDependencies": {
+    "@tsconfig/node18": "^18.2.2",
+    "@tsconfig/recommended": "^1.0.3",
+    "@types/aws-lambda": "^8.10.122",
+    "@vercel/ncc": "^0.38.0",
+    "typescript": "^5.2.2"
+  }
 }

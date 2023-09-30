@@ -2,34 +2,22 @@ name: GitHub Actions Access Manager Example
 
 on:
   workflow_dispatch:
-  # push:
-  #   branches:
-  #   - master
+  push:
+    branches:
+    - aws-github-access-manager
 
 permissions:
   id-token: write # This is required for requesting the JWT
+  contents: read  # This is required for actions/checkout
 
 jobs:
   sandbox:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - uses: qoomon/github-actions-access-manager@v2
-      id: access-manager
-      with:
-        repositories: |
-          qoomon/sandbox-private
-        permissions: |
-          packages:read
+    - uses: actions/checkout@v4
     - uses: actions/setup-node@v3
-      with:
-        node-version: 18
-        registry-url: https://npm.pkg.github.com
-    - run: cp $NPM_CONFIG_USERCONFIG .npmrc
-    - run: cat .npmrc
-    - run: npm install @qoomon/private-sandbox
-      env:
-        NODE_AUTH_TOKEN: ${{steps.access-manager.outputs.GITHUB_ACCESS_MANAGER_TOKEN}}
+    - run: npm ci
+    - run: npm start
           
           
          
