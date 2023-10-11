@@ -6,14 +6,14 @@ export function AwsRequestSigner(signer: SignatureV4): BeforeRequestHook {
     return async (request: Request) => {
         const requestUrl = new URL(request.url);
         const requestHeaders = Object.fromEntries(request.headers.entries());
-        if (requestHeaders["Authorization"]) {
+        if (requestHeaders["authorization"]) {
             // preserve Authorization header
-            requestHeaders["X-Authorization"] = requestHeaders["Authorization"];
-            delete requestHeaders["Authorization"];
+            requestHeaders["x-authorization"] = requestHeaders["authorization"];
+            delete requestHeaders["authorization"];
         }
         const canonicalRequest = new HttpRequest({
             hostname: requestUrl.hostname,
-            // port: requestUrl.port ? parseInt(requestUrl.port) : undefined,
+            port: requestUrl.port ? parseInt(requestUrl.port) : undefined,
             path: requestUrl.pathname,
             protocol: requestUrl.protocol,
             method: request.method,

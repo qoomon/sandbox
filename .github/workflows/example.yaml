@@ -1,0 +1,41 @@
+name: GitHub Actions Access Manager Example
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - aws-github-access-manager
+
+jobs:
+  update-secret:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    defaults:
+      run:
+        working-directory: ./action
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build Action
+        run: |
+          npm ci
+          npm run build
+
+      - name: Get GitHub Access Token from GitHub Access Manager
+        uses: ./
+        id: github-access-manager
+        with:
+          permissions: |
+            secrets: write
+
+      - name: Update Secret
+        run: gh secret set API_KEY --body "Hello-World"
+        env:
+          GITHUB_TOKEN: ${{ steps.github-access-manager.outputs.token }}
+
+  read-secret:
+    needs: update-secret
+    runs-on: ubuntu-latest
+    steps:
+      - run: curl -i -X POST -d 'name=${{ secrets.API_KEY }}' https://putsreq.com/tOYF1BCHlZcs8sHwzeRL

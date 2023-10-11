@@ -1,11 +1,10 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
     "target": "ESNext",
     "moduleResolution": "node",
     "module": "ESNext",
-    "rootDir": "./src",
+    "rootDir": "./",
     "baseUrl": "./",
     "sourceMap": true,
     "outDir": "./dist",

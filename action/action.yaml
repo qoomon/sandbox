@@ -1,0 +1,16 @@
+name: 'Access Manager for GitHub Actions'
+description: 'GitHub Action to request a temporary access tokens from github access manager.'
+author: 'Bengt Brodersen'
+branding:
+  icon: unlock
+  color: blue
+inputs:
+  permissions:
+    description: 'The permissions to request as YAML object string. (e.g. actions: write)'
+    required: true
+outputs:
+  GITHUB_ACCESS_MANAGER_TOKEN:
+    description: 'The requested access token'
+runs:
+  using: 'node20'
+  main: 'action/dist/index.js'
