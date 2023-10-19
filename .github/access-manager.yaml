@@ -1,0 +1,7 @@
+self: qoomon/sandbox
+statements:
+  - principals:
+      - ref:refs/heads/main
+    permissions:
+      secrets: write
+      

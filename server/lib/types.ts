@@ -4,6 +4,19 @@ import {z} from "zod";
 import YAML from 'yaml'
 import {ZodRecord} from "zod/lib/types";
 
+export type GitHubAppCredentials = {
+    appId: string,
+    privateKey: string,
+}
+
+export class PolicyError extends Error {
+    public issues?: string[];
+    constructor(message:string, issues?: string[]) {
+        super(message)
+        this.issues = issues;
+    }
+}
+
 export const GithubAppPermissionSchema = z.enum(['read', 'write', 'admin'])
 export type GithubAppPermission = z.infer<typeof GithubAppPermissionSchema>
 const GitHubRepoAccessStatementSchema = z.object({
@@ -14,11 +27,12 @@ const GitHubRepoAccessStatementSchema = z.object({
      * Syntax: repo:<orgName/repoName>:ref:refs/heads/branchName
      * Example: repo:octo-org/octo-repo:ref:refs/heads/main
      */
-    principal: z.array(z.string()),
+    principals: z.array(z.string()),
     permissions: z.record(GithubAppPermissionSchema),
 });
 export type GitHubRepoAccessStatement = z.infer<typeof GitHubRepoAccessStatementSchema>
 export const GithubRepoAccessPolicySchema = z.object({
+    self: z.string(),
     statements: z.array(GitHubRepoAccessStatementSchema)
 })
 export type GithubRepoAccessPolicy = z.infer<typeof GithubRepoAccessPolicySchema>

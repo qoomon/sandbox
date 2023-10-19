@@ -1,5 +1,8 @@
 # GitHub Actions Access Manager Action
 
+## Setup
+create repository GitHub Actions secret `ACCESS_MANAGER_POLICY` https://github.com/OWNER/REPO/settings/secrets/actions/new
+
 ## Example Workflow
 ```yaml
 name: GitHub Actions Access Manager Example
@@ -19,7 +22,7 @@ jobs:
       - uses: actions/checkout@v4
     
       - name: Get GitHub Access Token from GitHub Access Manager
-        uses: JH-Sandbox/GitHub-Actions-Access-Manager@main
+        uses: qoomon/github-actions-access-manager@v1
         id: access-token
         with:
           permissions: |
@@ -39,10 +42,12 @@ jobs:
 
 ## Release
 ```bash
+RELEASE_VERSION="0.0.0"
+
 npm ci
 npm run build
+
 git add -f dist/
-RELEASE_VERSION="1.0.1"
 git commit -m "build(release): action release $RELEASE_VERSION"
 git push
 

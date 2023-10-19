@@ -1,84 +1,89 @@
-import {APIGatewayProxyEventV2, APIGatewayProxyHandlerV2, APIGatewayProxyResultV2, Context} from 'aws-lambda';
+import {
+    APIGatewayEventRequestContextV2,
+    APIGatewayProxyEventV2,
+    APIGatewayProxyEventV2WithRequestContext,
+    APIGatewayProxyHandlerV2,
+    APIGatewayProxyResultV2,
+    Context
+} from 'aws-lambda';
 import {getReasonPhrase, StatusCodes} from "http-status-codes";
 import {JwtRsaVerifier} from "aws-jwt-verify";
+import {JwtInvalidClaimError} from "aws-jwt-verify/error";
 import {Octokit} from "@octokit/rest";
 import {createAppAuth} from "@octokit/auth-app";
 import {
     AccessTokensRequestBodySchema,
     GithubActionJwtPayload,
+    GitHubAppCredentials,
     GithubAppPermission,
     GithubAppPermissions,
     GithubRepoAccessPolicy,
     GithubRepoAccessPolicySchema,
     GitHubRepoAccessStatement,
-    JsonTransformer,
+    JsonTransformer, PolicyError,
     YamlTransformer
 } from "./lib/types";
-import {
-    getSecretObject,
-    jsonErrorResponse,
-    jsonResponse,
-    withErrorHandler
-} from "./lib/lambda-utils";
+import {getSecretObject, jsonErrorResponse, jsonResponse, withErrorHandler} from "./lib/lambda-utils";
 import {comparePermission, ensureSameRepositoryOwner, parseRepository} from "./lib/github-utils";
 import {ZodTypeAny} from "zod/lib/types";
 import {ensureNotEmpty, formatKey, wildcardRegExp} from "./lib/common-utils";
-import {ZodError} from "zod";
+
+// --- configure -------------------------------------------------------------------------------------------------------
+
+const ACCESS_MANAGER_POLICY_FILE_PATH = '.github/access-manager.yaml'
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-const API_ENDPOINT_URL = new URL(process.env["API_ENDPOINT_URL"]!);
-const GITHUB_ACTIONS_TOKEN_SUB_WHITELIST = [].map(it => wildcardRegExp(it)) // allow all if empty
-const GITHUB_APP_SECRETS = await getSecretObject<{
-    appId: string,
-    privateKey: string
-}>(process.env["GITHUB_APP_SECRETS_NAME"]!).then(it => {
-    // due to aws secret manager limitation to store multiline strings we need to format the key
-    it.privateKey = formatKey(it.privateKey)
-    return it
-})
+const GITHUB_ACTIONS_TOKEN_SUB_WHITELIST = [] // allow all, if empty
+    .map(subPattern => wildcardRegExp(subPattern))
+
+const GITHUB_APP_SECRETS = await getSecretObject<GitHubAppCredentials>(process.env["GITHUB_APP_SECRETS_NAME"]!)
+// due to aws secret manager limitation to store multiline strings we need to format the key
+GITHUB_APP_SECRETS.privateKey = formatKey(GITHUB_APP_SECRETS.privateKey)
+
+const GITHUB_APP_CLIENT = new Octokit({authStrategy: createAppAuth, auth: GITHUB_APP_SECRETS})
+const GITHUB_APP_INFOS = await GITHUB_APP_CLIENT.apps.getAuthenticated().then(it => it.data)
 
 const GITHUB_ACTIONS_TOKEN_VERIFIER = JwtRsaVerifier.create({
     issuer: "https://token.actions.githubusercontent.com", // set this to the expected "iss" claim on your JWTs
     jwksUri: 'https://token.actions.githubusercontent.com/.well-known/jwks', // from get from ISSUER/.well-known/openid-configuration > $.jwks_uri
-    audience: API_ENDPOINT_URL.hostname // set this to the expected "aud" claim on your JWTs
+    audience: "github-actions-access-manager" // set this to the expected "aud" claim on your JWTs
 })
-
-const GITHUB_APP_CLIENT = new Octokit({authStrategy: createAppAuth, auth: GITHUB_APP_SECRETS})
-const GITHUB_APP_INFOS = await GITHUB_APP_CLIENT.apps.getAuthenticated().then(it => it.data)
-// https://github.com/OWNER/REPO/settings/variables/actions/ACCESS_MANGER_POLICY
-const ACCESS_MANAGER_POLICY_VARIABLE_NAME: string = 'ACCESS_MANAGER_POLICY'
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-export const handler: APIGatewayProxyHandlerV2 = withErrorHandler(errorHandler, async (event, _context): Promise<APIGatewayProxyResultV2> => {
+export const handler: APIGatewayProxyHandlerV2 = withErrorHandler(handleError, async (event, _context): Promise<APIGatewayProxyResultV2> => {
+    // --- handle authorization ----------------------------------------------------------------------------------------
     const requestIdentity = await handleAuthorization(event.headers)
     console.info("requestIdentity.sub:", requestIdentity.sub)
 
     if (event.requestContext.http.path === '/v1/access_tokens') {
         if (event.requestContext.http.method === 'POST') {
-            const requestBody = await parseJsonBody(event.body, AccessTokensRequestBodySchema)
-            console.info("requestBody:", requestBody)
-            // TODO maybe refactor
-            const requestTargetRepository = requestBody.repository ?? requestIdentity.repository
+            // --- handle input ----------------------------------------------------------------------------------------
+            const request = await handleInput(event, requestIdentity)
+            console.info("request:", request)
 
+            // --- process access token request ------------------------------------------------------------------------
 
             // --- get target repository app installation
 
             const targetRepoInstallation = await getAppInstallation({
-                repository: requestTargetRepository
+                repository: request.targetRepository
             })
             if (!targetRepoInstallation) {
-                throw new APIClientError(StatusCodes.FORBIDDEN, `${GITHUB_APP_INFOS.name} is not installed for ${requestTargetRepository} repository`, {
+                throw new APIClientError(StatusCodes.FORBIDDEN, `'${GITHUB_APP_INFOS.name}' is not installed for ${request.targetRepository} repository`, {
                     details: {html_url: GITHUB_APP_INFOS.html_url}
                 })
             }
 
             // --- check if target repository installation grants requested token permissions
 
-            const targetRepoInstallationDeniedPermissions = verifyPermissions(requestBody.permissions, targetRepoInstallation.permissions)
+            const targetRepoInstallationDeniedPermissions = verifyPermissions({
+                requested: request.permissions,
+                granted: targetRepoInstallation.permissions,
+            })
             if (targetRepoInstallationDeniedPermissions) {
-                throw new APIClientError(StatusCodes.FORBIDDEN, `The permissions requested are not granted to ${GITHUB_APP_INFOS.name} installation for ${requestTargetRepository} repository.`, {
+                throw new APIClientError(StatusCodes.FORBIDDEN, `The permissions requested are not granted to '${GITHUB_APP_INFOS.name}' installation for '${request.targetRepository}' repository.`, {
                     details: {deniedPermission: targetRepoInstallationDeniedPermissions}
                 })
             }
@@ -87,20 +92,21 @@ export const handler: APIGatewayProxyHandlerV2 = withErrorHandler(errorHandler, 
 
             const targetRepositoryClient = await createInstallationOctokit({
                 installation_id: targetRepoInstallation.id,
-                repositories: [requestTargetRepository],
-                permissions: {actions_variables: 'read'} as GithubAppPermissions,  // needed to read repository access policy
+                repositories: [request.targetRepository],
+                permissions: {
+                    single_file: 'read', // needed to read repository access policy file ACCESS_MANAGER_POLICY_FILE_PATH
+                } as GithubAppPermissions,
             })
 
             const targetRepositoryGrantedPermissions = await getRepositoryAccessPermissions({
                 repositoryClient: targetRepositoryClient,
-                repository: requestTargetRepository,
+                repository: request.targetRepository,
                 identity: requestIdentity
             }).catch(error => {
-                // TODO refactor
-                if (error instanceof ZodError) {
-                    throw new APIClientError(StatusCodes.FORBIDDEN, `${requestTargetRepository} repository has an invalid access policy`, {
+                if (error instanceof PolicyError) {
+                    throw new APIClientError(StatusCodes.FORBIDDEN, `'${request.targetRepository}' repository has an invalid access policy`, {
                         // only return details, if the target repository is the same as request identity repository
-                        details: requestTargetRepository === requestIdentity.repository ? error.issues : undefined,
+                        details: request.targetRepository === requestIdentity.repository ? error.issues : undefined,
                         cause: error,
                     })
                 }
@@ -109,9 +115,12 @@ export const handler: APIGatewayProxyHandlerV2 = withErrorHandler(errorHandler, 
 
             // --- check if source repository access policy grants requested token permissions
 
-            const targetRepositoryDeniedPermissions = verifyPermissions(requestBody.permissions, targetRepositoryGrantedPermissions)
+            const targetRepositoryDeniedPermissions = verifyPermissions({
+                requested: request.permissions,
+                granted: targetRepositoryGrantedPermissions,
+            })
             if (targetRepositoryDeniedPermissions) {
-                throw new APIClientError(StatusCodes.FORBIDDEN, `The permissions requested are not granted to github action principal ${requestIdentity.sub}`, {
+                throw new APIClientError(StatusCodes.FORBIDDEN, `The permissions requested are not granted to github action principal '${requestIdentity.sub}'`, {
                     details: {declinedPermission: targetRepositoryDeniedPermissions}
                 })
             }
@@ -121,9 +130,9 @@ export const handler: APIGatewayProxyHandlerV2 = withErrorHandler(errorHandler, 
             const accessToken = await createInstallationAccessToken({
                 installation_id: targetRepoInstallation.id,
                 // be aware that an empty array will result in requesting permissions for all repositories
-                repositories: ensureNotEmpty([requestTargetRepository]),
+                repositories: ensureNotEmpty([request.targetRepository]),
                 // be aware that an empty object will result in requesting all granted permissions
-                permissions: ensureNotEmpty(requestBody.permissions),
+                permissions: ensureNotEmpty(request.permissions),
             })
 
             // --- response with GitHub access token
@@ -157,9 +166,12 @@ async function handleAuthorization(headers: Record<string, string | undefined>):
     }
 
     const githubToken = await GITHUB_ACTIONS_TOKEN_VERIFIER.verify(githubTokenValue)
-        .then(payload => payload as GithubActionJwtPayload)
+        .then(it => it as GithubActionJwtPayload)
         .catch(error => {
-            throw new APIClientError(StatusCodes.UNAUTHORIZED, error?.message || 'Unexpected token error') // TODO check if error can contain sensitive information
+            if (error instanceof JwtInvalidClaimError) {
+                throw new APIClientError(StatusCodes.UNAUTHORIZED, error.message)
+            }
+            throw error
         })
 
     if (GITHUB_ACTIONS_TOKEN_SUB_WHITELIST.length && !GITHUB_ACTIONS_TOKEN_SUB_WHITELIST.some(subRegex => subRegex.test(githubToken.sub))) {
@@ -167,6 +179,14 @@ async function handleAuthorization(headers: Record<string, string | undefined>):
     }
 
     return githubToken
+}
+
+async function handleInput(event: APIGatewayProxyEventV2WithRequestContext<APIGatewayEventRequestContextV2>, requestIdentity: GithubActionJwtPayload) {
+    return await parseJsonBody(event.body, AccessTokensRequestBodySchema)
+        .then(request => ({
+            permissions: request.permissions,
+            targetRepository: request.repository || requestIdentity.repository
+        }));
 }
 
 async function parseJsonBody<T extends ZodTypeAny>(body: string | undefined, schema: T) {
@@ -184,7 +204,7 @@ async function parseJsonBody<T extends ZodTypeAny>(body: string | undefined, sch
     return parseResult.data
 }
 
-async function errorHandler(error: any, _event: APIGatewayProxyEventV2, _context: Context) {
+async function handleError(error: any, _event: APIGatewayProxyEventV2, _context: Context) {
     console.error('[ERROR]', error)
 
     if (error instanceof APIClientError) {
@@ -252,12 +272,11 @@ async function createInstallationOctokit(params: {
  * @param granted permissions
  * @return denied permissions or null if all permissions are granted
  */
-function verifyPermissions(requested: GithubAppPermissions, granted: GithubAppPermissions) {
+function verifyPermissions({requested, granted}: { requested: GithubAppPermissions, granted: GithubAppPermissions }) {
     const deniedPermissions = {} as GithubAppPermissions
     for (const [scope, requestedPermission] of Object.entries(requested) as [keyof GithubAppPermissions, GithubAppPermission][]) {
         if (comparePermission(requestedPermission, granted[scope]) < 0) {
-            // @ts-ignore
-            missingPermissions[scope] = requestedPermission
+            (deniedPermissions[scope] as string) = requestedPermission
         }
     }
     if (Object.keys(deniedPermissions).length > 0) {
@@ -277,33 +296,46 @@ async function getRepositoryAccessPermissions({repositoryClient, repository, ide
     return determineGrantedPermissions(targetRepositoryAccessPolicy, identity)
 }
 
+
 async function getRepositoryAccessPolicy({repositoryClient, repository}: {
     repositoryClient: Octokit,
     repository: string
 }): Promise<GithubRepoAccessPolicy> {
-    const variable = await repositoryClient.actions
-        .getRepoVariable({...parseRepository(repository), name: ACCESS_MANAGER_POLICY_VARIABLE_NAME})
-        .then(it => it.data)
+
+    const policyValue = await repositoryClient.repos
+        .getContent({
+            ...parseRepository(repository),
+            path: ACCESS_MANAGER_POLICY_FILE_PATH
+        })
+        .then(res => Buffer.from((res.data as { content: string }).content, 'base64').toString())
         .catch(error => {
             if (error.status === StatusCodes.NOT_FOUND) return null
             throw error
         })
-    if (!variable) {
-        return {statements: []}
+
+    if (!policyValue) {
+        return {self: repository, statements: []}
     }
 
     const accessPolicyResult = YamlTransformer
-        .pipe(GithubRepoAccessPolicySchema).safeParse(variable.value)
+        .pipe(GithubRepoAccessPolicySchema).safeParse(policyValue)
 
     if (!accessPolicyResult.success) {
-        throw accessPolicyResult.error
+        throw new PolicyError('Invalid access policy', accessPolicyResult.error.issues
+            .map(issue => `${issue.path.join('.')}: ${issue.message}`))
     }
-    return accessPolicyResult.data
+
+    const policy = accessPolicyResult.data
+    if (policy.self.toLowerCase() !== repository.toLowerCase()) {
+        throw new PolicyError('Invalid access policy', [`policy field 'self' needs to be set to '${repository}'`])
+    }
+
+    return policy
 }
 
 function determineGrantedPermissions(accessPolicy: GithubRepoAccessPolicy, identity: GithubActionJwtPayload) {
     const permissionsSets = accessPolicy.statements
-        .filter((statement: GitHubRepoAccessStatement) => statement.principal.some(principalPattern => {
+        .filter((statement: GitHubRepoAccessStatement) => statement.principals.some(principalPattern => {
             if (!principalPattern.startsWith("repo:")) {
                 principalPattern = `repo:${identity.repository}:` + principalPattern
             }
@@ -331,8 +363,7 @@ function aggregatePermissions(permissionSets: GithubAppPermissions[]) {
     for (const permissions of permissionSets) {
         for (const [scope, permission] of Object.entries(permissions) as [keyof GithubAppPermissions, GithubAppPermission][]) {
             if (comparePermission(resultingPermissions[scope], permission) > 0) {
-                //@ts-ignore
-                resultingPermissions[scope] = permission
+                (resultingPermissions[scope] as string) = permission
             }
         }
     }

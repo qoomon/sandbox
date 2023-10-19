@@ -8,12 +8,13 @@ import {AwsRequestSigner} from "./lib/aws-request-signer";
 import {GithubAccessTokenResponse, GithubAppPermissions} from "./lib/types";
 import {ensureSimpleRecord} from "./lib/github-utils";
 
-// ---------------------------------------------------------------------------------------------------------------------
+// --- Configuration ---------------------------------------------------------------------------------------------------
 
 const GITHUB_ACCESS_MANAGER_API = {
-    url: new URL("https://el6yspz5c5.execute-api.eu-central-1.amazonaws.com"),
-    accessRoleArn: "arn:aws:iam::856009282719:role/github-access-manager-api-access",
-    region: "eu-central-1",
+    service: 'lambda', // 'lambda' for Function URLs or 'execute-api' for ApiGateway,
+    baseUrl: new URL("CHANGE-ME"),
+    accessRoleArn: "CHANGE-ME",
+    region: "CHANGE-ME",
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -22,17 +23,16 @@ async function run() {
     const permissions = ensureSimpleRecord(YAML.parse(core.getInput('permissions')))
 
     const accessToken = await getAccessToken({permissions})
-
     core.setSecret(accessToken.token)
-    core.exportVariable('GITHUB_ACCESS_MANAGER_TOKEN', accessToken.token)
+
     core.setOutput('token', accessToken.token)
+    core.info('set token as output `token`. Usage ${{ steps.STEP_ID.outputs.token }}')
 }
 
 async function errorHandler(error: Error) {
     if (error instanceof HTTPError) {
         const responsePayload = await error.response.json()
-        core.error(error.message + " " + JSON.stringify(responsePayload, null, 2))
-        core.setFailed(`${error.message} - ${responsePayload.message}`)
+        core.setFailed(error.message + " " + JSON.stringify(responsePayload, null, 2))
     } else {
         core.setFailed(error)
     }
@@ -43,12 +43,12 @@ run().catch(errorHandler)
 // ---------------------------------------------------------------------------------------------------------------------
 
 async function getAccessToken({permissions}: { permissions: GithubAppPermissions }) {
-    return await ky.post(new URL('/v1/access_tokens', GITHUB_ACCESS_MANAGER_API.url), {
+    return await ky.post(new URL('/v1/access_tokens', GITHUB_ACCESS_MANAGER_API.baseUrl), {
         json: {permissions},
-        headers: {"Authorization": 'Bearer ' + await core.getIDToken(GITHUB_ACCESS_MANAGER_API.url.hostname)},
+        headers: {"Authorization": 'Bearer ' + await core.getIDToken('github-actions-access-manager')},
         hooks: {
             beforeRequest: [AwsRequestSigner(new SignatureV4({
-                service: 'execute-api',
+                service: GITHUB_ACCESS_MANAGER_API.service,
                 region: GITHUB_ACCESS_MANAGER_API.region,
                 credentials: fromWebToken({
                     webIdentityToken: await core.getIDToken("sts.amazonaws.com"),
