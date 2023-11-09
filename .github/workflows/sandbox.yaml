@@ -12,17 +12,10 @@ jobs:
   doit:
     runs-on: ubuntu-latest
     steps:
-      - run: sudo sh -c "whoami"
-      - run: echo "$USER" "$HOME"
-      - run: ls -R "$HOME"
-          
-      - run: sudo ps aux | grep github\|runner
-      - run: sudo cat /etc/sudoers
-      - run: users
-      - run: groups
-      - run: groups runner
-      - run: groups runneradmin
-      - run: getent group adm
-      - run: getent group runneradmin
-      - run: getent group sudo
-         
+      - run: echo "hello world"
+  dothat:
+    needs: doit
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "hello world"
+   
