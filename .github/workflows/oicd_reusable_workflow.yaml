@@ -1,4 +1,4 @@
-name: OIDC Token Example
+name: OIDC Token Reusble Workflow Example
 
 on:
   workflow_call:
