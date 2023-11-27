@@ -1,0 +1,19 @@
+name: OIDC Token Example
+
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write # This is required for requesting the JWT
+
+jobs:
+  sandbox:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const token = await core.getIDToken()
+            console.log(JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString()))
+   
+          
