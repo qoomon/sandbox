@@ -16,6 +16,6 @@ jobs:
             const token = await core.getIDToken()
             console.log(JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString()))
   oicd-reusable-workflow:
-     uses: qoomon/sandbox/.github/workflows/oicd_reusable_workflow.yaml@main
+     uses: qoomon/sandbox/.github/workflows/oicd_reusable_workflow.yaml@master
    
           
