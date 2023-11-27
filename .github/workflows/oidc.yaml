@@ -7,7 +7,7 @@ permissions:
   id-token: write # This is required for requesting the JWT
 
 jobs:
-  sandbox:
+  oicd:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/github-script@v7
@@ -15,5 +15,7 @@ jobs:
           script: |
             const token = await core.getIDToken()
             console.log(JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString()))
+  oicd-reusable-workflow:
+     uses: qoomon/sandbox/blob/master/.github/workflows/oicd_reusable_workflow.yaml@main
    
           
