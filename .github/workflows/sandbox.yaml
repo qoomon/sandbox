@@ -18,7 +18,7 @@ jobs:
            
             await Promise.any([Promise.reject(new Error("some error")),Promise.reject(new Error("another error"))]).catch((e) => {
         
-              core.setFailed(e.message + "\n" + e.stack)
+              core.setFailed('Unhandled error, see job logs')
               console.error('Error', e)
             })
             
