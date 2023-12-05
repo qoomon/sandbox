@@ -12,11 +12,11 @@ jobs:
   doit:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "hello world"
-      - run: exit 1
-  dothat:
-    needs: doit
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "hello world"
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            await Promise.any([Promise.reject(new Error("some error"))]).catch((e) => {
+              core.setFailed(e)
+            })
+            
    
