@@ -17,9 +17,9 @@ jobs:
           script: |
            
             await Promise.any([Promise.reject(new Error("some error"),Promise.reject(new Error("another error"))]).catch((e) => {
-              
-  
-              core.setFailed(e..stack )
+        
+              core.setFailed(e.stack)
+              console.error(e)
             })
             
    
