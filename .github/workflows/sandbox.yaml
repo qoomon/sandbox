@@ -1,25 +1,27 @@
 name: Sandbox
 on:
   workflow_dispatch:
-  # push:
-  #   branches:
-  #   - master
+  push:
+    branches:
+      - master
 
 permissions:
   id-token: write # This is required for requesting the JWT
   
 jobs:
-  doit:
+  doThis:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/github-script@v7
+      - run: echo "doThis $(date)" > foo.txt
+      - uses: actions/upload-artifact@v4
         with:
-          script: |
-           
-            await Promise.any([Promise.reject(new Error("some error")),Promise.reject(new Error("another error"))]).catch((e) => {
-        
-              core.setFailed('Unhandled error, see job logs')
-              console.error('Error', e)
-            })
-            
+          name: my-artifact
+          path: foo.txt  
+  doThat:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: my-artifact
+      - run: cat foo.txt
    
