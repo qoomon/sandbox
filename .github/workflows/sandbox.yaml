@@ -21,7 +21,7 @@ jobs:
           date > dummy.txt
           git add dummy.txt
       - run: |
-          git comit -m "work work"
+          git commit -m "work work"
           git push
           
  
