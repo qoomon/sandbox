@@ -2,29 +2,27 @@ name: ~ Sandbox
 on:
   workflow_dispatch:
   push:
+    paths-ignore:
+      - dummy.txt
     branches:
       - master
 
 permissions:
-  id-token: write # This is required for requesting the JWT
+  id-token: write # This is required for requesting OIDC token
+  contents: write
   
 jobs:
   doThis:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "doThis $(date)" > foo.txt
-      - uses: actions/upload-artifact@v4
-        with:
-          name: my-artifact
-          path: foo.txt  
-  doThat:
-    needs: doThis
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          path: .
-          name: my-artifact
-      - run: ls -R
-      - run: cat foo.txt
+      - uses: actions/checkout@v4
+      - uses: chainguard-dev/actions/setup-gitsign@main
+      - run: |
+          date > dummy.txt
+          git add dummy.txt
+      - run: |
+          git comit -m "work work"
+          git push
+          
+ 
    
