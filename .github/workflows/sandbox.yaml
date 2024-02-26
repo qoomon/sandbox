@@ -87,16 +87,16 @@ jobs:
                 createCommitOnBranch(input: $input) {
                     commit {
                         oid
-                        url
                     }
                 }
             }`, {input})
             
-            console.log('commit', commit)  
+            console.log('Commit:', commit)  
+
+            await execCommand(`git pull origin ${branchName}`)
 
       - run: |
-          # git commit -m "work work"
-          # git push
+         git rev-parse HEAD
           
  
    
