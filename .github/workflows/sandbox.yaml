@@ -23,35 +23,39 @@ jobs:
         with:
           script: |
             async function execCommand(command) {
-                const result = { stdout: '', stderr: '' }
+                const result = {stdout: '', stderr: ''}
                 await exec.exec(command, null, {
                     listeners: {
-                        stdout(data) { result.stdout += data.toString() },
-                        stderr(data) { result.stderr += data.toString() },
+                        stdout(data) {
+                            result.stdout += data.toString()
+                        },
+                        stderr(data) {
+                            result.stderr += data.toString()
+                        },
                     },
                 })
                 return result
             }
             
             const repositoryNameWithOwner = await execCommand('git remote get-url --push origin')
-                .then(({ stdout }) => stdout.trim().replace(/.*?([^/:]+\/[^/]+?)(?:\.git)?$/, '$1'))
+                .then(({stdout}) => stdout.trim().replace(/.*?([^/:]+\/[^/]+?)(?:\.git)?$/, '$1'))
             
             const branchName = await execCommand('git branch --show-current')
-                .then(({ stdout }) => stdout.trim())
+                .then(({stdout}) => stdout.trim())
             
             const expectedHeadOid = await execCommand('git rev-parse HEAD')
-                .then(({ stdout }) => stdout.trim())
+                .then(({stdout}) => stdout.trim())
             
             const fileChanges = {
                 additions: await execCommand('git diff --cached --name-only --diff-filter=AM')
-                    .then(({ stdout }) => stdout.split("\n"))
+                    .then(({stdout}) => stdout.split("\n"))
                     .then((paths) => paths.map((path) => ({
-                            path,
-                            contents: fs.readFileSync(path).toString('base64')),
+                        path,
+                        contents: fs.readFileSync(path).toString('base64'),
                     }))),
                 deletions: await execCommand('git diff --cached --name-only --diff-filter=D')
-                  .then(({ stdout }) => stdout.split("\n"))
-                  .then((paths) => paths.map((path) => ({ path }))),
+                    .then(({stdout}) => stdout.split("\n"))
+                    .then((paths) => paths.map((path) => ({path}))),
             }
             
             const message = {
@@ -60,33 +64,34 @@ jobs:
             }
             
             const input = {
-              branch: {
-                  repositoryNameWithOwner,
-                  branchName,
-              },
-              expectedHeadOid,
-              fileChanges,
-              message,
+                branch: {
+                    repositoryNameWithOwner,
+                    branchName,
+                },
+                expectedHeadOid,
+                fileChanges,
+                message,
             }
             
             console.info('input', {
                 ...input,
                 fileChanges: {
-                    additions: input.fileChanges.additions.map(({ path }) => path),
+                    additions: input.fileChanges.additions.map(({path}) => path),
                     deletions: input.fileChanges.deletions,
                 }
             })
             
             const commit = await github.graphql(`mutation ($input: CreateCommitOnBranchInput!) {
-              createCommitOnBranch(input: $input) {
-                commit {
-                  oid
-                  url
+                createCommitOnBranch(input: $input) {
+                    commit {
+                        oid
+                        url
+                    }
                 }
-              }
-            }`, { input })
+            }`, {input})
             
             console.log('commit', commit)
+
             
       - run: |
           # git commit -m "work work"
