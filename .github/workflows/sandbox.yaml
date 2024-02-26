@@ -25,7 +25,7 @@ jobs:
             async function execCommand(command) {
               const result = { stdout: '', stderr: '' }
             
-              await exec.exec('git branch --show-current', {
+              await exec.exec(command, {
                 listeners: {
                   stdout(data) {
                     result.stdout += data.toString()
