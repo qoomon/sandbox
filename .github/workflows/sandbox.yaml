@@ -50,7 +50,7 @@ jobs:
               .then(({ stdout }) => stdout.trim())
             
             const repository = await execCommand('git remote get-url --push origin')
-              .then(({ stdout }) => stdout.trim().replace(/.*?([^/:]+\/[^/]+?)(?:\.git)?$/, ''))
+              .then(({ stdout }) => stdout.trim().replace(/.*?([^/:]+\/[^/]+?)(?:\.git)?$/, '$1'))
               .then(repository => ({
                 owner: repository.split('/')[0],
                 repo: repository.split('/')[1]
