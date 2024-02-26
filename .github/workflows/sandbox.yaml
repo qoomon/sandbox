@@ -23,7 +23,7 @@ jobs:
         with:
           script: |
             const fs = require('fs')
-
+            
             async function execCommand(command) {
                 const result = {stdout: '', stderr: ''}
                 await exec.exec(command, null, {
@@ -61,7 +61,7 @@ jobs:
             }
             
             const message = {
-              headline: 'Sign me!',
+                headline: 'Sign me!',
                 body: 'This is a commit message',
             }
             
@@ -75,13 +75,13 @@ jobs:
                 message,
             }
             
-            console.info('CreateCommitOnBranchInput', JSON.stringify({
+            console.info('CreateCommitOnBranchInput:', JSON.stringify({
                 ...input,
                 fileChanges: {
                     additions: input.fileChanges.additions.map(({path}) => path),
                     deletions: input.fileChanges.deletions,
                 }
-            }, null, 2)))
+            }, null, 2))
             
             const commit = await github.graphql(`mutation ($input: CreateCommitOnBranchInput!) {
                 createCommitOnBranch(input: $input) {
