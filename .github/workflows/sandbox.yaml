@@ -50,13 +50,13 @@ jobs:
             
             const fileChanges = {
                 additions: await execCommand('git diff --cached --name-only --diff-filter=AM')
-                    .then(({stdout}) => stdout.split("\n"))
+                    .then(({stdout}) => stdout.trim().split("\n"))
                     .then((paths) => paths.map((path) => ({
                         path,
                         contents: fs.readFileSync(path).toString('base64'),
                     }))),
                 deletions: await execCommand('git diff --cached --name-only --diff-filter=D')
-                    .then(({stdout}) => stdout.split("\n"))
+                    .then(({stdout}) => stdout.trim().split("\n"))
                     .then((paths) => paths.map((path) => ({path}))),
             }
             
