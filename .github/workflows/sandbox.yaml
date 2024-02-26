@@ -16,13 +16,36 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: chainguard-dev/actions/setup-gitsign@main
       - run: |
           date > dummy.txt
           git add dummy.txt
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const target {
+              owner: 'qoomon',
+              repo: 'sandbox',
+              branch: 'master'
+            }
+            const result = await github.graphql(`query ($owner: String!, $repo: String!, $ref: String!) {
+              repository(owner: $owner, name: $repo) {
+                ref(qualifiedName: $ref) {
+                  target {
+                    ... on Commit {
+                      oid
+                    }
+                  }
+                }
+              }
+            }`, {
+              owner: target.owner,
+              repo: target.repo,
+              ref: `refs/heads/${target.branch}`
+            })
+            console.log('result', result)
       - run: |
           git commit -m "work work"
-          git push
+          # git push
           
  
    
