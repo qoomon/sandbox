@@ -50,13 +50,13 @@ jobs:
             
             const fileChanges = {
                 additions: await execCommand('git diff --cached --name-only --diff-filter=AM')
-                    .then(({stdout}) => stdout.trim().split('\n'))
+                    .then(({stdout}) => stdout.split('\n').filter(path => path.trim() !== ''))
                     .then((paths) => paths.map((path) => ({
                         path,
                         contents: fs.readFileSync(path).toString('base64'),
                     }))),
                 deletions: await execCommand('git diff --cached --name-only --diff-filter=D')
-                    .then(({stdout}) => stdout.trim().split('\n'))
+                    .then(({stdout}) => stdout.split('\n').filter(path => path.trim() !== ''))
                     .then((paths) => paths.map((path) => ({path}))),
             }
             
@@ -92,7 +92,7 @@ jobs:
                 }
             }`, {input})
             
-            console.log('commit', commit)
+            console.log('commit', commit)  
 
       - run: |
           # git commit -m "work work"
