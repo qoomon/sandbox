@@ -22,7 +22,7 @@ jobs:
       - uses: actions/github-script@v7
         with:
           script: |
-            function execAsync(command) {
+            async function execAsync(command) {
               const result = { stdout: '', stderr: '' }
             
               await exec.exec('git branch --show-current', {
