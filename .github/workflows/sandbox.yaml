@@ -22,15 +22,15 @@ jobs:
       - uses: actions/github-script@v7
         with:
           script: |
-            async function execAsync(command) {
+            async function execCommand(command) {
               const result = { stdout: '', stderr: '' }
             
               await exec.exec('git branch --show-current', {
                 listeners: {
-                  stdout: (data: Buffer) => {
+                  stdout(data) {
                     result.stdout += data.toString()
                   },
-                  stderr: (data: Buffer) => {
+                  stderr(data) {
                     result.stderr += data.toString()
                   }
                 },
@@ -40,11 +40,11 @@ jobs:
               return result
             }
             
-            const branch = await execAsync('git branch --show-current')
+            const branch = await execCommand('git branch --show-current')
               .then(({ stdout }) => stdout.trim())
-            const refHash = await execAsync('git rev-parse HEAD')
+            const refHash = await execCommand('git rev-parse HEAD')
               .then(({ stdout }) => stdout.trim())
-            const repository = await execAsync('git remote get-url --push origin')
+            const repository = await execCommand('git remote get-url --push origin')
               .then(({ stdout }) => stdout.trim().replace(/.*?([^/:]+\/[^/]+?)(?:\.git)?$/, ''))
               .then(repository => ({
                 owner: repository.split('/')[0],
@@ -77,8 +77,8 @@ jobs:
               repo: target.repo,
               ref: `refs/heads/${target.branch}`
             }).then(({ repository }) => repository.ref.target.oid)
-            
-            console.log('refHash2', refHash2)
+
+console.log('refHash2', refHash2)
       - run: |
           # git commit -m "work work"
           # git push
