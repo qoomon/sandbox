@@ -49,7 +49,7 @@ jobs:
             const refHash = await execCommand('git rev-parse HEAD')
               .then(({ stdout }) => stdout.trim())
             
-            const repository = await execCommand('git remote -v')
+            const repository = await execCommand('git remote get-url --push origin')
               .then(({ stdout }) => stdout.trim().replace(/.*?([^/:]+\/[^/]+?)(?:\.git)?$/, ''))
               .then(repository => ({
                 owner: repository.split('/')[0],
