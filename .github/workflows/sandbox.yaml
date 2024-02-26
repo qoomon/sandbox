@@ -78,7 +78,7 @@ jobs:
               ref: `refs/heads/${target.branch}`
             }).then(({ repository }) => repository.ref.target.oid)
 
-console.log('refHash2', refHash2)
+            console.log('refHash2', refHash2)
       - run: |
           # git commit -m "work work"
           # git push
