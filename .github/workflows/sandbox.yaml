@@ -56,34 +56,10 @@ jobs:
                 repo: repository.split('/')[1]
               }))
               
-            
             console.log('repository', repository)
             console.log('branch', branch)
             console.log('refHash', refHash)
             
-            const target = {
-              owner: 'qoomon',
-              repo: 'sandbox',
-              branch,
-            }
-            
-            const refHash2 = await github.graphql(`query ($owner: String!, $repo: String!, $ref: String!) {
-              repository(owner: $owner, name: $repo) {
-                ref(qualifiedName: $ref) {
-                  target {
-                    ... on Commit {
-                      oid
-                    }
-                  }
-                }
-              }
-            }`, {
-              owner: target.owner,
-              repo: target.repo,
-              ref: `refs/heads/${target.branch}`
-            }).then(({ repository }) => repository.ref?.target?.oid)
-            
-            console.log('refHash2', refHash2)
       - run: |
           # git commit -m "work work"
           # git push
