@@ -22,21 +22,24 @@ jobs:
       - uses: actions/github-script@v7
         with:
           script: |
+            
             async function execCommand(command) {
-              const result = { stdout: '', stderr: '' }
+              const result = { std: '', stdout: '', stderr: '' }
             
               await exec.exec(command, {
                 listeners: {
                   stdout(data) {
+                    result.std += data.toString()
                     result.stdout += data.toString()
                   },
                   stderr(data) {
+                    result.std += data.toString()
                     result.stderr += data.toString()
                   }
                 },
                 // cwd: './lib'
               }).catch(error => {
-                throw new Error(error.message, `\n${error.message}`)
+                throw new Error(error.message + `\n${result.std}`)
               })
               
               return result
