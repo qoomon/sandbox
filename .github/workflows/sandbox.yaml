@@ -23,7 +23,7 @@ jobs:
         with:
           script: |
             const fs = require('fs')
-            
+
             async function execCommand(command) {
                 const result = {stdout: '', stderr: ''}
                 await exec.exec(command, null, {
@@ -50,19 +50,19 @@ jobs:
             
             const fileChanges = {
                 additions: await execCommand('git diff --cached --name-only --diff-filter=AM')
-                    .then(({stdout}) => stdout.trim().split("\n"))
+                    .then(({stdout}) => stdout.trim().split('\n'))
                     .then((paths) => paths.map((path) => ({
                         path,
                         contents: fs.readFileSync(path).toString('base64'),
                     }))),
                 deletions: await execCommand('git diff --cached --name-only --diff-filter=D')
-                    .then(({stdout}) => stdout.trim().split("\n"))
+                    .then(({stdout}) => stdout.trim().split('\n'))
                     .then((paths) => paths.map((path) => ({path}))),
             }
             
             const message = {
-                headline: "Sign me!",
-                body: "This is a commit message",
+              headline: 'Sign me!',
+                body: 'This is a commit message',
             }
             
             const input = {
@@ -75,13 +75,13 @@ jobs:
                 message,
             }
             
-            console.info('input', {
+            console.info('CreateCommitOnBranchInput', JSON.stringify({
                 ...input,
                 fileChanges: {
                     additions: input.fileChanges.additions.map(({path}) => path),
                     deletions: input.fileChanges.deletions,
                 }
-            })
+            }, null, 2)))
             
             const commit = await github.graphql(`mutation ($input: CreateCommitOnBranchInput!) {
                 createCommitOnBranch(input: $input) {
@@ -94,7 +94,6 @@ jobs:
             
             console.log('commit', commit)
 
-            
       - run: |
           # git commit -m "work work"
           # git push
