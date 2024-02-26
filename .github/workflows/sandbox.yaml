@@ -22,9 +22,8 @@ jobs:
       - uses: actions/github-script@v7
         with:
           script: |
-            import { promisify } from 'node:util'
-            import { exec as _exec } from 'child_process'
-            const exec = util.promisify(_exec)
+            const util = require('node:util')
+            const exec = util.promisify(require('child_process').exec)
             
             const branch = await exec('git branch --show-current').then(({ stdout }) => stdout.trim())
             const refHash = await exec('git rev-parse HEAD').then(({ stdout }) => stdout.trim())
