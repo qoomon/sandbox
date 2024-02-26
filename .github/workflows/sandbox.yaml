@@ -24,7 +24,7 @@ jobs:
           script: |
             
             async function execCommand(command) {
-              const result = { std: '', stdout: '', stderr: '' }
+              const result = {stdout: '', stderr: '' }
             
               await exec.exec(command, {
                 listeners: {
@@ -38,8 +38,6 @@ jobs:
                   }
                 },
                 // cwd: './lib'
-              }).catch(error => {
-                throw new Error(error.message + `\n${result.std}`)
               })
               
               return result
@@ -51,7 +49,7 @@ jobs:
             const refHash = await execCommand('git rev-parse HEAD')
               .then(({ stdout }) => stdout.trim())
             
-            const repository = await execCommand('git remote get-url --push origin')
+            const repository = await execCommand('git remote -v')
               .then(({ stdout }) => stdout.trim().replace(/.*?([^/:]+\/[^/]+?)(?:\.git)?$/, ''))
               .then(repository => ({
                 owner: repository.split('/')[0],
