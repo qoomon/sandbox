@@ -22,12 +22,29 @@ jobs:
       - uses: actions/github-script@v7
         with:
           script: |
-            const util = require('node:util')
-            const exec = util.promisify(require('child_process').exec)
+            function execAsync(command) {
+              const result = { stdout: '', stderr: '' }
             
-            const branch = await exec('git branch --show-current').then(({ stdout }) => stdout.trim())
-            const refHash = await exec('git rev-parse HEAD').then(({ stdout }) => stdout.trim())
-            const repository = await exec('git remote get-url --push origin')
+              await exec.exec('git branch --show-current', {
+                listeners: {
+                  stdout: (data: Buffer) => {
+                    result.stdout += data.toString()
+                  },
+                  stderr: (data: Buffer) => {
+                    result.stderr += data.toString()
+                  }
+                },
+                // cwd: './lib'
+              })
+              
+              return result
+            }
+            
+            const branch = await execAsync('git branch --show-current')
+              .then(({ stdout }) => stdout.trim())
+            const refHash = await execAsync('git rev-parse HEAD')
+              .then(({ stdout }) => stdout.trim())
+            const repository = await execAsync('git remote get-url --push origin')
               .then(({ stdout }) => stdout.trim().replace(/.*?([^/:]+\/[^/]+?)(?:\.git)?$/, ''))
               .then(repository => ({
                 owner: repository.split('/')[0],
