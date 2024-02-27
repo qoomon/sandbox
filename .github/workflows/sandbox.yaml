@@ -15,12 +15,12 @@ jobs:
   doThis:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@main
+      - uses: actions/checkout@v4
       - run: |
           date > dummy.txt
           git add dummy.txt
           
-      - uses: qoomon/commit@v1
+      - uses: qoomon/commit@main
         with:
           message: "I feel signed"
 
