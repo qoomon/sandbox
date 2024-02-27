@@ -15,7 +15,7 @@ jobs:
   doThis:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@main
       - run: |
           date > dummy.txt
           git add dummy.txt
