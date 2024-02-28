@@ -20,7 +20,7 @@ jobs:
           date > dummy.txt
           git add dummy.txt
           
-      - uses: qoomon/actions--commit@main
+      - uses: qoomon/actions--commit@feature/using-github-rest-api
         with:
           message: "I feel signed"
 
