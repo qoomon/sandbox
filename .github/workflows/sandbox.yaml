@@ -19,10 +19,9 @@ jobs:
       - run: |
           date > dummy.txt
           git add dummy.txt
+          git commit -m "work work $(date)"
           
       - uses: qoomon/actions--commit@feature/using-github-rest-api
-        with:
-          message: "I feel signed"
 
       - run: |
          git rev-parse HEAD
