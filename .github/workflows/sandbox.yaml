@@ -21,11 +21,14 @@ jobs:
           date > dummy.txt
           git add dummy.txt
           git commit -m "work work $(date)"
+          date > dummy2.txt
+          git status
           
       - uses: qoomon/actions--commit@feature/using-github-rest-api
       - run: |
+          git status
           git push
-
+          git status
       - run: |
          git rev-parse HEAD
           
