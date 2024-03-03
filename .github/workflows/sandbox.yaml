@@ -23,6 +23,8 @@ jobs:
           git commit -m "work work $(date)"
           
       - uses: qoomon/actions--commit@feature/using-github-rest-api
+      - run: |
+          git push
 
       - run: |
          git rev-parse HEAD
