@@ -33,7 +33,7 @@ jobs:
           git tag -am "${TAG_NAME}" "${TAG_NAME}"
 
       - name: Sign tag ${{ env.TAG_NAME }}
-        uses: qoomon/actions--sign-tag@v1
+        uses: qoomon/actions--sign-tag@main
         with:
           name: ${{ env.TAG_NAME }}
 
