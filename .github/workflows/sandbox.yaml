@@ -17,6 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: qoomon/actions--setup-git-user@v1
+      
       - run: |
           date > dummy.txt
           git add dummy.txt
@@ -26,6 +27,19 @@ jobs:
         uses: qoomon/actions--sign-commit@main
 
       - run: git push
+
+      - run: |
+          TAG_NAME=vDummy$(date +%s) && echo "TAG_NAME=${TAG_NAME}" >> $GITHUB_ENV
+          git tag -am "${TAG_NAME}" "${TAG_NAME}"
+
+      - name: Sign tag ${{ env.TAG_NAME }}
+        uses: qoomon/actions--sign-tag@v1
+        with:
+          name: ${{ env.TAG_NAME }}
+
+      - run: git push origin "${TAG_NAME}"
+
+    
           
  
    
