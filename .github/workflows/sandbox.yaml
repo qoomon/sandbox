@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: echo '${{ secrets.token }}' | head -c 4
+      - run: echo '${{ github.token }}' | head -c 4
           
  
    
