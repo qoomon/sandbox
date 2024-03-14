@@ -16,7 +16,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: echo '${{ github.token }}' | head -c 4
+      - uses: qoomon/actions--setup-git-user@v1
+      - run: |
+          date > dummy.txt
+          git add dummy.txt
+          git commit -m 'work, work'
+
+      - name: Sign HEAD commit
+        uses: qoomon/actions--sign-commit@main
+
+      - run: git push
           
  
    
