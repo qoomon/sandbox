@@ -43,5 +43,7 @@ jobs:
       - run: |
           TAG_NAME=v$(date +%s)
           gh release create "${TAG_NAME}" --generate-notes
+        env:
+          GH_TOKEN: ${{ github.token }}
 
       
