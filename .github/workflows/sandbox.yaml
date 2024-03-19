@@ -16,6 +16,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4      
+
+      # --- create commit ------------------
       - run: |
           date > dummy.txt
           git add dummy.txt
@@ -26,6 +28,7 @@ jobs:
 
       - run: git push
 
+      # --- create tag ---------------------
       - run: |
           TAG_NAME=v$(date +%s)
           echo "TAG_NAME=${TAG_NAME}" >> $GITHUB_ENV
@@ -35,3 +38,10 @@ jobs:
           name: ${{ env.TAG_NAME }}
 
       - run: git push origin "${TAG_NAME}"
+
+      # --- create release ----------------
+      - run: |
+          TAG_NAME=v$(date +%s)
+          gh release create "${TAG_NAME}" --generate-notes
+
+      
