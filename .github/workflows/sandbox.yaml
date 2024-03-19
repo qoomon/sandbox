@@ -15,9 +15,7 @@ jobs:
   doThis:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: qoomon/actions--setup-git-user@v1
-      
+      - uses: actions/checkout@v4      
       - run: |
           date > dummy.txt
           git add dummy.txt
