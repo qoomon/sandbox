@@ -21,25 +21,10 @@ jobs:
       - run: |
           date > dummy.txt
           git add dummy.txt
-          git commit -m 'work, work'
 
       - name: Sign HEAD commit
         uses: qoomon/actions--sign-commit@main
+        with:
+          args: -m 'work, work'
 
       - run: git push
-
-      - run: |
-          TAG_NAME=vDummy$(date +%s) && echo "TAG_NAME=${TAG_NAME}" >> $GITHUB_ENV
-          git tag -am "${TAG_NAME}" "${TAG_NAME}"
-
-      - name: Sign tag ${{ env.TAG_NAME }}
-        uses: qoomon/actions--sign-tag@main
-        with:
-          name: ${{ env.TAG_NAME }}
-
-      - run: git push origin "${TAG_NAME}"
-
-    
-          
- 
-   
