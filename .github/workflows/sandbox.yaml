@@ -25,6 +25,6 @@ jobs:
       - name: Sign HEAD commit
         uses: qoomon/actions--sign-commit@main
         with:
-          args: -m 'work, work'
+          message: 'work, work'
 
       - run: git push
