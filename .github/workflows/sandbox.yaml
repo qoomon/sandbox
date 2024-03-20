@@ -19,8 +19,8 @@ jobs:
 
       # --- create commit ------------------
       - run: |
-          date > dummy.txt
-          git add dummy.txt
+          # date > dummy.txt
+          # git add dummy.txt
 
       - uses: qoomon/actions--create-commit@main
         with:
