@@ -25,6 +25,7 @@ jobs:
       - uses: qoomon/actions--create-commit@main
         with:
           message: 'work, work'
+          allow-empty: true
 
       - run: git push
 
