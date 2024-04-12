@@ -17,34 +17,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4      
 
-      # --- create commit ------------------
-      - run: |
-          # date > dummy.txt
-          # git add dummy.txt
-
-      - uses: qoomon/actions--create-commit@main
+      - if: ${{ github.event_name == 'workflow_dispatch' }}
+        uses: mxschmitt/action-tmate@v3
         with:
-          message: 'work, work'
-          allow-empty: true
-
-      - run: git push
-
-      # --- create tag ---------------------
-      - run: |
-          TAG_NAME=v$(date +%s)
-          echo "TAG_NAME=${TAG_NAME}" >> $GITHUB_ENV
-
-      - uses: qoomon/actions--create-tag@main
-        with:
-          name: ${{ env.TAG_NAME }}
-
-      - run: git push origin "${TAG_NAME}"
-
-      # --- create release ----------------
-      - run: |
-          TAG_NAME=v$(date +%s)
-          gh release create "${TAG_NAME}" --generate-notes
-        env:
-          GH_TOKEN: ${{ github.token }}
+          timeout-minutes: 15
 
       
