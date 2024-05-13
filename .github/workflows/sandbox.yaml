@@ -18,25 +18,49 @@ jobs:
       - uses: actions/github-script@v7
         with:
           script: |
-            const workflowRun = await github.rest.actions.getWorkflowRun({
+            const thisWorkflowRun = await github.rest.actions.getWorkflowRun({
               ...context.repo,
               run_id: context.runId,
             }).then((res) => res.data)
-
-            console.log('workflowRun', {
-              name: workflowRun.name,
-              workflow_id: workflowRun.workflow_id,
-              id: workflowRun.id,
-              run_number: workflowRun.run_number,
-              run_attempt: workflowRun.run_attempt,
+            
+            console.log('thisWorkflowRun', {
+              name: thisWorkflowRun.name,
+              workflow_id: thisWorkflowRun.workflow_id,
+              id: thisWorkflowRun.id,
+              run_number: thisWorkflowRun.run_number,
+              run_attempt: thisWorkflowRun.run_attempt,
             })
+            
+            const thisWorkflowRunJobs = await github.rest.actions.listJobsForWorkflowRunAttempt({
+              ...context.repo,
+              run_id: thisWorkflowRun.id,
+              attempt_number: thisWorkflowRun.run_attempt ?? 1,
+            }).then((res) => res.data.jobs)
+            
+            const thisWorkflowRunJob = thisWorkflowRunJobs.find((job) => job.name === context.job)!
+            
+            console.log('thisWorkflowRunJob', thisWorkflowRunJob)
             
             const recentWorkflowRuns = await github.rest.actions.listWorkflowRuns({
               ...context.repo,
-              workflow_id: workflowRun.workflow_id,
+              workflow_id: thisWorkflowRun.workflow_id,
             }).then((res) => res.data.workflow_runs)
-
-            const mostRecentWorkflowRun = recentWorkflowRuns[0]
+            
+            let mostRecentWorkflowRun = recentWorkflowRuns[0]
+            for (const run of recentWorkflowRuns) {
+              mostRecentWorkflowRun = run
+              if (mostRecentWorkflowRun.id === thisWorkflowRun.id) {
+                break
+              }
+            
+              const runJob = await github.rest.actions.getJobForWorkflowRun({
+                ...context.repo,
+                job_id: mostRecentWorkflowRun.id,
+              }).then((res) => res.data)
+              if (runJob.status !== 'queued') {
+                break
+              }
+            }
             
             console.log('recentWorkflowRun', {
               name: mostRecentWorkflowRun.name,
