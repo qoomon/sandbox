@@ -30,7 +30,7 @@ jobs:
               workflow_id: workflowRun.workflow_id,
             }).then((res) => res.data)
             
-            console.log('recentWorkflowRuns', recentWorkflowRuns)
+            console.log('recentWorkflowRun', recentWorkflowRuns[0])
 
             
 
