@@ -22,13 +22,15 @@ jobs:
               ...context.repo,
               run_id: context.runId,
             }).then((res) => res.data)
+
+            console.log('workflowRun', workflowRun)
             
             const recentWorkflowRuns = await github.rest.actions.listWorkflowRuns({
               ...context.repo,
               workflow_id: workflowRun.workflow_id,
             }).then((res) => res.data)
             
-            console.log(recentWorkflowRuns)
+            console.log('recentWorkflowRuns', recentWorkflowRuns)
 
             
 
