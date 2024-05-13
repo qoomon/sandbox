@@ -14,6 +14,8 @@ permissions:
 jobs:
   doThis:
     runs-on: ubuntu-latest
+    concurrency:
+      group: ${{ github.workflow }}
     steps:
       - uses: actions/github-script@v7
         with:
