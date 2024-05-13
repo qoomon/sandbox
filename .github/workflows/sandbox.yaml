@@ -37,7 +37,7 @@ jobs:
               attempt_number: thisWorkflowRun.run_attempt ?? 1,
             }).then((res) => res.data.jobs)
             
-            const thisWorkflowRunJob = thisWorkflowRunJobs.find((job) => job.name === context.job)!
+            const thisWorkflowRunJob = thisWorkflowRunJobs.find((job) => job.name === context.job)
             
             console.log('thisWorkflowRunJob', thisWorkflowRunJob)
             
