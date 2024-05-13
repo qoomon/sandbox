@@ -15,8 +15,10 @@ jobs:
   doThis:
     runs-on: ubuntu-latest
     steps:
-      - run: echo hello
-      - run: exit 78
-      - run: echo world
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            console.log(context)
+            
 
       
