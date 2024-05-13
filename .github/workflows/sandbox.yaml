@@ -34,10 +34,14 @@ jobs:
             const recentWorkflowRuns = await github.rest.actions.listWorkflowRuns({
               ...context.repo,
               workflow_id: workflowRun.workflow_id,
-            }).then((res) => res.data)
-            
-            console.log('recentWorkflowRun', recentWorkflowRuns)
+            }).then((res) => res.data.workflow_runs)
 
+            const mostRecentWorkflowRun = recentWorkflowRuns[0]
             
-
-      
+            console.log('recentWorkflowRun', {
+              name: mostRecentWorkflowRun.name,
+              workflow_id: mostRecentWorkflowRun.workflow_id,
+              id: mostRecentWorkflowRun.id,
+              run_number: mostRecentWorkflowRun.run_number,
+              run_attempt: mostRecentWorkflowRun.run_attempt,
+            })
