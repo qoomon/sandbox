@@ -18,7 +18,18 @@ jobs:
       - uses: actions/github-script@v7
         with:
           script: |
-            console.log(context)
+            const workflowRun = await github.rest.actions.getWorkflowRun({
+              ...context.repo,
+              run_id: context.runId,
+            }).then((res) => res.data)
+            
+            const recentWorkflowRuns = await github.rest.actions.listWorkflowRuns({
+              ...context.repo,
+              workflow_id: workflowRun.workflow_id,
+            }).then((res) => res.data)
+            
+            console.log(recentWorkflowRuns)
+
             
 
       
