@@ -39,20 +39,17 @@ jobs:
             if (thisWorkflowRun.id < recentWorkflowRuns[0]?.id) {
             
               for (const recentWorkflowRun of recentWorkflowRuns) {
-
+            
                 console.log('recentWorkflowRun.id:', recentWorkflowRun.id)
                 console.log('recentWorkflowRun.id === thisWorkflowRun.id:', recentWorkflowRun.id === thisWorkflowRun.id)
+            
                 if (recentWorkflowRun.id === thisWorkflowRun.id) {
                   break
                 }
+                const recentWorkflowRunJob = await github.rest.actions.listJobsForWorkflowRunAttempt({
+                  ...context.repo, run_id: recentWorkflowRun.id, attempt_number: recentWorkflowRun.run_attempt ?? 1,
+                }).then((res) => res.data.jobs.find((job) => job.name === context.job))
             
-                const recentWorkflowRunJob = await github.rest.actions.getJobForWorkflowRun({
-                  ...context.repo,
-                  job_id: thisWorkflowRunJob.id,
-                  run_id: recentWorkflowRun.id,
-                  run_attempt: recentWorkflowRun.run_attempt ?? 1,
-                }).then((res) => res.data)
-
                 console.log('recentWorkflowRunJob.status:', recentWorkflowRunJob.status)
                 // TODO only if in concurrency group
                 if (recentWorkflowRunJob.status === 'waiting' ||
@@ -60,12 +57,10 @@ jobs:
                   continue
                 }
             
-                console.log('::notice::Discard this job execution, due to a newer workflow run.%0A' +
-                    'Workflow: ' + recentWorkflowRun.html_url + '%0A' +
-                    `  Job: ${thisWorkflowRunJob.id}: ` + recentWorkflowRunJob.html_url)
+                console.log('::notice::Discard this job execution, due to a newer workflow run. \n' +
+                    'Workflow: ' + recentWorkflowRun.html_url + '\n' +
+                    `  Job: ${thisWorkflowRunJob.name}: ` + recentWorkflowRunJob.html_url)
                 process.exit(1)
-            
-                _github.setFailed('This is a failure')
               }
             }
 
