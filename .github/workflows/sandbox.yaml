@@ -21,48 +21,8 @@ jobs:
       group: ${{ github.workflow }}-${{ github.job }}
       cancel-in-progress: false
     steps:
-      - uses: actions/github-script@v7
-        with:
-          script: |
-            const thisWorkflowRun = await github.rest.actions.getWorkflowRun({
-              ...context.repo, run_id: context.runId,
-            }).then((res) => res.data)
-            
-            const thisWorkflowRunJob = await github.rest.actions.listJobsForWorkflowRunAttempt({
-              ...context.repo, run_id: thisWorkflowRun.id, attempt_number: thisWorkflowRun.run_attempt ?? 1,
-            }).then((res) => res.data.jobs.find((job) => job.name === context.job))
-            
-            const recentWorkflowRuns = await github.rest.actions.listWorkflowRuns({
-              ...context.repo, workflow_id: thisWorkflowRun.workflow_id,
-            }).then((res) => res.data.workflow_runs)
-            
-            if (thisWorkflowRun.id < recentWorkflowRuns[0]?.id) {
-            
-              for (const recentWorkflowRun of recentWorkflowRuns) {
-            
-                console.log('recentWorkflowRun.id:', recentWorkflowRun.id)
-                console.log('recentWorkflowRun.id === thisWorkflowRun.id:', recentWorkflowRun.id === thisWorkflowRun.id)
-            
-                if (recentWorkflowRun.id === thisWorkflowRun.id) {
-                  break
-                }
-                const recentWorkflowRunJob = await github.rest.actions.listJobsForWorkflowRunAttempt({
-                  ...context.repo, run_id: recentWorkflowRun.id, attempt_number: recentWorkflowRun.run_attempt ?? 1,
-                }).then((res) => res.data.jobs.find((job) => job.name === context.job))
-            
-                console.log('recentWorkflowRunJob.status:', recentWorkflowRunJob.status)
-                // TODO only if in concurrency group
-                if (recentWorkflowRunJob.status === 'waiting' ||
-                    recentWorkflowRunJob.status === 'queued') {
-                  continue
-                }
-            
-                console.log('::notice::Discard this job execution, due to a newer workflow run. \n' +
-                    'Workflow: ' + recentWorkflowRun.html_url + '\n' +
-                    `  Job: ${thisWorkflowRunJob.name}: ` + recentWorkflowRunJob.html_url)
-                process.exit(1)
-              }
-            }
+      - run: |
+          gh run view "$GITHUB_RUN_ID" --job $GITHUB_JOB --json jobs 
 
       - run: echo Deploy...
             
