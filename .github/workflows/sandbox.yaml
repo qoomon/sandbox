@@ -39,7 +39,9 @@ jobs:
             if (thisWorkflowRun.id < recentWorkflowRuns[0]?.id) {
             
               for (const recentWorkflowRun of recentWorkflowRuns) {
-            
+
+                console.log('recentWorkflowRun.id:', recentWorkflowRun.id)
+                console.log('recentWorkflowRun.id === thisWorkflowRun.id:', recentWorkflowRun.id === thisWorkflowRun.id)
                 if (recentWorkflowRun.id === thisWorkflowRun.id) {
                   break
                 }
@@ -50,7 +52,8 @@ jobs:
                   run_id: recentWorkflowRun.id,
                   run_attempt: recentWorkflowRun.run_attempt ?? 1,
                 }).then((res) => res.data)
-            
+
+                console.log('recentWorkflowRunJob.status:', recentWorkflowRunJob.status)
                 // TODO only if in concurrency group
                 if (recentWorkflowRunJob.status === 'waiting' ||
                     recentWorkflowRunJob.status === 'queued') {
