@@ -4,12 +4,6 @@ on:
     inputs:
       buildTimeSeconds:
         default: '10'
-  push:
-    paths-ignore:
-      - dummy.txt
-    branches:
-      - master
-
 
 permissions:
   id-token: write # This is required for requesting OIDC token
@@ -63,8 +57,12 @@ jobs:
                   continue
                 }
             
-                console.log('Discard this job execution, due to a newer workflow run.')
+                console.log('::notice::Discard this job execution, due to a newer workflow run. \n' +
+                    'Workflow: ' + recentWorkflowRun.html_url + '\n' +
+                    `  Job: ${thisWorkflowRunJob.id}: ` + recentWorkflowRunJob.html_url)
                 process.exit(1)
+            
+                _github.setFailed('This is a failure')
               }
             }
 
