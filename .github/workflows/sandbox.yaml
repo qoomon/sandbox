@@ -21,6 +21,7 @@ jobs:
     steps:
       - run: sleep ${{ inputs.buildTimeSeconds }}
   deploy:
+    needs: [build]
     runs-on: ubuntu-latest
     concurrency:
       group: ${{ github.workflow }}-${{ github.job }}
