@@ -50,14 +50,16 @@ jobs:
                   break
                 }
             
-                const runJob = await github.rest.actions.getJobForWorkflowRun({
+                const recentWorkflowRunJob = await github.rest.actions.getJobForWorkflowRun({
                   ...context.repo,
                   job_id: thisWorkflowRunJob.id,
                   run_id: recentWorkflowRun.id,
                   run_attempt: recentWorkflowRun.run_attempt ?? 1,
                 }).then((res) => res.data)
             
-                if (runJob.status === 'queued') {
+                // TODO only if in concurrency group
+                if (recentWorkflowRunJob.status === 'waiting' ||
+                    recentWorkflowRunJob.status === 'queued') {
                   continue
                 }
             
