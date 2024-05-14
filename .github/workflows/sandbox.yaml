@@ -57,8 +57,8 @@ jobs:
                   continue
                 }
             
-                console.log('::notice::Discard this job execution, due to a newer workflow run. \n' +
-                    'Workflow: ' + recentWorkflowRun.html_url + '\n' +
+                console.log('::notice::Discard this job execution, due to a newer workflow run.%0A' +
+                    'Workflow: ' + recentWorkflowRun.html_url + '%0A' +
                     `  Job: ${thisWorkflowRunJob.id}: ` + recentWorkflowRunJob.html_url)
                 process.exit(1)
             
