@@ -20,21 +20,19 @@ runs:
           const inputs = {
             redact: core.getInput('redact')?.split(',')?.map(it => it.trim()) ?? []
           }
-  
-          core.info(JSON.stringify(context.payload))
 
-          let eventPayload
+          let eventInputs
           switch (context.eventName) {
             case 'repository_dispatch':
-              payload = context.payload.client_payload;
+              eventInputs = context.payload.client_payload;
               break;
             case 'workflow_dispatch':
             default:
-              payload = context.payload.inputs;
+              eventInputs = context.payload.inputs;
           }
           
-          if(eventPayload) {
-            core.setOutput('payload', eventPayload);
+          if(eventInputs) {
+            core.setOutput('inputs', eventInputs);
             for (const [key, value] of Object.entries(eventPayload)) {
               core.info(`${key}: ${inputs.redact.includes(key) ? '***' : value}`)
               core.setOutput(key, value);
