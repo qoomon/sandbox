@@ -16,13 +16,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Check if the job should run
-        run: |
-          if [ "true" == "true" ]; then
-            echo "Skipping build job"
-            exit 0
-          fi
-      - name: Build
-        run: echo "Building the project..."
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/log-event-inputs
             
             
