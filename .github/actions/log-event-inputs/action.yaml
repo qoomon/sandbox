@@ -33,8 +33,9 @@ runs:
           
           if(eventInputs) {
             core.setOutput('inputs', eventInputs);
+            core.info('Inputs:')
             for (const [key, value] of Object.entries(eventInputs)) {
-              core.info(`${key}: ${inputs.redact.includes(key) ? '***' : value}`)
+              core.info(`  ${key}: ${inputs.redact.includes(key) ? '***' : JSON.stringify(value)}`)
               core.setOutput(key, value);
             }
           } else {
