@@ -24,7 +24,7 @@ runs:
           core.info(JSON.stringify(context.payload))
 
           let eventPayload
-          switch (github.context.eventName) {
+          switch (context.eventName) {
             case 'repository_dispatch':
               payload = context.payload.client_payload;
               break;
