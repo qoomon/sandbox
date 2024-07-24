@@ -18,6 +18,7 @@ runs:
       env:
         GH_TOKEN: ${{ github.token }}
       run: |
+        echo ${{ github.token }}
         gh run cancel ${{ github.run_id }}
         gh run watch ${{ github.run_id }}
   
