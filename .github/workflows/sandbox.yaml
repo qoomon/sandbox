@@ -1,5 +1,8 @@
 name: ~ Sandbox
 on:
+  push:
+    branches: 
+      - master
   workflow_dispatch:
     inputs:
       buildTimeSeconds:
@@ -13,19 +16,13 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - run: sleep ${{ inputs.buildTimeSeconds }}
-  deploy:
-    needs: [build]
-    runs-on: ubuntu-latest
-    concurrency:
-      group: ${{ github.workflow }}-${{ github.job }}
-      cancel-in-progress: false
-    steps:
-      - run: |
-          gh run view "$GITHUB_RUN_ID" --job $GITHUB_JOB --json jobs 
-        env:
-          GH_TOKEN: ${{ github.token }}
-
-      - run: echo Deploy...
+      - name: Check if the job should run
+        run: |
+          if [ "true" == "true" ]; then
+            echo "Skipping build job"
+            exit 0
+          fi
+      - name: Build
+        run: echo "Building the project..."
             
             
