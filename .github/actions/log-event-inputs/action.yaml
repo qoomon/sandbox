@@ -14,15 +14,13 @@ using: composite
 steps:
   - name: Log Workflow Inputs
     uses: actions/github-script@v7
-    env:
-      EVENT_INPUTS: ${{ toJSON(github.event.inputs) }}
     with:
       script: |
         const inputs = {
           redact: core.getInput('redact')?.split(',')?.map(it => it.trim()) ?? []
         }
 
-        const eventInputs = JSON.parse(process.env.EVENT_INPUTS)
+        const eventInputs = context.payload.inputs
         for (const [key, value] of Object.entries(eventInputs)) {
           core.info(`${key}: ${inputs.redact.includes(key) ? '***' : value}`)
         }
