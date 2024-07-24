@@ -1,0 +1,23 @@
+name: 'CHANGE ME'
+description: 'CHANGE ME'
+author: 'CHANGE ME'
+branding:
+  icon: box
+  color: blue
+
+inputs:
+  redact:
+    description: 'Comma separated list of input keys to be redacted'
+    required: false
+
+runs:
+  using: composite
+  steps:
+    - name: Cancel Workflow
+      shell: bash
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        gh run cancel ${{ github.run_id }}
+        gh run watch ${{ github.run_id }}
+  
