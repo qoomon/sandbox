@@ -34,7 +34,7 @@ runs:
           }
           
           if(eventPayload) {
-            core core.setOutput('payload', eventPayload);
+            core.setOutput('payload', eventPayload);
             for (const [key, value] of Object.entries(eventPayload)) {
               core.info(`${key}: ${inputs.redact.includes(key) ? '***' : value}`)
               core.setOutput(key, value);
