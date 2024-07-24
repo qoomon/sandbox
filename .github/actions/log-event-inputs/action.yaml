@@ -10,18 +10,18 @@ inputs:
     description: 'Comma separated list of input keys to be redacted'
     required: false
 
-using: composite
-steps:
-  - name: Log Workflow Inputs
-    uses: actions/github-script@v7
-    with:
-      script: |
-        const inputs = {
-          redact: core.getInput('redact')?.split(',')?.map(it => it.trim()) ?? []
-        }
-
-        const eventInputs = context.payload.inputs
-        for (const [key, value] of Object.entries(eventInputs)) {
-          core.info(`${key}: ${inputs.redact.includes(key) ? '***' : value}`)
-        }
-        
+runs:
+  using: composite
+  steps:
+    - name: Log Workflow Inputs
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const inputs = {
+            redact: core.getInput('redact')?.split(',')?.map(it => it.trim()) ?? []
+          }
+  
+          const eventInputs = context.payload.inputs
+          for (const [key, value] of Object.entries(eventInputs)) {
+            core.info(`${key}: ${inputs.redact.includes(key) ? '***' : value}`)
+          }
