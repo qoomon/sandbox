@@ -21,7 +21,22 @@ runs:
             redact: core.getInput('redact')?.split(',')?.map(it => it.trim()) ?? []
           }
   
-          const eventInputs = context.payload.inputs
-          for (const [key, value] of Object.entries(eventInputs)) {
-            core.info(`${key}: ${inputs.redact.includes(key) ? '***' : value}`)
+          core.info(JSON.stringify(context.payload))
+
+          let eventPayload
+          switch (github.context.eventName) {
+            case 'repository_dispatch':
+              payload = context.payload.client_payload;
+              break;
+            case 'workflow_dispatch':
+            default:
+              payload = context.payload.inputs;
+          }
+          
+          if(eventPayload) {
+            core setOutput('payload', eventPayload);
+            for (const [key, value] of Object.entries(eventPayload)) {
+              core.info(`${key}: ${inputs.redact.includes(key) ? '***' : value}`)
+              core.setOutput(key, value);
+            }
           }
