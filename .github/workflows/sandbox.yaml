@@ -16,8 +16,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "${{ toJSON(github.event.inputs) }}"
       - uses: actions/checkout@v4
-      - uses: ./.github/actions/log-event-inputs
+      - uses: ./.github/actions/cancel-workflow
+      - run: echo fuck
             
             
