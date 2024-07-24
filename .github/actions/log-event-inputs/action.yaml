@@ -37,4 +37,6 @@ runs:
               core.info(`${key}: ${inputs.redact.includes(key) ? '***' : value}`)
               core.setOutput(key, value);
             }
+          } else {
+            core.info('No inputs.')
           }
