@@ -23,6 +23,7 @@ jobs:
           set -x
           echo ${{ job.environment.name }}
           echo ${{ github.jobs.foo.environment }}
-          echo ${{ vars.ENVIRONMENT_STAGE }}
+          echo ${{ env.ENVIRONMENT_STAGE }}
+          env
             
             
