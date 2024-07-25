@@ -13,6 +13,6 @@ runs:
       run: |
         gh run cancel ${{ github.run_id }}
         timeout 30s gh run watch ${{ github.run_id }} >/dev/null
-            env:
-      GH_TOKEN: ${{ github.token }}
+      env:
+        GH_TOKEN: ${{ github.token }}
   
