@@ -15,5 +15,4 @@ runs:
       run: |
         gh run cancel ${{ github.run_id }}
         timeout 30s gh run watch ${{ github.run_id }} >/dev/null
-      timeout-minutes: 1
   
