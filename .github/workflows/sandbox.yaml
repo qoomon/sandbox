@@ -26,5 +26,6 @@ jobs:
           echo ${{ github.jobs.foo.environment }}
           echo ${{ env.ENVIRONMENT_STAGE }}
           env
+          echo '${{ toJson(github) }}'
             
             
