@@ -16,6 +16,7 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment: Playground
     steps:
       - uses: actions/checkout@v4
       - id: foo
