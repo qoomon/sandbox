@@ -21,11 +21,6 @@ jobs:
       - uses: actions/checkout@v4
       - id: foo
         run: |
-          set -x
-          echo ${{ job.environment.name }}
-          echo ${{ github.jobs.foo.environment }}
-          echo ${{ env.ENVIRONMENT_STAGE }}
           env
-          echo '${{ toJson(github) }}'
             
             
