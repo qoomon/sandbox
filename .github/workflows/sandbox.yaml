@@ -22,5 +22,6 @@ jobs:
       - id: foo
         run: |
           env
+          sleep 60
             
             
