@@ -7,11 +7,6 @@ on:
     inputs:
       buildTimeSeconds:
         default: '10'
-
-permissions:
-  id-token: write # This is required for requesting OIDC token
-  contents: write
-  actions: write
   
 jobs:
   example:
