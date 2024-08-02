@@ -14,14 +14,18 @@ permissions:
   actions: write
   
 jobs:
-  build:
+  example:
     runs-on: ubuntu-latest
-    environment: Playground
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
-      - id: foo
-        run: |
-          env
-          sleep 60
+      - uses: qoomon/actions--setup-git@v1
+
+      - runs: |
+          date > dummy.txt
+          git add dummy.txt
+          git commit -m "chore: update dummy"
+          git push
             
             
