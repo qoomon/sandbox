@@ -2,7 +2,7 @@ name: ~ Sandbox
 on:
   push:
     branches: 
-      - master
+      - main
   
 jobs:
   example:
