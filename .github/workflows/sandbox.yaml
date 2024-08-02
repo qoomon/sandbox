@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: qoomon/actions--setup-git@v1
 
-      - runs: |
+      - run: |
           date > dummy.txt
           git add dummy.txt
           git commit -m "chore: update dummy"
