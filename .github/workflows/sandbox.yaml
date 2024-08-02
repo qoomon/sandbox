@@ -3,10 +3,6 @@ on:
   push:
     branches: 
       - master
-  workflow_dispatch:
-    inputs:
-      buildTimeSeconds:
-        default: '10'
   
 jobs:
   example:
@@ -16,11 +12,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: qoomon/actions--setup-git@v1
-
       - run: |
           date > dummy.txt
           git add dummy.txt
           git commit -m "chore: update dummy"
           git push
-            
-            
