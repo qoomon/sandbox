@@ -15,7 +15,6 @@ jobs:
       - uses: qoomon/sandbox/actions/set-env@main
         with:
           vars: ${{ toJson(vars) }}
-          secrets: ${{ toJson(secrets) }}
           scope: PROD
           export: |
             AWS_ACCOUNT
