@@ -10,10 +10,10 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
-      - uses: qoomon/actions--setup-git@v1
-      - run: |
-          date > dummy.txt
-          git add dummy.txt
-          git commit -m "chore: update dummy"
-          git push
+      - uses: actions/github-script@v7
+        env:
+          GITHUB_TOKEN: ${{ secrets.token }}
+        with:
+          script: |
+            const token = process.env.GITHUB_TOKEN
+            console.log(JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString()))
