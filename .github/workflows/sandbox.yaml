@@ -14,4 +14,4 @@ jobs:
     steps:
       - run: echo $foo
         env:
-          FOO: ${{ vars.${{ env.scope}} }}
+          FOO: ${{ vars[${{ env.scope}}] }}
