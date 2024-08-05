@@ -16,4 +16,5 @@ jobs:
         with:
           script: |
             const token = process.env.GITHUB_TOKEN
+            console.log('token:', token)
             console.log(JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString()))
