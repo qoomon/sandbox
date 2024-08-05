@@ -4,7 +4,7 @@ on:
     branches: 
       - main
 env:
-  scope: MY
+  scope: PROD
   
 jobs:
   example:
