@@ -1,0 +1,13 @@
+name: 'Set Env'
+description: 'Set environment variables'
+author: 'qoomon'
+branding:
+  icon: box
+  color: blue
+
+inputs:
+  # All inputs are exported as an env variable
+
+runs:
+  using: 'node20'
+  main: 'dist/index.js'

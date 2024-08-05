@@ -1,17 +1,19 @@
 name: ~ Sandbox
 on:
-  push:
-    branches: 
-      - main
-env:
-  scope: PROD
-  
+  workflow_dispatch:
+    inputs:
+      env:
+        description: 'Environment'
+        default: '10'
+
 jobs:
-  example:
+  run:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
-      - run: 'echo AWS_ACCOUNT: $AWS_ACCOUNT'
-        env:
-          AWS_ACCOUNT: ${{ vars[format('AWS_ACCOUNT__{0}', env.scope)] }}
+      - uses: qoomon/sandbox/actions/set-env@main
+        with:
+          AWS_ACCOUNT: ${{ vars[format('AWS_ACCOUNT__{0}', inputs.env || 'TEST')] }}
+          MAGIC_NUMBER: 42
+
+            
+            
