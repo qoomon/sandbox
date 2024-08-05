@@ -12,6 +12,6 @@ jobs:
     permissions:
       contents: write
     steps:
-      - run: echo AWS_ACCOUNT: $AWS_ACCOUNT
+      - run: 'echo AWS_ACCOUNT: $AWS_ACCOUNT'
         env:
           AWS_ACCOUNT: ${{ vars[format('AWS_ACCOUNT__{0}', env.scope)] }}
