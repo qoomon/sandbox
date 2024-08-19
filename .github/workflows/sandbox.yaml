@@ -12,13 +12,8 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-      - uses: qoomon/sandbox/actions/set-env@main
-        with:
-          vars: ${{ toJson(vars) }}
-          scope: PROD
-          export: |
-            AWS_ACCOUNT
-            MAGIC_NUMBER
+      - run: export FOO=42
+      - run: echo FOO $FOO
 
 
             
