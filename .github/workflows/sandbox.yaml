@@ -16,7 +16,9 @@ jobs:
         foo: [1,2,3]
         bar: ['x', 'y']
     steps:
-      - run: echo {{ toJSON(matrix) }}
+      - run: echo MATRIX $MATRIX
+        env:
+          MATRIX: ${{ matrix.version }}
 
 
             
