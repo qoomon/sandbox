@@ -10,15 +10,11 @@ on:
 
 jobs:
   run:
+    name: moin moin
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        foo: [1,2,3]
-        bar: ['x', 'y']
     steps:
-      - run: echo MATRIX $MATRIX
-        env:
-          MATRIX: ${{ toJSON(matrix) }}
+      - run: |
+           echo "How about ${{ github.jobs[github.job].name }}"
 
 
             
