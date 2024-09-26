@@ -16,7 +16,7 @@ jobs:
       - run: |
            echo "How about ${{ github.jobs[github.job].name }}"
       - run: |
-           env ] grep GITHUB_
+           env | grep GITHUB_
 
 
             
