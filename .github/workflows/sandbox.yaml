@@ -9,7 +9,7 @@ on:
         default: 'TEST'
 
 jobs:
-  run:
+  play:
     name: moin moin
     runs-on: ubuntu-latest
     steps:
