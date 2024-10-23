@@ -1,39 +1,23 @@
-name: ~ Sandbox
+name: ⚙️ Sandbox
 on:
-  workflow_dispatch:
   push:
-    paths-ignore:
-      - dummy.txt
-    branches:
-      - master
+    branches: ['main']
+  workflow_dispatch:
+    inputs:
+      env:
+        description: 'Environment'
+        default: 'TEST'
 
-permissions:
-  id-token: write # This is required for requesting OIDC token
-  contents: write
-  
 jobs:
-  doThis:
+  play:
+    name: moin moin
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: qoomon/actions--setup-git-user@v1
       - run: |
-          date > dummy.txt
-          git add dummy.txt
-          curl https://raster.shields.io/badge/date-$(date |  tr ' ' '_')-blue > dummy.png
-          git add dummy.png
-          git commit -m "work work $(date)"
-          date > dummy2.txt
-          git add dummy2.txt
-          date > dummy3.txt
-          git status
-          
-      - uses: qoomon/actions--commit@feature/using-github-rest-api
+           echo "How about ${{ github.jobs[github.job].name }}"
       - run: |
-          git status
-          git push
-      - run: |
-         git rev-parse HEAD
-          
- 
-   
+           env | grep GITHUB_
+
+
+            
+            
