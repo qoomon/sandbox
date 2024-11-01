@@ -9,14 +9,24 @@ on:
         default: 'TEST'
 
 jobs:
-  play:
-    name: moin moin
+  example:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
       - run: |
-           echo "How about ${{ github.jobs[github.job].name }}"
-      - run: |
-           env | grep GITHUB_
+          date > dummy.txt
+          git add dummy.txt
+
+      - uses: qoomon/actions--create-commit@v1
+        id: commit
+        with:
+          message: work work
+          skip-empty: true
+
+      - if: ${{ steps.commit.outputs.commit != null }}
+        run: git push
 
 
             
