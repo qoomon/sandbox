@@ -15,9 +15,9 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.ref }}
-      - run: |
-          date > dummy.txt
-          git add dummy.txt
+      # - run: |
+      #    date > dummy.txt
+      #    git add dummy.txt
 
       - uses: qoomon/actions--create-commit@main
         id: commit
