@@ -19,13 +19,13 @@ jobs:
           date > dummy.txt
           git add dummy.txt
 
-      - uses: qoomon/actions--create-commit@v1
+      - uses: qoomon/actions--create-commit@main
         id: commit
         with:
           message: work work
           skip-empty: true
 
-      - if: ${{ steps.commit.outputs.commit != '' }}
+      - if: ${{ steps.commit.outputs.commit != null }}
         run: git push
 
 
