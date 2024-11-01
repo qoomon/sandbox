@@ -25,7 +25,7 @@ jobs:
           message: work work
           skip-empty: true
       - run: echo ${{ steps.commit.outputs.commit }}
-      - if: ${{ steps.commit.outputs.commit != null }}
+      - if: ${{ steps.commit.outputs.commit }}
         run: git push
 
 
