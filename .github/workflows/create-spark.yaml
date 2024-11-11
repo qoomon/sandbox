@@ -11,7 +11,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: |
+      - working-directory:
+          spark
+        env:
+          GITHUB_TOKEN:
+            ${{ secrets.TOKEN }}
+        run: |
           npm install
           node create-spark.js ${{ github.event.inputs.repository }}
-        working-directory: spark
