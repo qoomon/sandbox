@@ -14,8 +14,7 @@ jobs:
       - working-directory:
           spark
         env:
-          GITHUB_TOKEN:
-            ${{ secrets.TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           npm install
           node create-spark.js ${{ github.event.inputs.repository }}
