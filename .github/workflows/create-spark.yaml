@@ -1,9 +1,10 @@
+name: Create Spark
 on:
   workflow_dispatch:
-    inouts:
+    inputs:
       repository:
-        description: 'Repository name'
         required: true
+
 
 jobs:
   create-spark:
