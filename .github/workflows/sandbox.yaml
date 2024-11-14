@@ -12,7 +12,7 @@ jobs:
   logLatestRelease:
     runs-on: ubuntu-latest
     steps:
-      - uses: octokit/graphql-action@v2.x
+      - uses: octokit/graphql-action@v2.3.2
         id: get_latest_release
         with:
           query: |
