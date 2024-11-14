@@ -17,17 +17,17 @@ jobs:
         with:
           query: |
             query {
-                  owner: user(login: "qoomon") {
-                    repository: gist(name: "5dfcdf8eec66a051ecd85625518cfd13") {
-                      stargazers(first: 100) {
-                        totalCount
-                        edges {
-                          starredAt
-                        }
-                      }
+              owner: user(login: "qoomon") {
+                repository: gist(name: "5dfcdf8eec66a051ecd85625518cfd13") {
+                  stargazers(first: 100) {
+                    totalCount
+                    edges {
+                      starredAt
                     }
                   }
                 }
+              }
+            }
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: "echo 'latest release: ${{ steps.get_latest_release.outputs.data }}'"
