@@ -9,24 +9,28 @@ on:
         default: 'TEST'
 
 jobs:
-  example:
+  logLatestRelease:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: octokit/graphql-action@v2.x
+        id: get_latest_release
         with:
-          ref: ${{ github.ref }}
-      - run: |
-          date > dummy.txt
-          git add dummy.txt
-
-      - uses: qoomon/actions--create-commit@main
-        id: commit
-        with:
-          message: work work
-          skip-empty: true
-      - run: echo ${{ steps.commit.outputs.commit }}
-      - if: ${{ steps.commit.outputs.commit }}
-        run: git push
+          query: |
+            query () {
+                  owner: user(login: "qoomon") {
+                    repository: gist(name: "5dfcdf8eec66a051ecd85625518cfd13") {
+                      stargazers(first: 100) {
+                        totalCount
+                        edges {
+                          starredAt
+                        }
+                      }
+                    }
+                  }
+                }
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: "echo 'latest release: ${{ steps.get_latest_release.outputs.data }}'"
 
 
             
