@@ -16,7 +16,7 @@ jobs:
         id: get_latest_release
         with:
           query: |
-            query () {
+            query {
                   owner: user(login: "qoomon") {
                     repository: gist(name: "5dfcdf8eec66a051ecd85625518cfd13") {
                       stargazers(first: 100) {
