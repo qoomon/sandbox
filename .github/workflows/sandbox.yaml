@@ -12,25 +12,9 @@ jobs:
   logLatestRelease:
     runs-on: ubuntu-latest
     steps:
-      - uses: octokit/graphql-action@v2.3.2
-        id: get_latest_release
-        with:
-          query: |
-            {
-              viewer {
-                gist(name: "5dfcdf8eec66a051ecd85625518cfd13") {
-                  stargazerCount
-                  stargazers(first: 100) {
-                    edges {
-                      starredAt
-                    }
-                  }
-                }
-              }
-            }
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-      - run: "echo 'latest release: ${{ steps.get_latest_release.outputs.data }}'"
+      - run: |
+          FOO="ab "
+          [[ $INPUTS_REPOSITORY = *[[:space:]]* ]] && echo "does contain spaces" || echo "does not contain spaces"
 
 
             
