@@ -13,8 +13,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          FOO="ab "
-          [[ $INPUTS_REPOSITORY = *[[:space:]]* ]] && echo "does contain spaces" || echo "does not contain spaces"
+          FOO_WITH_SPACES="ab "
+          FOO_WITHOUT_SPACES="ab "
+          [[ $FOO_WITH_SPACES = *[[:space:]]* ]] && echo "does contain spaces" || echo "does not contain spaces"
+          [[ $FOO_WITHOUT_SPACES = *[[:space:]]* ]] && echo "does contain spaces" || echo "does not contain spaces"
 
 
             
