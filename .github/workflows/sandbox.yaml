@@ -14,7 +14,7 @@ jobs:
     steps:
       - run: |
           FOO_WITH_SPACES="ab "
-          FOO_WITHOUT_SPACES="ab "
+          FOO_WITHOUT_SPACES="ab"
           [[ $FOO_WITH_SPACES = *[[:space:]]* ]] && echo "does contain spaces" || echo "does not contain spaces"
           [[ $FOO_WITHOUT_SPACES = *[[:space:]]* ]] && echo "does contain spaces" || echo "does not contain spaces"
 
