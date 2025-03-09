@@ -13,10 +13,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          FOO_WITH_SPACES="ab "
-          FOO_WITHOUT_SPACES="ab"
-          [[ $FOO_WITH_SPACES = *[[:space:]]* ]] && echo "does contain spaces" || echo "does not contain spaces"
-          [[ $FOO_WITHOUT_SPACES = *[[:space:]]* ]] && echo "does contain spaces" || echo "does not contain spaces"
+          echo github.run_id ${{github.run_id}}
+          echo github.run_attempt ${{github.run_attempt}}
+          echo github.run_attempt ${{github.run_number}}
+          env | grep GITHUB_
 
 
             
