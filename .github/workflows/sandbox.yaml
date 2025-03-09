@@ -13,10 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          echo github.run_id ${{github.run_id}}
-          echo github.run_attempt ${{github.run_attempt}}
-          echo github.run_number ${{github.run_number}}
           env | grep GITHUB_
+          env | grep GH_
 
 
             
