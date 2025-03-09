@@ -21,6 +21,9 @@ jobs:
       - run: |
           echo jobs:
           curl 'https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/attempts/${{ github.run_attempt }}/jobs'
+          sleep 10
+          echo jobs ater 10 second:
+          curl 'https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/attempts/${{ github.run_attempt }}/jobs'
 
             
             
