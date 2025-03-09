@@ -12,15 +12,15 @@ jobs:
   logLatestRelease:
     runs-on: ubuntu-latest
     steps:
-      - run: 'echo github: ${{ toJSON(github) }}'
-      - run: 'echo runner: ${{ toJSON(runner) }}'
+      - run: 'echo "github: ${{ toJSON(github) }}"'
+      - run: 'echo "runner: ${{ toJSON(runner) }}"'
       - run: | 
           echo env:
           env | grep GITHUB_ || true
           env | grep GH_     || true
       - run: |
           echo jobs:
-          'http https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/attempts/${{ github.run_attempt }}/jobs'
+          http 'https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/attempts/${{ github.run_attempt }}/jobs'
 
             
             
