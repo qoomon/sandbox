@@ -13,11 +13,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          echo github: '${{ toJSON(github) }}'
-          echo runner: '${{ toJSON(runner) }}'
+          echo github: $CONTEXT_GITHUB
+          echo runner: $CONTEXT_RUNNER
           echo env:
-          env | grep GITHUB_
-          env | grep GH_
+          env | grep GITHUB_ || true
+          env | grep GH_     || true
+        env:
+          CONTEXT_GITHUB: ${{ toJSON(github) }}
+          CONTEXT_RUNNER: ${{ toJSON(runner) }}
 
 
             
