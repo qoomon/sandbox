@@ -20,7 +20,7 @@ jobs:
           env | grep GH_     || true
       - run: |
           echo jobs:
-          http 'https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/attempts/${{ github.run_attempt }}/jobs'
+          curl 'https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/attempts/${{ github.run_attempt }}/jobs'
 
             
             
