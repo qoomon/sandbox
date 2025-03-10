@@ -14,7 +14,6 @@ jobs:
     steps:
       - uses: actions/upload-artifact@v4
         with:
-          path: /home/runner
           path: |
             /home/runner
             !/home/runner/runners
