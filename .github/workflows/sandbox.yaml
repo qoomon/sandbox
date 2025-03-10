@@ -12,12 +12,8 @@ jobs:
   github-context:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/upload-artifact@v4
-        with:
-          path: |
-            /home/runner
-            /home/runner/runners/*/_diag
-      - run: cat $GITHUB_STATE
+    
+      - run: cat /home/runner/runners/2.322.0/_diag/pages/*
       - run: 'echo "github: ${{ toJSON(github) }}"'
       - run: 'echo "runner: ${{ toJSON(runner) }}"'
       - run: | 
