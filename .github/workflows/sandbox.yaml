@@ -12,6 +12,8 @@ jobs:
   github-context:
     runs-on: ubuntu-latest
     steps:
+      - run: ls -R /home/runner
+      - run: bat $GITHUB_STATE
       - run: 'echo "github: ${{ toJSON(github) }}"'
       - run: 'echo "runner: ${{ toJSON(runner) }}"'
       - run: | 
@@ -22,8 +24,8 @@ jobs:
       - run: |
           echo jobs:
           curl 'https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/attempts/${{ github.run_attempt }}/jobs'
-          sleep 10
-          echo jobs ater 10 second:
+          sleep 30
+          echo jobs ater 30 second:
           curl 'https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/attempts/${{ github.run_attempt }}/jobs'
 
             
