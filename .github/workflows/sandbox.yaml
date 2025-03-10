@@ -12,7 +12,7 @@ jobs:
   github-context:
     runs-on: ubuntu-latest
     steps:
-    
+      - run: cat /home/runner/runners/2.322.0/_work/**/*
       - run: cat /home/runner/runners/2.322.0/_diag/pages/*
       - run: 'echo "github: ${{ toJSON(github) }}"'
       - run: 'echo "runner: ${{ toJSON(runner) }}"'
