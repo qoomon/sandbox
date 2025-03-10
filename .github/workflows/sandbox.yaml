@@ -15,6 +15,9 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           path: /home/runner
+          path: |
+            /home/runner
+            !/home/runner/runners
       - run: cat $GITHUB_STATE
       - run: 'echo "github: ${{ toJSON(github) }}"'
       - run: 'echo "runner: ${{ toJSON(runner) }}"'
