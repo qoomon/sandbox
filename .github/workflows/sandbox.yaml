@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: ls -R /home/runner
-      - run: bat $GITHUB_STATE
+      - run: cat $GITHUB_STATE
       - run: 'echo "github: ${{ toJSON(github) }}"'
       - run: 'echo "runner: ${{ toJSON(runner) }}"'
       - run: | 
