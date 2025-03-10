@@ -9,7 +9,21 @@ on:
         default: 'TEST'
 
 jobs:
-  logLatestRelease:
+  github-runner:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          RUNNER_NAME=$(echo "$RUNNER_NAME")
+          echo "Fetching runner ID for $RUNNER_NAME"
+
+          ID=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/runners")
+
+          echo "Runner ID: $ID"
+        env:
+          RUNNER_NAME: ${{ runner.name }}
+  github-context:
     runs-on: ubuntu-latest
     steps:
       - run: 'echo "github: ${{ toJSON(github) }}"'
