@@ -10,7 +10,7 @@ on:
 
 jobs:
   github-context:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - uses: qoomon/actions--context@main
 
