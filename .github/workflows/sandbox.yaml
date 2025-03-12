@@ -12,21 +12,7 @@ jobs:
   github-context:
     runs-on: self-hosted
     steps:
-      - run: ls /home/runner/runners/2.322.0/
-      - run: cat /home/runner/runners/2.322.0/_diag/pages/*
-      - run: 'echo "github: ${{ toJSON(github) }}"'
-      - run: 'echo "runner: ${{ toJSON(runner) }}"'
-      - run: | 
-          echo env:
-          env | grep RUNNER_ || true
-          env | grep GITHUB_ || true
-          env | grep GH_     || true
-      - run: |
-          echo jobs:
-          curl 'https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/attempts/${{ github.run_attempt }}/jobs'
-          sleep 30
-          echo jobs ater 30 second:
-          curl 'https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/attempts/${{ github.run_attempt }}/jobs'
+      - uses: qoomon/actions--context@v3
 
             
             
