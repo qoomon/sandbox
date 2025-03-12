@@ -10,7 +10,7 @@ on:
 
 jobs:
   github-context:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - run: ls /home/runner/runners/2.322.0/
       - run: cat /home/runner/runners/2.322.0/_diag/pages/*
