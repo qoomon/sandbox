@@ -12,7 +12,7 @@ jobs:
   github-context:
     runs-on: self-hosted
     steps:
-      - uses: qoomon/actions--context@v3
+      - uses: qoomon/actions--context@main
 
             
             
