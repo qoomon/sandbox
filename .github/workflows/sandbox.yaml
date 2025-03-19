@@ -16,20 +16,11 @@ jobs:
       - uses: qoomon/actions--context@main
         id: context
       - run: echo Deploy...
-    outputs:
-      deploymentId: ${{ steps.context.outputs.deployment_id }}
-  
-  deployment-example-delete-deployment:
-    needs: deployment-example
-    runs-on: ubuntu-latest
-    steps:
       - name: Delete Previous deployments
         uses: actions/github-script@v6
-        env:
-          DEPLOYMENT_ID: ${{ needs.deployment-example.outputs.deploymentId }}
         with:
           script: |
-            const deploymentId = Number(process.env.DEPLOYMENT_ID);
+            const deploymentId = Number(process.env.GITHUB_DEPLOYMENT_ID);
             console.log('deploymentId:', deploymentId);
             await github.rest.repos.createDeploymentStatus({ 
               ...context.repo,
