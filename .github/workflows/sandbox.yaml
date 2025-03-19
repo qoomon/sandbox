@@ -14,11 +14,22 @@ jobs:
     environment: Playground
     steps:
       - uses: qoomon/actions--context@main
+        id: context
+      - run: echo Deploy...
+    outputs:
+      deploymentId: ${{ steps.context.outputs.deploymentId }}
+  
+  github-context-delete-deployment:
+    needs: github-context
+    runs-on: ubuntu-latest
+    steps:
       - name: Delete Previous deployments
         uses: actions/github-script@v6
+        env:
+          DEPLOYMENT_ID: ${{ needs.github-context.outputs.deploymentId }}
         with:
           script: |
-            const deploymentId = Number(process.env.GITHUB_DEPLOYMENT_ID);
+            const deploymentId = Number(process.env.DEPLOYMENT_ID);
             await github.rest.repos.createDeploymentStatus({ 
               ...context.repo,
               deployment_id: deploymentId, 
