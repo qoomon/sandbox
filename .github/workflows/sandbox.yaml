@@ -9,7 +9,7 @@ on:
         default: 'TEST'
 
 jobs:
-  github-context:
+  deployment-example:
     runs-on: ubuntu-latest
     environment: Playground
     steps:
@@ -19,14 +19,14 @@ jobs:
     outputs:
       deploymentId: ${{ steps.context.outputs.deployment_id }}
   
-  github-context-delete-deployment:
-    needs: github-context
+  deployment-example-delete-deployment:
+    needs: deployment-example
     runs-on: ubuntu-latest
     steps:
       - name: Delete Previous deployments
         uses: actions/github-script@v6
         env:
-          DEPLOYMENT_ID: ${{ needs.github-context.outputs.deploymentId }}
+          DEPLOYMENT_ID: ${{ needs.deployment-example.outputs.deploymentId }}
         with:
           script: |
             const deploymentId = Number(process.env.DEPLOYMENT_ID);
