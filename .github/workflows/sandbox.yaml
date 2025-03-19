@@ -27,8 +27,4 @@ jobs:
               deployment_id: deploymentId, 
               state: 'inactive',
             });
-            await github.rest.repos.deleteDeployment({
-              ...context.repo,
-              deployment_id: deploymentId,
-            });
-  
+          
