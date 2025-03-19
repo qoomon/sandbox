@@ -18,7 +18,7 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            const deploymentId = Number(prosess.env.GITHUB_DEPLOYMENT_ID);
+            const deploymentId = Number(process.env.GITHUB_DEPLOYMENT_ID);
             await github.rest.repos.createDeploymentStatus({ 
               ...context.repo,
               deployment_id: deploymentId, 
