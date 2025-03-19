@@ -30,6 +30,7 @@ jobs:
         with:
           script: |
             const deploymentId = Number(process.env.DEPLOYMENT_ID);
+            console.log('deploymentId:', deploymentId);
             await github.rest.repos.createDeploymentStatus({ 
               ...context.repo,
               deployment_id: deploymentId, 
