@@ -11,8 +11,21 @@ on:
 jobs:
   github-context:
     runs-on: ubuntu-latest
+    environment: Playground
     steps:
       - uses: qoomon/actions--context@main
-
-            
-            
+      - name: Delete Previous deployments
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const deploymentId = Number(parseprosess.env.GITHUB_DEPLOYMENT_ID);
+            await github.rest.repos.createDeploymentStatus({ 
+              ...context.repo,
+              deployment_id: deploymentId, 
+              state: 'inactive',
+            });
+            await github.rest.repos.deleteDeployment({
+              ...context.repo,
+              deployment_id: deploymentId,
+            });
+  
