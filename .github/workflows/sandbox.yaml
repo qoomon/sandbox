@@ -1,12 +1,10 @@
 name: ⚙️ Sandbox
 on:
-  pull_request: 
+  push: 
 
 jobs:
   deployment-example:
     runs-on: ubuntu-latest
     environment: Playground
     steps:
-      - uses: qoomon/actions--create-comment@main
-        with:
-          comment: Hello
+      - run: echo Step1 Step1 Step1 Step1 Step1 Step1 Step1 Step1 Step1 Step1 Step1 Step1 Step1 Step1 Step1 Step1 Step1 Step1 Step1 Step1 Step1 Step1 Step1 Step1 Step1 Step1 Step1 Step1 Step1 Step1 Step1 Step1 Step1 Step1 Step1 Step1
