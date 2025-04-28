@@ -15,3 +15,5 @@ jobs:
           echo GITHUB_ENV $GITHUB_ENV
           echo GITHUB_OUTPUT $GITHUB_OUTPUT
           echo GITHUB_STEP_SUMMARY $GITHUB_STEP_SUMMARY 
+        env:
+          GITHUB_ENV: foo
