@@ -7,4 +7,11 @@ jobs:
     runs-on: ubuntu-latest
     environment: Playground
     steps:
-      - run: echo Step1 Step1 Step1 Step1 Step1 Step1 Step1 Step1 Step1 Step1 Step1 Step1 Step1 Step1 Step1 Step1 Step1 Step1 Step1 Step1 Step1 Step1 Step1 Step1 Step1 Step1 Step1 Step1 Step1 Step1 Step1 Step1 Step1 Step1 Step1 Step1
+      - run: |
+          echo GITHUB_ENV $GITHUB_ENV
+          echo GITHUB_OUTPUT $GITHUB_OUTPUT
+          echo GITHUB_STEP_SUMMARY $GITHUB_STEP_SUMMARY 
+      - run: |
+          echo GITHUB_ENV $GITHUB_ENV
+          echo GITHUB_OUTPUT $GITHUB_OUTPUT
+          echo GITHUB_STEP_SUMMARY $GITHUB_STEP_SUMMARY 
