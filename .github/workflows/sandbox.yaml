@@ -9,7 +9,13 @@ jobs:
     steps:
       - run: |
           echo STEP0=fromStep0 >> $GITHUB_ENV
+          echo STEP0=fromStep0 >> $GITHUB_OUTPUT
+          echo '#fromStep0' >> $GITHUB_STEP_SUMMARY
       - run: |
-          echo STEP2=fromStep3 >> $GITHUB_ENV 
+          echo STEP1=fromStep1 >> $GITHUB_ENV 
+          echo STEP1=fromStep1 >> $GITHUB_OUTPUT
+          echo '#fromStep1' >> $GITHUB_STEP_SUMMARY
       - run: |
-          cat $GITHUB_ENV 
+          cat GITHUB_ENV: $GITHUB_ENV 
+          cat GITHUB_OUTPUT: $GITHUB_OUTPUT
+          cat GITHUB_STEP_SUMMARY: $GITHUB_STEP_SUMMARY
