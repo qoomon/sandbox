@@ -8,12 +8,8 @@ jobs:
     environment: Playground
     steps:
       - run: |
-          echo GITHUB_ENV $GITHUB_ENV
-          echo GITHUB_OUTPUT $GITHUB_OUTPUT
-          echo GITHUB_STEP_SUMMARY $GITHUB_STEP_SUMMARY 
+          echo STEP0=fromStep0 >> $GITHUB_ENV
       - run: |
-          echo GITHUB_ENV $GITHUB_ENV
-          echo GITHUB_OUTPUT $GITHUB_OUTPUT
-          echo GITHUB_STEP_SUMMARY $GITHUB_STEP_SUMMARY 
-        env:
-          GITHUB_ENV: foo
+          echo STEP2=fromStep3 >> $GITHUB_ENV 
+      - run: |
+          cat $GITHUB_ENV 
