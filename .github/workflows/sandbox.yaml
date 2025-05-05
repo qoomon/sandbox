@@ -34,3 +34,6 @@ jobs:
           
           echo GITHUB_STEP_SUMMARY: $GITHUB_STEP_SUMMARY
           cat $GITHUB_STEP_SUMMARY || true
+
+          env | grep RUNNER_
+          env | grep GITHUB_
