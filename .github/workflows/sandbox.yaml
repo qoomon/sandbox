@@ -7,33 +7,11 @@ jobs:
     runs-on: ubuntu-latest
     environment: Playground
     steps:
-      - run: |
-          echo GITHUB_ENV: $GITHUB_ENV 
-          echo STEP0=fromStep0 >> $GITHUB_ENV
-          
-          echo GITHUB_OUTPUT: $GITHUB_OUTPUT
-          echo STEP0=fromStep0 >> $GITHUB_OUTPUT
-          
-          echo GITHUB_STEP_SUMMARY: $GITHUB_STEP_SUMMARY
-          echo '#fromStep0' >> $GITHUB_STEP_SUMMARY
-      - run: |
-          echo GITHUB_ENV: $GITHUB_ENV 
-          echo STEP1=fromStep1 >> $GITHUB_ENV 
-          
-          echo GITHUB_OUTPUT: $GITHUB_OUTPUT
-          echo STEP1=fromStep1 >> $GITHUB_OUTPUT
-          
-          echo GITHUB_STEP_SUMMARY: $GITHUB_STEP_SUMMARY
-          echo '#fromStep1' >> $GITHUB_STEP_SUMMARY
-      - run: |
-          echo GITHUB_ENV: $GITHUB_ENV 
-          cat $GITHUB_ENV || true
-          
-          echo GITHUB_OUTPUT: $GITHUB_OUTPUT
-          cat $GITHUB_OUTPUT || true
-          
-          echo GITHUB_STEP_SUMMARY: $GITHUB_STEP_SUMMARY
-          cat $GITHUB_STEP_SUMMARY || true
-
-          env | grep RUNNER_
-          env | grep GITHUB_
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          path: './bar'
+      - uses: actions/checkout@v4
+        with:
+          path: './foo'
+  
