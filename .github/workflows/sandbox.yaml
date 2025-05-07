@@ -3,7 +3,7 @@ on:
   push: 
 
 jobs:
-  deployment-example:
+  0:
     runs-on: ubuntu-latest
     environment: Playground
     steps:
