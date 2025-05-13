@@ -3,15 +3,16 @@ on:
   push: 
 
 jobs:
-  0:
+  go:
     runs-on: ubuntu-latest
     environment: Playground
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/checkout@v4
+      - uses: qoomon/actions--set-env@v1
         with:
-          path: './bar'
-      - uses: actions/checkout@v4
-        with:
-          path: './foo'
+          vars: ${{ toJson(vars) }}
+          # optional - prefer scoped variables over unscoped ones e.g.,
+          # PROD__MAGIC_NUMBER or MAGIC_NUMBER__PROD would be chosen over MAGIC_NUMBER
+          scope: PROD
+          export: |
+            MAGIC_NUMBER
   
