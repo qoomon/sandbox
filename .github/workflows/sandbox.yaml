@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: Playground
     steps:
-      - uses: qoomon/actions--set-env@v1
+      - uses: qoomon/actions--set-envX@v1
         with:
           vars: ${{ toJson(vars) }}
           # optional - prefer scoped variables over unscoped ones e.g.,
