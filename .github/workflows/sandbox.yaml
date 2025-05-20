@@ -7,12 +7,8 @@ jobs:
     runs-on: ubuntu-latest
     environment: Playground
     steps:
-      - uses: qoomon/actions--set-envX@v1
-        with:
-          vars: ${{ toJson(vars) }}
-          # optional - prefer scoped variables over unscoped ones e.g.,
-          # PROD__MAGIC_NUMBER or MAGIC_NUMBER__PROD would be chosen over MAGIC_NUMBER
-          scope: PROD
-          export: |
-            MAGIC_NUMBER
+      - run: echo one
+        id: foo
+      - run: echo two
+        id: foo
   
