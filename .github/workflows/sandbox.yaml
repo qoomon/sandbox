@@ -8,7 +8,7 @@ jobs:
     environment: Playground
     steps:
       - run: echo one
-        id: foo
+        id: "1"
       - run: echo two
-        id: foo
+        id: "2"
   
