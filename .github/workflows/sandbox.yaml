@@ -2,6 +2,9 @@ name: ⚙️ Sandbox
 on:
   push: 
 
+permissions:
+ contents: write
+
 jobs:
   go:
     runs-on: ubuntu-latest
@@ -16,6 +19,8 @@ jobs:
             -F message='qoo1' \
             -F object="$(git rev-parse HEAD)" \
             -F type='commit'
+        env:
+          GH_TOKEN: ${{ github.token }}
            
             
   
