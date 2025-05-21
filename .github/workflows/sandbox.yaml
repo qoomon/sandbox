@@ -14,11 +14,11 @@ jobs:
         with:
           ref: main
       - run: |
-          gh api -X POST /repos/${{ github.repository }}/git/tags \
-            -F tag='qoo1' \
-            -F message='qoo1' \
-            -F object="$(git rev-parse HEAD)" \
-            -F type='commit'
+          gh api --verbose -X POST /repos/${{ github.repository }}/git/tags \
+            --field tag=qoo1 \
+            --field message=qoo1 \
+            --field object=$(git rev-parse HEAD) \
+            --field type=commit
         env:
           GH_TOKEN: ${{ github.token }}
            
