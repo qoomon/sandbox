@@ -13,7 +13,7 @@ jobs:
       - uses: qoomon/actions--context@v4
       - run: env
       - run: pwd
-      - run: ls ~/
+      - uses: mxschmitt/action-tmate@v3
            
             
   
