@@ -10,10 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     environment: Playground
     steps:
-      - uses: qoomon/actions--context@v4
       - run: env
       - run: pwd
-      - uses: mxschmitt/action-tmate@v3
+      #- uses: mxschmitt/action-tmate@v3
            
             
   
