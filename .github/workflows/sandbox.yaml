@@ -7,8 +7,15 @@ jobs:
     runs-on: ubuntu-latest
     environment: Playground
     steps:
-      - run: echo one
-        id: "1"
-      - run: echo two
-        id: "2"
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - run: |
+          gh api -X POST /repos/${{ github.repository }}/git/tags \
+            -F tag='qoo1' \
+            -F message='qoo1' \
+            -F object="$(git rev-parse HEAD)" \
+            -F type='commit'
+           
+            
   
