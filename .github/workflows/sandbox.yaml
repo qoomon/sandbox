@@ -10,9 +10,16 @@ jobs:
     runs-on: ubuntu-latest
     environment: Playground
     steps:
-      - run: env
-      - run: pwd
-      #- uses: mxschmitt/action-tmate@v3
+      - uses: qoomon/actions--parallel-steps@v1
+        id: parallel-steps
+        with:
+          steps: |
+            - uses: actions/checkout@v4
+            - uses: action/setup-java@v4
+              with:
+                distribution: 'temurin' # See 'Supported distributions' for available options
+                java-version: '21'
+      - run: ls -lachs
            
             
   
