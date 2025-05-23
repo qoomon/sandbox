@@ -32,8 +32,8 @@ jobs:
     steps:
       - run: |
           echo fuck=this >> $GITHUB_ENV
-          echo fuck=bar > $GITHUB_ENV
-      - run: echo value $fuck
+          echo foo=bar > $GITHUB_ENV
+      - run: echo fuck=$fuck foo=$foo
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
         with:
