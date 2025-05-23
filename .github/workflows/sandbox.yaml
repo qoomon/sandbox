@@ -28,8 +28,6 @@ jobs:
     runs-on: ubuntu-latest
     environment: Playground
     steps:
-      - run: |
-          env | grep -e GITHUB_ -e RUNNER_
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
         with:
