@@ -12,7 +12,7 @@ jobs:
     steps:
       - run: |
           env | grep -e GITHUB_ -e RUNNER_
-      - uses: qoomon/actions--parallel-steps@v1
+      - uses: qoomon/actions--parallel-steps@main
         id: parallel-steps
         with:
           steps: |
