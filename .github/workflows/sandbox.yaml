@@ -31,9 +31,9 @@ jobs:
     environment: Playground
     steps:
       - run: |
-          echo fuck=this >> $GITHUB_ENV
-          echo foo=bar > $GITHUB_ENV
-      - run: echo fuck=$fuck foo=$foo
+          env | grep -e GITHUB_ -e RUNNER_
+      - run: |
+          env | grep -e GITHUB_ -e RUNNER_
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
         with:
