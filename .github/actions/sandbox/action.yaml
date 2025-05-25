@@ -1,0 +1,7 @@
+name: 'Sandbox action'
+runs:
+  using: "composite"
+  steps:
+    - name: Set Greeting
+      run: echo "GITHUB_ACTION=$GITHUB_ACTION"
+      shell: bash
