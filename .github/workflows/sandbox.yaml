@@ -12,6 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: exit 0
+        if: true && (${{ true }})
       - uses: qoomon/actions--parallel-steps@main
         id: parallel-steps
         with:
