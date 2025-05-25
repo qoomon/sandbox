@@ -10,8 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     environment: Playground
     steps:
+      - uses: actions/checkout@v4
       - run: |
-          env | grep -e GITHUB_ -e RUNNER_
+          echo "GITHUB_ACTION=$GITHUB_ACTION"
+      - uses: ./
       - uses: qoomon/actions--parallel-steps@main
         id: parallel-steps
         with:
@@ -26,6 +28,7 @@ jobs:
                 distribution: 'temurin' # See 'Supported distributions' for available options
                 java-version: '21'
       - run: ls -lachs
+      
   sequential:
     runs-on: ubuntu-latest
     environment: Playground
