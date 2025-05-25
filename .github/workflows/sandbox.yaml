@@ -11,9 +11,7 @@ jobs:
     environment: Playground
     steps:
       - uses: actions/checkout@v4
-      - run: |
-          echo "GITHUB_ACTION=$GITHUB_ACTION"
-      - uses: .github/actions/sandbox
+      - run: exit 1
       - uses: qoomon/actions--parallel-steps@main
         id: parallel-steps
         with:
