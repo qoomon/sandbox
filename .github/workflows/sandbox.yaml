@@ -13,7 +13,7 @@ jobs:
       - uses: actions/checkout@v4
       - run: |
           echo "GITHUB_ACTION=$GITHUB_ACTION"
-      - uses: ./
+      - uses: ./.github/actions/sandbox
       - uses: qoomon/actions--parallel-steps@main
         id: parallel-steps
         with:
