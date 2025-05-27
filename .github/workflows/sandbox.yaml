@@ -31,8 +31,8 @@ jobs:
             const workerProcess = await findProcess('name', runnerWorkerProcessName).then((list) => list[0]);
             console.log("workerProcess", workerProcess)
             
-            const index = workerProcess.cmd.indexOf(path.join("bin", runnerWorkerProcessName));
-            const runnerDir = workerProcess.cmd.slice(0, index).replace(/^"/, ""); // on windows the bin is quoted
+            const index = workerProcess.bin.indexOf(path.join("bin", runnerWorkerProcessName));
+            const runnerDir = workerProcess.bin.slice(0, index);
             console.log("runnerDir", runnerDir)
             
           
