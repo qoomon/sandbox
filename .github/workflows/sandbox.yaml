@@ -21,14 +21,18 @@ jobs:
             const checkSuiteEnv = Object.fromEntries(Object.entries(process.env).filter(([name, value]) => value.includes(workflowRun.check_suite_id)));
             console.log("checkSuiteEnv:", checkSuiteEnv);
 
+            // https://octokit.github.io/rest.js/v22/
             const checkRuns = await github.rest.checks.listForSuite({
               owner,
               repo,
               check_suite_id,
+              // TODO check_name
+              // TODO status
+              // TODO filter latest
             }).then((res) => res.data);
             console.log("checkRuns:", checkRuns);
 
-            const checkRun = checkRuns.check_runs.find((checkRun) => checkRun.external_id == "UUID"));
+            const checkRun = checkRuns.check_runs.find((checkRun) => checkRun.external_id == "UUID");
             console.log("checkRun:", checkRun);
                        
   
