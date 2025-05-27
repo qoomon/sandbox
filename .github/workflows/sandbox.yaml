@@ -23,9 +23,8 @@ jobs:
 
             // https://octokit.github.io/rest.js/v22/
             const checkRuns = await github.rest.checks.listForSuite({
-              owner,
-              repo,
-              check_suite_id,
+              owner, repo,
+              check_suite_id: workflowRun.check_suite_id,
               // TODO check_name
               // TODO status
               // TODO filter latest
