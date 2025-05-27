@@ -12,9 +12,6 @@ jobs:
     runs-on: ${{ matrix.runner }}
     steps:
       - uses: actions/checkout@v4
-      - run: |
-          env | grep -e RUNNER_
-          ps aux | grep Runner.Worker
       - run: npm install find-process
       - uses: actions/github-script@v7
         with:
