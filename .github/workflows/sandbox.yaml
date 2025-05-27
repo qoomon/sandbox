@@ -15,7 +15,8 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               run_id: context.runId,
-            });
+            }).then((res) => res.data);
             console.log("workflowRun:", workflowRun);
-           
+            Object.entries(process.env).filter(([name, value]) => value == workflowRun.check_suite_id)
+                       
   
