@@ -27,7 +27,6 @@ jobs:
             const findProcess = require('find-process');
 
             const runnerWorkerProcessName = 'Runner.Worker';
-
             const runnerWorkerProcess = await findProcess('name', runnerWorkerProcessName).then((list) => {
               if (list.length !== 1) {
                 throw new Error(`Expected exactly one process with name ${runnerWorkerProcessName}, found: ${list.length}`);
@@ -35,9 +34,14 @@ jobs:
               return list[0];
             });
             
+            function removeEnd(str, suffix) {
+              if (str.endsWith(suffix)) {
+                return str.slice(0, -suffix.length);
+              }
+              throw new Error(`String "${str}" does not end with "${suffix}"`);
+            }
             
-            const index = runnerWorkerProcess.bin.indexOf(path.join("bin", runnerWorkerProcessName));
-            const runnerDir = runnerWorkerProcess.bin.slice(0, index);
+            const runnerDir = removeEnd(runnerWorkerProcess.bin, path.join("bin", runnerWorkerProcessName));
             console.log("runnerDir", runnerDir);
 
             const diagDir = path.join(runnerDir, "_diag");
