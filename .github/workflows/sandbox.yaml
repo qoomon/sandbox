@@ -33,15 +33,15 @@ jobs:
               }
               return list[0];
             });
-            
-            function removeEnd(str, suffix) {
-              if (str.endsWith(suffix)) {
-                return str.slice(0, -suffix.length);
-              }
-              throw new Error(`String "${str}" does not end with "${suffix}"`);
+                        
+            const index = runnerWorkerProcess.bin.indexOf(path.join("bin", runnerWorkerProcessName));
+            if (index === -1) {
+              throw new Error(
+                `Unable to extract path from ${runnerWorkerProcessName} command string, this might be a bug (${runnerWorkerProcess.bin})`
+              );
             }
-            
-            const runnerDir = removeEnd(runnerWorkerProcess.bin, path.join("bin", runnerWorkerProcessName));
+
+            const runnerDir = runnerWorkerProcess.bin.substring(0, index);
             console.log("runnerDir", runnerDir);
 
             const diagDir = path.join(runnerDir, "_diag");
