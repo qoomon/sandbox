@@ -5,7 +5,11 @@ on:
     
 jobs:
   playground:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        runner: [ubuntu-latest, macos-latest, windows-latest]
+      fail-fast: false
+    runs-on: ${{ matrix.runner }}
     steps:
       - uses: actions/checkout@v4
       - run: |
@@ -21,7 +25,8 @@ jobs:
             // runner dir: /home/runner/actions-runner/cached/_diag
             // Worker_*.log
             // line: "INFO JobRunner] Job ID <<<UUID>>>"
-
+            
+            const path = require('node:path');
             const findProcess = require('find-process');
 
             const workerProcess = await findProcess('name', 'Runner.Worker').then((list) => list[0]);
