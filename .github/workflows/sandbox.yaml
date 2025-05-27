@@ -11,6 +11,7 @@ jobs:
       - run: |
           env | grep -e RUNNER_
           ps aux | grep Runner.Worker
+      - run: npm install find-process
       - uses: actions/github-script@v7
         with:
           script: |
@@ -24,7 +25,8 @@ jobs:
             const findProcess = require('find-process');
 
             const workerProcess = await findProcess('name', 'Runner.Worker').then((list) => list[0]);
-
+            console.log("workerProcess", workerProcess)
+            
             const index = workerProcess.cmd.indexOf(path.join("bin", processName));
             const runnerDir = workerProcess.cmd.slice(0, index).replace(/^"/, ""); // on windows the bin is quoted
             console.log("runnerDir", runnerDir)
