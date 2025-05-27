@@ -24,17 +24,10 @@ jobs:
             const findProcess = require('find-process');
 
             const workerProcess = await findProcess('name', 'Runner.Worker').then((list) => list[0]);
-            const workerCmd = results[0]!.cmd;
-            const index = workerCmd.indexOf(path.join("bin", processName));
-            const runnerDir = workerCmd.slice(0, index).replace(/^"/, ""); // on windows the bin is quoted
-            const workerLogFiles = (
-              await globby("Worker_*.log", {
-                cwd: path.join(runnerDir, "_diag"),
-                absolute: true,
-              })
-            )
-              .sort()
-              .reverse();
+
+            const index = workerProcess.cmd.indexOf(path.join("bin", processName));
+            const runnerDir = workerProcess.cmd.slice(0, index).replace(/^"/, ""); // on windows the bin is quoted
+            console.log("runnerDir", runnerDir)
             
           
             const {owner, repo} = context.repo;
