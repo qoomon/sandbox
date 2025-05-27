@@ -8,6 +8,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - run: |
+          env | grep -e RUNNER_
       - uses: actions/github-script@v7
         with:
           script: |
