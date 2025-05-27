@@ -29,10 +29,12 @@ jobs:
             const path = require('node:path');
             const findProcess = require('find-process');
 
-            const workerProcess = await findProcess('name', 'Runner.Worker').then((list) => list[0]);
+            const runnerWorkerProcessName = 'Runner.Worker';
+
+            const workerProcess = await findProcess('name', runnerWorkerProcessName).then((list) => list[0]);
             console.log("workerProcess", workerProcess)
             
-            const index = workerProcess.cmd.indexOf(path.join("bin", processName));
+            const index = workerProcess.cmd.indexOf(path.join("bin", runnerWorkerProcessName));
             const runnerDir = workerProcess.cmd.slice(0, index).replace(/^"/, ""); // on windows the bin is quoted
             console.log("runnerDir", runnerDir)
             
