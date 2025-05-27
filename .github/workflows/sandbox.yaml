@@ -15,12 +15,28 @@ jobs:
       - uses: actions/github-script@v7
         with:
           script: |
+            
             // RUNNER_TEMP=/home/runner/work/_temp
             // runner process: /home/runner/actions-runner/cached/bin/Runner.Worker
             // runner dir: /home/runner/actions-runner/cached/_diag
             // Worker_*.log
             // line: "INFO JobRunner] Job ID <<<UUID>>>"
 
+            const findProcess = require('find-process');
+
+            const workerProcess = await findProcess('name', 'Runner.Worker').then((list) => list[0]);
+            const workerCmd = results[0]!.cmd;
+            const index = workerCmd.indexOf(path.join("bin", processName));
+            const runnerDir = workerCmd.slice(0, index).replace(/^"/, ""); // on windows the bin is quoted
+            const workerLogFiles = (
+              await globby("Worker_*.log", {
+                cwd: path.join(runnerDir, "_diag"),
+                absolute: true,
+              })
+            )
+              .sort()
+              .reverse();
+            
           
             const {owner, repo} = context.repo;
             const workflowRun = await github.rest.actions.getWorkflowRun({
