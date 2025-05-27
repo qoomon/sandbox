@@ -16,18 +16,16 @@ jobs:
               owner, repo,
               run_id: context.runId,
             }).then((res) => res.data);
-            console.log("workflowRun:", workflowRun);
+            console.log("workflowRun.check_suite_id:", workflowRun.check_suite_id);
             
-            const checkSuiteEnv = Object.fromEntries(Object.entries(process.env).filter(([name, value]) => value.includes(workflowRun.check_suite_id)));
-            console.log("checkSuiteEnv:", checkSuiteEnv);
-
             // https://octokit.github.io/rest.js/v22/
             const checkRuns = await github.rest.checks.listForSuite({
               owner, repo,
               check_suite_id: workflowRun.check_suite_id,
-              // TODO check_name
-              // TODO status
-              // TODO filter latest
+              check_name: context.job,
+              status: "in_progress",
+              filter: "latest",
+              // TODO per_page
             }).then((res) => res.data);
             console.log("checkRuns:", checkRuns);
 
