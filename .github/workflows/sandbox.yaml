@@ -28,12 +28,20 @@ jobs:
 
             const runnerWorkerProcessName = 'Runner.Worker';
 
-            const workerProcess = await findProcess('name', runnerWorkerProcessName).then((list) => list[0]);
-            console.log("workerProcess", workerProcess)
+            const runnerWorkerProcess = await findProcess('name', runnerWorkerProcessName).then((list) => {
+              if (list.length !== 1) {
+                throw new Error(`Expected exactly one process with name ${runnerWorkerProcessName}, found: ${list.length}`);
+              }
+              return list[0];
+            });
             
-            const index = workerProcess.bin.indexOf(path.join("bin", runnerWorkerProcessName));
-            const runnerDir = workerProcess.bin.slice(0, index);
-            console.log("runnerDir", runnerDir)
+            
+            const index = runnerWorkerProcess.bin.indexOf(path.join("bin", runnerWorkerProcessName));
+            const runnerDir = runnerWorkerProcess.bin.slice(0, index);
+            console.log("runnerDir", runnerDir);
+
+            const diagDir = path.join(runnerDir, "_diag");
+            console.log("diagDir", diagDir);
             
           
             const {owner, repo} = context.repo;
