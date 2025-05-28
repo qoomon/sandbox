@@ -8,9 +8,11 @@ jobs:
     strategy:
       matrix:
         runner: [ubuntu-latest, macos-latest, windows-latest]
+        task: [1, 2, 3, 4, 5]
       fail-fast: false
     runs-on: ${{ matrix.runner }}
     steps:
       - uses: actions/checkout@v4
-      - uses: qoomon/actions--context@v1
       - uses: ./.github/actions/job-id
+      - run: echo task=${{ matrix.task }}
+  
