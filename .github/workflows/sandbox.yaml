@@ -7,7 +7,7 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-      - uses: qoomon/actions--parallel-steps@v1
+      - uses: qoomon/actions--parallel-steps@main
         if: ${{ false }}
         id: parallel-steps
         with:
