@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: qoomon/actions--parallel-steps@v1
-        if: ${{ never() }}
+        if: ${{ "1" === "0" }}
         id: parallel-steps
         with:
           steps: |
