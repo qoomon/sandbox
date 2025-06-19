@@ -4,15 +4,26 @@ on:
   workflow_dispatch:
     
 jobs:
-  playground:
-    strategy:
-      matrix:
-        runner: [1, 2, 3, 4, 5]
-        task: [1, 2, 3, 4, 5]
-      fail-fast: false
+  run:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/job-id
-      - run: echo task=${{ matrix.runner }}-${{ matrix.task }}
+      - uses: qoomon/actions--parallel-steps@v1
+        if: ${{ never() }}
+        id: parallel-steps
+        with:
+          steps: |
+            - run: echo Step0
+            - run: echo Step1
+            - uses: actions/github-script@v7
+              id: greetings
+              with:
+                script: |
+                  const recipient = 'world'
+                  console.log(`Hello ${recipient}!`)
+                  core.setOutput('recipient', recipient)
+
+      # access parallel steps outputs            
+      - run: echo Hello $RECIPIENT
+        env:
+          RECIPIENT: ${{ steps.parallel-steps.outputs.greetings-recipient }}
   
