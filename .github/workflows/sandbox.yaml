@@ -16,3 +16,4 @@ jobs:
         with:
           add: .
           commit: -am"fuck" --allow-empty
+          push: true
