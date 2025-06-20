@@ -2,28 +2,14 @@ name: ⚙️ Sandbox
 on:
   push: 
   workflow_dispatch:
-    
+
+permissions:
+  contents: write
+  
 jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-      - uses: qoomon/actions--parallel-steps@main
-        if: ${{ false }}
-        id: parallel-steps
+      - uses: qoomon/actions--create-commit@feature/recreate-inputs
         with:
-          steps: |
-            - run: echo Step0
-            - run: echo Step1
-            - uses: actions/github-script@v7
-              id: greetings
-              with:
-                script: |
-                  const recipient = 'world'
-                  console.log(`Hello ${recipient}!`)
-                  core.setOutput('recipient', recipient)
-
-      # access parallel steps outputs            
-      - run: echo Hello $RECIPIENT
-        env:
-          RECIPIENT: ${{ steps.parallel-steps.outputs.greetings-recipient }}
-  
+          commit: -am"fuck" --allow-empty
