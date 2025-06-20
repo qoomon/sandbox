@@ -10,6 +10,7 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - uses: qoomon/actions--create-commit@feature/recreate-inputs
         with:
           commit: -am"fuck" --allow-empty
