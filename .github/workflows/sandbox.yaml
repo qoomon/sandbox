@@ -23,7 +23,7 @@ jobs:
               type: 'commit',
             }).then((res) => res.data);
           
-            await octokit.git.createRef({
+            await github.rest.git.createRef({
               ...context.repo,
               ref: `refs/tags/${annotatedTag.tag}`,
               sha: annotatedTag.sha,
