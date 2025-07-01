@@ -11,20 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: touch foo
-      - uses: actions/github-script@v7
-        with:
-          script: |
-            let annotatedTag = await github.rest.git.createTag({
-              ...context.repo,
-              tag: "signed_tag_test_1",
-              message: "sign me",
-              object: context.sha,
-              type: 'commit',
-            }).then((res) => res.data);
-          
-            await github.rest.git.createRef({
-              ...context.repo,
-              ref: `refs/tags/${annotatedTag.tag}`,
-              sha: annotatedTag.sha,
-            });
+      - run: |
+          echo "::add-mask::2077"
+          echo "::set-env name=test_key_id::2077"
+          echo ${test_key_id}
+          echo 2077
+
