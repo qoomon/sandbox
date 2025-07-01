@@ -12,8 +12,5 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: |
-          echo "::add-mask::2077"
-          echo "test_key_id=2077" >> $GITHUB_ENV
-          echo ${test_key_id}
-          echo 2077
+          echo [command]/usr/bin/fuck
 
