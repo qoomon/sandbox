@@ -12,6 +12,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: |
-          echo ::info::/usr/bin/fuck
+          echo ::notice::/usr/bin/fuck
           echo [command]/usr/bin/fuck
 
