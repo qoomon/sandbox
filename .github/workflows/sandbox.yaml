@@ -13,5 +13,6 @@ jobs:
       - uses: actions/checkout@v4
       - run: |
           echo ::notice::/usr/bin/fuck
+          echo -e "\x1b[1;94mmoin moin\x1b[0m"
           echo [command]/usr/bin/fuck
 
