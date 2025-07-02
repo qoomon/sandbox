@@ -11,6 +11,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: |
-          echo XXX_GITHUB_ACTION=$GITHUB_ACTION
+      - run: exit 1
+        continue-on-error: true
 
