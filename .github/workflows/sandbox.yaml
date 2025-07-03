@@ -11,9 +11,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: |
-          for i in {31..99}
-          do
-              echo -e $i "\x1b[1;90mFuck You\x1b[0m"
-          done
+      - uses: "actions/github-script@v6"
+        with:
+          script: |
+            for (let code = 0 ; code <= 255; code++) {
+                const example = `This is an example text.`;
+                console.log(`${code} normal: \x1b[0;${code}m${example}\x1b[0m`);
+                console.log(`${code} bold:   \x1b[1;${code}m${example}\x1b[0m`);
+            }
 
