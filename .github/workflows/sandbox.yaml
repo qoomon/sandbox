@@ -11,6 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: exit 1
-        continue-on-error: true
+      - run: |
+          for i in {31..99}
+          do
+              echo -e $i "\x1b[1;90mFuck You\x1b[0m"
+          done
 
