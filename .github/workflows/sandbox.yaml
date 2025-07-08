@@ -14,9 +14,12 @@ jobs:
       - run: |
           echo github.workspace ${{ github.workspace }}
           echo GIHUB_WORKSPACE $GIHUB_WORKSPACE
+          pwd
       - run: mkdir foo
-      - run: |
+      - working-directory: ./foo
+        run: |
           echo github.workspace ${{ github.workspace }}
           echo GIHUB_WORKSPACE $GIHUB_WORKSPACE
-        working-directory: ./foo
+          pwd
+        
         
