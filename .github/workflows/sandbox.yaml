@@ -10,13 +10,13 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: "actions/github-script@v6"
-        with:
-          script: |
-            for (let code = 0 ; code <= 255; code++) {
-                const example = `This is an example text.`;
-                console.log(`${code} normal: \x1b[0;${code}m${example}\x1b[0m`);
-                console.log(`${code} bold:   \x1b[1;${code}m${example}\x1b[0m`);
-            }
-
+      
+      - run: |
+          echo github.workspace ${{ github.workspace }}
+          echo GIHUB_WORKSPACE $GIHUB_WORKSPACE
+      - run: mkdir foo
+      - run: |
+          echo github.workspace ${{ github.workspace }}
+          echo GIHUB_WORKSPACE $GIHUB_WORKSPACE
+        working-directory: ./foo
+        
