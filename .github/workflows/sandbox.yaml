@@ -10,16 +10,11 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-      
-      - run: |
-          echo github.workspace ${{ github.workspace }}
-          echo GIHUB_WORKSPACE $GIHUB_WORKSPACE
-          pwd
       - run: mkdir foo
       - working-directory: ./foo
         run: |
-          echo github.workspace ${{ github.workspace }}
-          echo GIHUB_WORKSPACE $GIHUB_WORKSPACE
           pwd
+          env | grep GITHUB_
+          
         
         
