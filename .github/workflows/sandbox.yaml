@@ -10,9 +10,10 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-      - run: echo ${JOBS}
+      - run: echo ${JOBS}; echo ${JOB};
         env:
           JOBS: ${{ toJSON(jobs) }}
+          JOB: ${{ toJSON(jobs) }}
           
         
         
