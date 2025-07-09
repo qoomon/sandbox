@@ -12,8 +12,7 @@ jobs:
     steps:
       - run: echo ${JOBS}; echo ${JOB};
         env:
-          JOBS: ${{ toJSON(jobs) }}
-          JOB: ${{ toJSON(jobs) }}
+          JOB: ${{ toJSON(job) }}
           
         
         
