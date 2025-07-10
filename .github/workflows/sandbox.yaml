@@ -10,9 +10,10 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-      - run: echo ${JOBS}; echo ${JOB};
-        env:
-          JOB: ${{ toJSON(job) }}
+      - uses: qoomon/actions--setup-git@v1
+        with:
+          foo:
+            bar: 42
           
         
         
