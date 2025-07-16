@@ -10,10 +10,11 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-      - uses: qoomon/actions--setup-git@v1
-        with:
-          foo:
-            bar: 42
+      - run: echo one
+        if : false
+      - run: echo two; exit 1
+      - run: echo three
+      - run: echo four
           
         
         
