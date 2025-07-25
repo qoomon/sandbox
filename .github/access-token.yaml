@@ -6,6 +6,5 @@ statements:
   - subjects:
       - repo:qoomon/sandbox:ref:refs/heads/main
     permissions: # https://docs.github.com/en/rest/authentication/permissions-required-for-github-apps
-      permissions:
-        contents: read
+      contents: read
 
