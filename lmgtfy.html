@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Let me google that for you!</title>
+    <script>
+      (async function() {
+        const googleUrl = 'https://www.google.com';
+        const query = decodeURIComponent(window.location.hash.substring(1)) || "Let me google that for you!";
+        document.documentElement.innerHTML = await fetch(`https://cors-tube.vercel.app/?url=${encodeURIComponent(googleUrl)}`)
+          .then(res=> res.text());
+        
+        // remove cookie banner
+        document.querySelectorAll('body > div')[2].remove()
+        const seatchInput = document.querySelector('textarea');
+        
+        seatchInput.focus();
+        seatchInput.setSelectionRange(0,0);
+        await await sleep(500);
+        
+        await typeInputValue(seatchInput, query, 100);
+        await await sleep(2000);
+        
+        // document.querySelector('center > input').click();
+        window.location =  `${googleUrl}/search?q=${encodeURIComponent(query)}`
+        
+        async function typeInputValue(inputElement, value, ms = 100) {
+          for (const char of value.split("")) {
+            inputElement.value += char;
+            inputElement.setSelectionRange(inputElement.value.length, inputElement.value.length);
+            await sleep(ms);
+          }  
+        }
+        
+        async function sleep(ms) {
+          return new Promise(resolve => setTimeout(resolve, ms));
+        }
+      })();
+    </script>
+</head>
+<body>
+  Let me google that for you!
+</body>
