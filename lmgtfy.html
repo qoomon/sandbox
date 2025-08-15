@@ -5,38 +5,87 @@
 
     <title>Let me google that for you!</title>
     <script>
-      (async function() {
-        const googleUrl = 'https://www.google.com';
-        const query = decodeURIComponent(window.location.hash.substring(1)) || "Let me google that for you!";
-        document.documentElement.innerHTML = await fetch(`https://cors-tube.vercel.app/?url=${encodeURIComponent(googleUrl)}`)
-          .then(res=> res.text());
-        
-        // remove cookie banner
-        document.querySelectorAll('body > div')[2].remove()
-        const seatchInput = document.querySelector('textarea');
-        
-        seatchInput.focus();
-        seatchInput.setSelectionRange(0,0);
-        await await sleep(500);
-        
-        await typeInputValue(seatchInput, query, 100);
-        await await sleep(2000);
-        
-        // document.querySelector('center > input').click();
-        window.location =  `${googleUrl}/search?q=${encodeURIComponent(query)}`
-        
-        async function typeInputValue(inputElement, value, ms = 100) {
-          for (const char of value.split("")) {
-            inputElement.value += char;
-            inputElement.setSelectionRange(inputElement.value.length, inputElement.value.length);
-            await sleep(ms);
+        (async function() {
+          
+          const googleUrl = 'https://www.google.com';
+          const query = decodeURIComponent(window.location.hash.substring(1)) || "Let me google that for you!";
+          document.documentElement.innerHTML = await fetch(`https://cors-tube.vercel.app/?url=${encodeURIComponent(googleUrl)}`, {
+              headers: {
+                  'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36',
+              }
+          }).then(res=> res.text());
+          
+          const cookieBanner = document.querySelectorAll('body > div')[2];
+          cookieBanner.remove();
+          
+          const searchInput = document.querySelector('textarea');
+          const searchInputRect = searchInput.getBoundingClientRect();
+          
+          const cursorElement = document.createElement('img');
+          cursorElement.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAABACAQAAADCUP3RAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAydJREFUeNrd119o1WUcx/HnnLktpxaiXRgWhCRBN6JhNfonBVGpqSiSIpoMI8xqMhDKNK1GrDJiRUQQdBHhRUGUdFN2IVFEVCa1WrQ0/0ybc225ndk52ysIfjyM7XBcz7ny/bn6fS9elz94gt2mhWpm0NPqqwkyZGcVSTDkKXXVBBm0o0okgPNa1Ib0qDIJjGRks5p0UNF+p4C/NKtNBksetF4PMGCr2mRwrWBjdcgI5mzWl5Fb1CSDQY0m/UCfJvlkMJjiYeeAszbJJ4NB3lb9GblePhkMajyakT3WySeBkRwAztqQDgqmeCwjz1ifBEbyCX8D3dYkgZFsjuTqJDCS2zPylFXpoKDWdueBk1YlgZFsycgTViSAZcgHksBIPmkQOG55Oiios9MwcMLydFAw1TMZ+YelSWAkWzPyd/ckgOXIJDCSz7kAdFmSDgoatPoH+NUd6aBgupcyssNtSWAkX87IXyxJAiP5mhLws1uTwEi+qgj85OZJgjdaa42xW61JB8BhN00K3KZk/IpKEMnyYN4CM8TveTpV7FsLy4L3+tGdgrhXAIYMlNmgz82fEFzqGF6XF2+36wPetNgtZdZozjgwZ6Xj4Kj5ItjgQ+BTl0/if5i3Tjdg1OOCuI2KMGjZRYM1NugR+9JsEZzje+A9dRcJPuQcUHRQH0PuF8TtAU66oTJonU16gZI3XOMzeFedCC5yGthVESw6oAcoandFCJqU+NMCEaz1DvCdKyuAjAIX7DPjv+tcHbBLELdKAYatrgRmXFt86mqDI+aK4EyHgA/UVwYLWjXEu0XOUNIkiNsOnLawEjhsj6lj7vXehwOmieB1fgNeqPS83ZtxMSsVGHC3CObsA46YUx4seNZlYVxm+Rra5USyUR8UbSwHDtodubHZAV3mi+A0HwOfaAgT5RFTQ5lc7xg0C+K2GIFejWGi5EPZ1HgLDpkpCGot8LwfjALtcmGyuUs/BStMd5+3dRPrdPXkwQYfwRcOKhAr6dJmdph8NiuBWMFXtpn3fx+XVzks1mu/ZWaFlOwFIzq9qFF9SM0iR32jxbVyoRqpt9hsuXCJ9C+7nRe8JZackAAAAABJRU5ErkJggg==";
+          cursorElement.style.position = 'absolute';
+          cursorElement.style.height= "2em";
+          cursorElement.style.left = `calc(${searchInputRect.x}px + 4em)`;
+          cursorElement.style.top = `calc(${searchInputRect.y}px + 24em)`;
+          cursorElement.style.opacity = '0%';
+          cursorElement.style.zIndex = 999;
+          document.body.append(cursorElement);
+          const cursorAnimationSearchInputDuration = 1200;
+          cursorElement.animate([
+              { 
+                top: `calc(${searchInputRect.y}px + 2.5em)`,
+                left: `calc(${searchInputRect.x}px + 1em)`,
+                opacity: '100%',
+              },
+            ], { 
+              easing: 'ease-in-out',
+              duration: cursorAnimationSearchInputDuration, 
+              fill: 'forwards',
+            });
+          await sleep(cursorAnimationSearchInputDuration);
+          
+          searchInput.focus();
+          searchInput.click();
+          searchInput.setSelectionRange(0, 0);
+          await sleep(500);
+          
+          await typeInputValue(searchInput, query, 100);
+          await sleep(500);
+          
+          const searchButton = document.querySelectorAll('form[action="/search"] center > input')[2]
+          const searchButtonRect = searchButton.getBoundingClientRect();
+          const cursorAnimationSearchButtionDuration = 800;
+          cursorElement.animate([
+              { 
+                top: `calc(${searchButtonRect.y}px + 1em)`,
+                left: `calc(${searchButtonRect.x}px + 3em)`,
+                opacity: '100%',
+              },
+            ], { 
+              easing: 'ease-in-out',
+              duration: cursorAnimationSearchButtionDuration, 
+              fill: 'forwards',
+            });
+          await  sleep(cursorAnimationSearchButtionDuration);
+          searchButton.focus();
+          await sleep(500);
+          
+          window.location =  `${googleUrl}/search?q=${encodeURIComponent(query)}`
+          
+          // --- helper functions ----
+          
+          async function typeInputValue(inputElement, value, ms = 100) {
+            for (const char of value.split("")) {
+              inputElement.value += char;
+              inputElement.setSelectionRange(inputElement.value.length, inputElement.value.length);
+              await sleep(ms + (Math.random() * ms * 0.2));
+            }  
+          }
+          
+          async function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
           }  
-        }
-        
-        async function sleep(ms) {
-          return new Promise(resolve => setTimeout(resolve, ms));
-        }
-      })();
+        })()
     </script>
 </head>
 <body>
