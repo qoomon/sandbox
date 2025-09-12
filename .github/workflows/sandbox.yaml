@@ -20,7 +20,7 @@ jobs:
             const jobCheck = await github.rest.checks.get({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              check_suite_id: process.env['GITHUB_JOB_CHECK_RUN_ID'],
+              check_run_id: process.env['GITHUB_JOB_CHECK_RUN_ID'],
             });
             console.log('jobCheck:', jobCheck)
 
