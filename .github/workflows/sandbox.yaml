@@ -15,12 +15,14 @@ jobs:
           GITHUB_JOB_CHECK_RUNN_ID: ${{ job.check_run_id }}
         with:
           script: |
-            const jobCheckSuite = await github.rest.checks.getSuite({
+           console.log('process.env['GITHUB_JOB_CHECK_RUN_ID']:', process.env['GITHUB_JOB_CHECK_RUN_ID'])
+
+            const jobCheck = await github.rest.checks.get({
               owner: context.repo.owner,
               repo: context.repo.repo,
               check_suite_id: process.env['GITHUB_JOB_CHECK_RUN_ID'],
             });
-            console.log('jobCheckSuite:', jobCheckSuite)
+            console.log('jobCheck:', jobCheck)
 
             
       - uses: qoomon/sandbox/.github/actions/sandbox@main
