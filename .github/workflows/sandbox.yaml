@@ -12,7 +12,7 @@ jobs:
     steps:
     
       - run: |
-          echo $
+          echo GITHUB_JOB_CHECK_RUNN_ID $GITHUB_JOB_CHECK_RUNN_ID
         env:
           GITHUB_JOB_CHECK_RUNN_ID: ${{ job.check_run_id }}
 
