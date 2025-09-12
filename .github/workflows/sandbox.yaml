@@ -15,7 +15,7 @@ jobs:
           GITHUB_JOB_CHECK_RUNN_ID: ${{ job.check_run_id }}
         with:
           script: |
-           console.log('process.env['GITHUB_JOB_CHECK_RUN_ID']:', process.env['GITHUB_JOB_CHECK_RUN_ID'])
+           console.log('GITHUB_JOB_CHECK_RUN_ID:', process.env['GITHUB_JOB_CHECK_RUN_ID'])
 
             const jobCheck = await github.rest.checks.get({
               owner: context.repo.owner,
