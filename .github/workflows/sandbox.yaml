@@ -10,12 +10,23 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/github-script@v8
+        env:
+          GITHUB_JOB_CHECK_RUNN_ID: ${{ job.check_run_id }}
+        with:
+          script: |
+            const jobCheckSuite = await github.rest.checks.getSuite({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              check_suite_id: process.env['GITHUB_JOB_CHECK_RUN_ID'],
+            });
+            console.log('jobCheckSuite:', jobCheckSuite)
+
+            
       - uses: qoomon/sandbox/.github/actions/sandbox@main
       - run: |
-          echo X_GITHUB_JOB_CHECK_RUNN_ID $X_GITHUB_JOB_CHECK_RUNN_ID
           env
-        env:
-          X_GITHUB_JOB_CHECK_RUNN_ID: ${{ job.check_run_id }}
+       
 
         
         
