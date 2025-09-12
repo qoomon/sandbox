@@ -10,7 +10,7 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-    
+      - uses: qoomon/sandbox/.github/actions/sandbox@main
       - run: |
           echo X_GITHUB_JOB_CHECK_RUNN_ID $X_GITHUB_JOB_CHECK_RUNN_ID
           env
