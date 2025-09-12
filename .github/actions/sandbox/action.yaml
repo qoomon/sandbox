@@ -1,6 +1,9 @@
 name: 'Sandbox action'
+inputs:
+  job_check_run_id:
+    default: ${{ job.check_run_id }}
 runs:
   using: "composite"
   steps:
-    - run: echo PWD "$PWD"; env | grep foo;
+    - run: echo job_check_run_id $INPUT_job_check_run_id & env
       shell: bash
