@@ -18,19 +18,24 @@ jobs:
           GITHUB_JOB_CHECK_RUN_ID: ${{ job.check_run_id }}
         with:
           script: |
-           console.log('GITHUB_JOB_CHECK_RUN_ID:', process.env['GITHUB_JOB_CHECK_RUN_ID'])
+            const job = await github.rest.actions.getJobForWorkflowRun({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              job_id: process.env['GITHUB_JOB_CHECK_RUN_ID'],
+            });
+            console.log('job:', job.data)
 
-            const jobCheck = await github.rest.checks.get({
+            const check = await github.rest.checks.get({
               owner: context.repo.owner,
               repo: context.repo.repo,
               check_run_id: process.env['GITHUB_JOB_CHECK_RUN_ID'],
             });
-            console.log('jobCheck:', jobCheck.data)
+            console.log('check:', check.data)
 
             
-      - uses: qoomon/sandbox/.github/actions/sandbox@main
-      - run: |
-          env
+      # - uses: qoomon/sandbox/.github/actions/sandbox@main
+      # - run: |
+      #    env
        
 
         
