@@ -10,6 +10,9 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
+      - uses: qoomon/actions--context@v4
+      - run: echo GITHUB_JOB_ID $GITHUB_JOB_ID
+      
       - uses: actions/github-script@v8
         env:
           GITHUB_JOB_CHECK_RUN_ID: ${{ job.check_run_id }}
@@ -22,7 +25,7 @@ jobs:
               repo: context.repo.repo,
               check_run_id: process.env['GITHUB_JOB_CHECK_RUN_ID'],
             });
-            console.log('jobCheck:', jobCheck)
+            console.log('jobCheck:', jobCheck.data)
 
             
       - uses: qoomon/sandbox/.github/actions/sandbox@main
