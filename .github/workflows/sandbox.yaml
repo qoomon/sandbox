@@ -10,6 +10,14 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
+      - uses: jdx/mise-action@v2
+        with:
+          mise_toml: |
+            [tools]
+            node = "24"
+      - run: node --version
+
+    
       - uses: qoomon/actions--context@v4
       - run: echo GITHUB_JOB_ID $GITHUB_JOB_ID
       
