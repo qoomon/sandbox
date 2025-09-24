@@ -10,7 +10,7 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-      - uses: qoomon/sandbox/.github/actions/sandbox@main
+      - run: env 
       # - uses: qoomon/actions--context@v4
       # - run: echo GITHUB_JOB_ID $GITHUB_JOB_ID
       
