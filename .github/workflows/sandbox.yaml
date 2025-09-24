@@ -10,38 +10,30 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-      - uses: jdx/mise-action@v2
-        with:
-          mise_toml: |
-            [tools]
-            node = "24"
-      - run: node --version
-
-    
-      - uses: qoomon/actions--context@v4
-      - run: echo GITHUB_JOB_ID $GITHUB_JOB_ID
+      # - uses: qoomon/actions--context@v4
+      # - run: echo GITHUB_JOB_ID $GITHUB_JOB_ID
       
-      - uses: actions/github-script@v8
-        env:
-          GITHUB_JOB_CHECK_RUN_ID: ${{ job.check_run_id }}
-        with:
-          script: |
-            const job = await github.rest.actions.getJobForWorkflowRun({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              job_id: process.env['GITHUB_JOB_CHECK_RUN_ID'],
-            });
-            console.log('job:', job.data)
-
-            const check = await github.rest.checks.get({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              check_run_id: process.env['GITHUB_JOB_CHECK_RUN_ID'],
-            });
-            console.log('check:', check.data)
+      # - uses: actions/github-script@v8
+      #   env:
+      #     GITHUB_JOB_CHECK_RUN_ID: ${{ job.check_run_id }}
+      #   with:
+      #     script: |
+      #       const job = await github.rest.actions.getJobForWorkflowRun({
+      #         owner: context.repo.owner,
+      #         repo: context.repo.repo,
+      #         job_id: process.env['GITHUB_JOB_CHECK_RUN_ID'],
+      #       });
+      #       console.log('job:', job.data)
+      #  
+      #       const check = await github.rest.checks.get({
+      #         owner: context.repo.owner,
+      #         repo: context.repo.repo,
+      #         check_run_id: process.env['GITHUB_JOB_CHECK_RUN_ID'],
+      #       });
+      #       console.log('check:', check.data)
 
             
-      # - uses: qoomon/sandbox/.github/actions/sandbox@main
+      - uses: qoomon/sandbox/.github/actions/sandbox@main
       # - run: |
       #    env
        
