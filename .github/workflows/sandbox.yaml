@@ -10,9 +10,8 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-      - run: echo ${{ job.xxx }}
-      # - uses: qoomon/actions--context@v4
-      # - run: echo GITHUB_JOB_ID $GITHUB_JOB_ID
+      - uses: qoomon/actions--context@main
+      - run: env | grep -e GITHUB_ -e RUNNER_
       
       # - uses: actions/github-script@v8
       #   env:
