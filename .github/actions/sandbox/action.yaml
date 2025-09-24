@@ -1,9 +1,12 @@
 name: 'Sandbox action'
 inputs:
   job_check_run_id:
+    description: 'Check run ID for the job'
     default: ${{ job.check_run_id }}
 runs:
   using: "composite"
   steps:
-    - run: echo job_check_run_id $INPUT_job_check_run_id & env
+    - run: echo job_check_run_id: $INPUT_JOB_CHECK_RUN_ID
       shell: bash
+      env:
+        INPUT_JOB_CHECK_RUN_ID: ${{ inputs.job_check_run_id }}
