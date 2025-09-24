@@ -10,7 +10,7 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-      - run: env 
+      - run: echo ${{ job.xxx }}
       # - uses: qoomon/actions--context@v4
       # - run: echo GITHUB_JOB_ID $GITHUB_JOB_ID
       
