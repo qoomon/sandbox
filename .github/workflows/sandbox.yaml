@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: qoomon/actions--context@main
-      - run: env | grep -e GITHUB_ -e RUNNER_
+      - run: env 
       
       # - uses: actions/github-script@v8
       #   env:
