@@ -16,7 +16,7 @@ jobs:
             --url 'https://app.koyeb.com/v1/services?name=github-actions-access-token' | jq '.services.[] | select(.name="github-actions-access-token").id' \
             --raw-output)"
           curl --request POST \
-            --header 'Authorization: Bearer ${KOYEB_API_KEY}' 
+            --header 'Authorization: Bearer ${KOYEB_API_KEY}' \
             --url https://app.koyeb.com/v1/services/${SERVICE_ID}/redeploy
       
       # - uses: actions/github-script@v8
