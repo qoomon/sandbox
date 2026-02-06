@@ -10,34 +10,5 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-      - run: |-
-          SERVICE_ID="$(curl --request GET \
-            --header "Authorization: Bearer ${KOYEB_API_KEY}" \
-            --url 'https://app.koyeb.com/v1/services?name=github-actions-access-token' | jq '.services.[] | select(.name="github-actions-access-token").id' \
-            --raw-output)"
-          curl --request POST \
-            --header "Authorization: Bearer ${KOYEB_API_KEY}" \
-            --url https://app.koyeb.com/v1/services/${SERVICE_ID}/redeploy
-      
-      # - uses: actions/github-script@v8
-      #   env:
-      #     GITHUB_JOB_CHECK_RUN_ID: ${{ job.check_run_id }}
-      #   with:
-      #     script: |
-      #       const job = await github.rest.actions.getJobForWorkflowRun({
-      #         owner: context.repo.owner,
-      #         repo: context.repo.repo,
-      #         job_id: process.env['GITHUB_JOB_CHECK_RUN_ID'],
-      #       });
-      #       console.log('job:', job.data)
-      #  
-      #       const check = await github.rest.checks.get({
-      #         owner: context.repo.owner,
-      #         repo: context.repo.repo,
-      #         check_run_id: process.env['GITHUB_JOB_CHECK_RUN_ID'],
-      #       });
-      #       console.log('check:', check.data)
-          
-      # - run: |
-      #    env
+      - uses: qoomon/sandbox/.guthub/actions/sandbox@main
       
