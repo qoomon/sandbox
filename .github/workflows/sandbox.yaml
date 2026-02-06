@@ -10,5 +10,5 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-      - uses: qoomon/sandbox/.guthub/actions/sandbox@main
+      - uses: qoomon/sandbox/.github/actions/sandbox@main
       
