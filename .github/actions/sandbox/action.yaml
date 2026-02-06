@@ -9,4 +9,5 @@ runs:
     - run: "env"
       shell: bash
       env:
+        GITHUB_ACTION_REF: ${{ github.action_ref }}
         INPUT_JOB_CHECK_RUN_ID: ${{ inputs.job_check_run_id }}
