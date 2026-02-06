@@ -6,7 +6,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - run: "echo job_check_run_id= $INPUT_JOB_CHECK_RUN_ID"
+    - run: "env"
       shell: bash
       env:
         INPUT_JOB_CHECK_RUN_ID: ${{ inputs.job_check_run_id }}
