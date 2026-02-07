@@ -11,3 +11,7 @@ runs:
       env:
         GITHUB_ACTION_REF: ${{ github.action_ref }}
         INPUT_JOB_CHECK_RUN_ID: ${{ inputs.job_check_run_id }}
+    - run: |
+        echo GITHUB_ACTION_PATH=$GITHUB_ACTION_PATH
+        cd "$GITHUB_ACTION_PATH"
+        git describe --tags
