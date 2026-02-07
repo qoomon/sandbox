@@ -15,3 +15,4 @@ runs:
         echo GITHUB_ACTION_PATH=$GITHUB_ACTION_PATH
         cd "$GITHUB_ACTION_PATH"
         git describe --tags
+      shell: bash
