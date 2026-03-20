@@ -1,5 +1,8 @@
 name: 'Sandbox action'
 inputs:
+  magic:
+    description: fairy dust
+    default: ${{ vars.MAGIC_NUMBER }}
   job_check_run_id:
     description: 'Check run ID for the job'
     default: ${{ job.check_run_id }}
