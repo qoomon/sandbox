@@ -11,22 +11,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - name: Commit and Push via CLI
-        run: |
-          # 1. Configure the bot identity
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-          date > foo.txt
-      
-          # 2. Stage changes
+      - run: |
+          mkdir -p dummies
+          for i in {1..500}; do date > "dummies/dummy_$i.txt"; done
           git add .
-      
-          # 3. Commit
-          git commit -m "chore: automated update via CLI"
-      
-          # 4. Push using the automatic GITHUB_TOKEN
-          git push
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: qoomon/actions--create-commit@v1
+        id: commit
+        with:
+          message: work work
+          skip-empty: true
+
+      - run: git push
       
