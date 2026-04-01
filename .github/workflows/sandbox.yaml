@@ -10,6 +10,7 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
+      - uses: github/checkout@v6
       - name: Commit and Push via CLI
         run: |
           # 1. Configure the bot identity
