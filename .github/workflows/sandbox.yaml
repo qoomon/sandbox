@@ -4,11 +4,28 @@ on:
   workflow_dispatch:
 
 permissions:
-  id-token: write
+  contents: write
   
 jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-      - uses: qoomon/sandbox/.github/actions/sandbox@v668
+      - name: Commit and Push via CLI
+        run: |
+          # 1. Configure the bot identity
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          date > foo.txt
+      
+          # 2. Stage changes
+          git add .
+      
+          # 3. Commit
+          git commit -m "chore: automated update via CLI"
+      
+          # 4. Push using the automatic GITHUB_TOKEN
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
