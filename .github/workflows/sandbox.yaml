@@ -16,7 +16,7 @@ jobs:
           for i in {1..500}; do date > "dummies/dummy_$i.txt"; done
           git add .
 
-      - uses: qoomon/actions--create-commit@v1
+      - uses: qoomon/actions--create-commit@main
         id: commit
         with:
           message: work work
