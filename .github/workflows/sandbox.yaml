@@ -5,22 +5,14 @@ on:
 
 permissions:
   contents: write
+
+concurrency:
+  group: sandbox-queue
+  queue: max
   
 jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - run: |
-          mkdir -p dummies
-          for i in {1..500}; do date > "dummies/dummy_$i.txt"; done
-          git add .
-
-      - uses: qoomon/actions--create-commit@v1.2.4
-        id: commit
-        with:
-          message: work work
-          skip-empty: true
-
-      - run: git push
+      - run: date
       
