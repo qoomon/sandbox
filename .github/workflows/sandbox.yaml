@@ -14,5 +14,5 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-      - run: date
+      - run: sleep 60
       
