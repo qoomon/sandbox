@@ -12,6 +12,10 @@ concurrency:
   
 jobs:
   build:
+    strategy:
+      matrix: 
+        version: [10, 12, 14]
+        
     runs-on: ubuntu-latest
     steps:
       - run: sleep 1
