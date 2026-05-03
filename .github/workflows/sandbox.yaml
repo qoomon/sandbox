@@ -16,6 +16,7 @@ jobs:
         
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@6
       - run: date > foo.txt
       - run: git add .
       - uses: qoomon/actions--create-commit@main
