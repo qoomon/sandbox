@@ -12,18 +12,16 @@ concurrency:
   
 jobs:
   build:
-    strategy:
-      matrix: 
-        version: [10, 14]
+    
         
     runs-on: ubuntu-latest
     steps:
-      - run: sleep 1
+      - run: date > foo.txt
+      - run: git add .
+      - uses: qoomon/actions--create-commit@main
+        with:
+          message: moin
 
 
-  deploy:
-    name: build (14)
-    runs-on: ubuntu-latest
-    steps:
-      - run: sleep 1
+  
       
