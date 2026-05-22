@@ -12,17 +12,15 @@ concurrency:
   
 jobs:
   build:
-    
-        
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - run: date > foo.txt
-      - run: git add .
-      - uses: qoomon/actions--create-commit@main
+      - uses: qoomon/github-profile-trophy@master
         with:
-          message: moin
-      - run: git push
+          title: LongTimeUser
+          path: ./trophy.svg
+      - uses: actions/upload-artifact@v7
+        with:
+          path: ./trophy.svg
 
 
   
