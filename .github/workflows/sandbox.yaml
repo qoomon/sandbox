@@ -14,15 +14,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: qoomon/github-profile-trophy@master
-        with:
-          title: LongTimeUser
-          path: ./trophy.svg
-      - uses: actions/upload-artifact@v7
-        with:
-          path: ./trophy.svg
-          archive: false
+      - name: Parallel Execution Block
+        parallel:
+          steps:
+            - run: echo foo
+            - run: echo bar
 
 
-  
       
