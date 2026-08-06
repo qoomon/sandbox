@@ -14,11 +14,16 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Parallel Execution Block
-        parallel:
-          steps:
-            - run: echo foo
-            - run: echo bar
+      - uses: qoomon/actions--oidc-debug@v1
+      - parallel:
+        - name: Build frontend
+          run: echo moin
+  
+        - name: Build backend
+          run: echo moin
+  
+        - name: Build docs
+          run: echo moin
 
 
       
