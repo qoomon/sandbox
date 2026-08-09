@@ -1,17 +1,758 @@
-4
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Project Management Triangle</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-<a href="content://com.android.contacts/contacts/c6771990182636674232">Open Google Contacts</a>
+    :root {
+      --black: #1a1a2e;
+      --white: #fffef5;
+      --yellow: #ffd60a;
+      --blue:   #4cc9f0;
+      --green:  #06d6a0;
+      --red:    #ef233c;
+      --orange: #ff6b35;
+      --purple: #7b2d8b;
+      --ink:    #1a1a2e;
+      --shadow-offset: 4px;
+      --border: 3px solid var(--ink);
+      --radius: 12px;
+    }
 
+    html, body {
+      min-height: 100%;
+      background-color: var(--white);
+      color: var(--ink);
+      font-family: 'Comic Neue', 'Comic Sans MS', cursive;
+    }
 
-<a href="intent:content://com.google.android.contacts/person/c6771990182636674232#Intent;action=android.intent.action.VIEW;end">
-  Open Contact 123
-</a>
+    /* ===== HALFTONE / COMIC DOT BACKGROUND ===== */
+    body {
+      background-color: #fffef5;
+      background-image: radial-gradient(circle, #e0d9c8 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
 
+    /* ===== LAYOUT ===== */
+    .page {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 24px 16px 48px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 28px;
+    }
 
-<a href="android-app://com.google.android.contacts">Pick a Contact</a>
+    /* ===== HEADER ===== */
+    .header {
+      text-align: center;
+      position: relative;
+    }
 
+    .header-badge {
+      display: inline-block;
+      background: var(--yellow);
+      border: var(--border);
+      border-radius: 50px;
+      padding: 4px 20px;
+      font-family: 'Bangers', 'Arial Black', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--ink);
+      transform: rotate(-1.5deg);
+      box-shadow: 3px 3px 0 var(--ink);
+      margin-bottom: 10px;
+    }
 
+    h1 {
+      font-family: 'Bangers', 'Arial Black', sans-serif;
+      font-size: clamp(2.6rem, 7vw, 4.8rem);
+      letter-spacing: 3px;
+      line-height: 1;
+      color: var(--ink);
+      text-shadow: 5px 5px 0 var(--yellow), 7px 7px 0 var(--ink);
+      transform: rotate(-1deg);
+      display: inline-block;
+    }
 
-<br>
+    .subtitle {
+      font-family: 'Comic Neue', cursive;
+      font-weight: 700;
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      margin-top: 12px;
+      color: #444;
+    }
 
-<br>
+    /* ===== COMIC PANEL (outer card) ===== */
+    .panel {
+      background: var(--white);
+      border: var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--ink);
+      padding: 24px;
+      width: 100%;
+    }
+
+    /* ===== INSTRUCTION BUBBLE ===== */
+    .instruction {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 8px;
+    }
+
+    .speech-bubble {
+      position: relative;
+      background: var(--yellow);
+      border: var(--border);
+      border-radius: 20px;
+      padding: 12px 22px;
+      font-weight: 700;
+      font-size: 1.05rem;
+      box-shadow: 3px 3px 0 var(--ink);
+      max-width: 480px;
+      text-align: center;
+    }
+    .speech-bubble::after {
+      content: '';
+      position: absolute;
+      bottom: -18px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 12px solid transparent;
+      border-right: 12px solid transparent;
+      border-top: 18px solid var(--ink);
+    }
+    .speech-bubble::before {
+      content: '';
+      position: absolute;
+      bottom: -13px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-top: 16px solid var(--yellow);
+      z-index: 1;
+    }
+
+    /* ===== TRIANGLE SVG WRAPPER ===== */
+    .triangle-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      width: 100%;
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    /* ===== CORNER NODES ===== */
+    .node {
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.15s, filter 0.15s;
+    }
+    .node:hover { transform: scale(1.08); }
+    .node:active { transform: scale(0.96); }
+
+    .node-circle {
+      transition: all 0.2s;
+    }
+    .node.selected .node-circle { stroke-width: 5; }
+    .node.dimmed { opacity: 0.35; filter: grayscale(70%); }
+
+    .node-label {
+      font-family: 'Bangers', sans-serif;
+      font-size: 18px;
+      fill: var(--ink);
+      text-anchor: middle;
+      dominant-baseline: central;
+      pointer-events: none;
+    }
+    .node-emoji {
+      font-size: 26px;
+      text-anchor: middle;
+      dominant-baseline: central;
+      pointer-events: none;
+    }
+    .node-sublabel {
+      font-family: 'Comic Neue', sans-serif;
+      font-weight: 700;
+      font-size: 12px;
+      fill: #555;
+      text-anchor: middle;
+      pointer-events: none;
+    }
+
+    /* selection ring */
+    .check-mark {
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .node.selected .check-mark { opacity: 1; }
+
+    /* ===== TRIANGLE FACE (SVG interior label) ===== */
+    .tri-center-text {
+      font-family: 'Bangers', sans-serif;
+      font-size: 15px;
+      fill: #666;
+      text-anchor: middle;
+      dominant-baseline: central;
+      pointer-events: none;
+    }
+
+    /* ===== SIDE LABELS ===== */
+    .side-label {
+      font-family: 'Comic Neue', sans-serif;
+      font-weight: 700;
+      font-size: 12px;
+      fill: #777;
+      text-anchor: middle;
+      pointer-events: none;
+      transition: fill 0.2s;
+    }
+    .side-label.active-side {
+      fill: var(--ink);
+      font-size: 13px;
+    }
+
+    /* ===== RESULT PANEL ===== */
+    .result-panel {
+      width: 100%;
+      max-width: 540px;
+      margin: 0 auto;
+      transition: all 0.3s;
+    }
+
+    .result-card {
+      border: var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--ink);
+      display: none;
+      animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .result-card.visible { display: block; }
+
+    @keyframes popIn {
+      from { transform: scale(0.85); opacity: 0; }
+      to   { transform: scale(1);    opacity: 1; }
+    }
+
+    .result-card .result-title {
+      font-family: 'Bangers', sans-serif;
+      font-size: 2rem;
+      letter-spacing: 2px;
+      line-height: 1.1;
+      margin-bottom: 6px;
+    }
+    .result-card .result-emoji {
+      font-size: 2.8rem;
+      margin-bottom: 8px;
+      display: block;
+    }
+    .result-card .result-desc {
+      font-weight: 700;
+      font-size: 1rem;
+      color: #333;
+      line-height: 1.5;
+    }
+    .result-card .sacrifice-label {
+      display: inline-block;
+      margin-top: 12px;
+      background: var(--ink);
+      color: white;
+      border-radius: 6px;
+      padding: 4px 12px;
+      font-family: 'Bangers', sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: 1px;
+    }
+
+    .pick-prompt {
+      text-align: center;
+      padding: 20px;
+      font-weight: 700;
+      font-size: 1rem;
+      color: #888;
+      font-style: italic;
+    }
+
+    /* ===== PICKS counter ===== */
+    .picks-row {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 4px;
+    }
+    .pick-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 2px solid var(--ink);
+      background: var(--white);
+      transition: background 0.2s;
+    }
+    .pick-dot.filled {
+      background: var(--ink);
+    }
+
+    /* ===== CONSTRAINTS INFO CARDS ===== */
+    .cards-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .constraint-card {
+      flex: 1 1 220px;
+      max-width: 260px;
+      border: var(--border);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--ink);
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
+      user-select: none;
+    }
+    .constraint-card:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0 var(--ink);
+    }
+    .constraint-card:active {
+      transform: translate(2px, 2px);
+      box-shadow: 2px 2px 0 var(--ink);
+    }
+    .constraint-card.selected {
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0 var(--ink);
+    }
+    .constraint-card.dimmed {
+      opacity: 0.45;
+      filter: grayscale(60%);
+    }
+
+    .card-icon {
+      font-size: 2.2rem;
+      margin-bottom: 6px;
+    }
+    .card-title {
+      font-family: 'Bangers', sans-serif;
+      font-size: 1.5rem;
+      letter-spacing: 2px;
+      margin-bottom: 4px;
+    }
+    .card-alt {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      opacity: 0.65;
+      margin-bottom: 6px;
+    }
+    .card-desc {
+      font-size: 0.88rem;
+      line-height: 1.5;
+      color: #333;
+    }
+    .card-badge {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 2px 10px;
+      border-radius: 20px;
+      border: 2px solid var(--ink);
+      font-family: 'Bangers', sans-serif;
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+    }
+
+    /* ===== FOOTER NOTE ===== */
+    .footer-note {
+      text-align: center;
+      font-size: 0.82rem;
+      color: #888;
+      font-weight: 700;
+      padding-top: 8px;
+    }
+
+    /* ===== UTIL ===== */
+    .mt-4 { margin-top: 4px; }
+    .text-center { text-align: center; }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 480px) {
+      .panel { padding: 16px 12px; }
+      h1 { font-size: 2.4rem; }
+      .cards-row { flex-direction: column; align-items: center; }
+      .constraint-card { max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ===== HEADER ===== -->
+  <header class="header">
+    <div class="header-badge">⚡ Project Management 101 ⚡</div>
+    <h1>THE TRIANGLE<br>OF DOOM</h1>
+    <p class="subtitle">Every project is a battle between three ruthless constraints!</p>
+  </header>
+
+  <!-- ===== MAIN PANEL ===== -->
+  <div class="panel">
+
+    <!-- Instruction bubble -->
+    <div class="instruction">
+      <div class="speech-bubble" id="instructionBubble">
+        👆 Click any <strong>TWO</strong> constraints to see what happens!
+      </div>
+    </div>
+
+    <!-- Picks counter -->
+    <div class="picks-row" style="margin-top:24px;">
+      <div class="pick-dot" id="dot0"></div>
+      <div class="pick-dot" id="dot1"></div>
+    </div>
+
+    <!-- ===== TRIANGLE SVG ===== -->
+    <div class="triangle-container">
+      <svg id="triangleSvg" viewBox="0 0 500 460" width="100%" style="max-width:520px; overflow:visible;" role="img" aria-label="Project Management Triangle">
+        <defs>
+          <!-- Drop shadow filter -->
+          <filter id="comicShadow" x="-10%" y="-10%" width="130%" height="130%">
+            <feDropShadow dx="5" dy="6" stdDeviation="0" flood-color="#1a1a2e" flood-opacity="0.9"/>
+          </filter>
+          <!-- Glow filter for selected nodes -->
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+            <feMerge>
+              <feMergeNode in="coloredBlur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+          <!-- Halftone-ish inner triangle pattern -->
+          <pattern id="dotPattern" x="0" y="0" width="12" height="12" patternUnits="userSpaceOnUse">
+            <circle cx="6" cy="6" r="1.5" fill="rgba(0,0,0,0.08)"/>
+          </pattern>
+        </defs>
+
+        <!-- ===== TRIANGLE BODY ===== -->
+        <!-- Triangle shadow (offset) -->
+        <polygon id="triShadow"
+          points="258,45 478,415 42,415"
+          fill="#1a1a2e"
+          opacity="0.18"
+          transform="translate(6,8)"
+        />
+        <!-- Triangle fill (dynamically colored) -->
+        <polygon id="triFill"
+          points="252,38 472,408 32,408"
+          fill="#f8f4e8"
+          stroke="none"
+        />
+        <!-- Triangle dot pattern overlay -->
+        <polygon
+          points="252,38 472,408 32,408"
+          fill="url(#dotPattern)"
+          stroke="none"
+          opacity="0.6"
+        />
+        <!-- Triangle outline (thick comic stroke) -->
+        <polygon id="triOutline"
+          points="252,38 472,408 32,408"
+          fill="none"
+          stroke="#1a1a2e"
+          stroke-width="6"
+          stroke-linejoin="round"
+          filter="url(#comicShadow)"
+        />
+
+        <!-- ===== SIDE LABELS (midpoints of each edge) ===== -->
+        <!-- Time–Cost side (bottom-left edge) midpoint ≈ (142, 223) -->
+        <text class="side-label" id="sideTC" x="130" y="234" transform="rotate(-60, 130, 234)">Fast &amp; Cheap =</text>
+        <text class="side-label" id="sideTCsub" x="130" y="248" transform="rotate(-60, 130, 248)">Low Quality 😬</text>
+
+        <!-- Time–Quality side (bottom-right edge) midpoint ≈ (362, 223) -->
+        <text class="side-label" id="sideTQ" x="374" y="234" transform="rotate(60, 374, 234)">Fast &amp; Good =</text>
+        <text class="side-label" id="sideTQsub" x="374" y="248" transform="rotate(60, 374, 248)">Very Expensive 💸</text>
+
+        <!-- Cost–Quality side (bottom edge) midpoint ≈ (252, 408) -->
+        <text class="side-label" id="sideCQ" x="252" y="428">Cheap &amp; Good  =  Slow 🐌</text>
+
+        <!-- ===== CENTER TEXT (changes with state) ===== -->
+        <text class="tri-center-text" x="252" y="262" id="triCenterLine1">PICK</text>
+        <text class="tri-center-text" x="252" y="282" id="triCenterLine2">ANY TWO</text>
+
+        <!-- ===== NODE: TIME (top) ===== -->
+        <g class="node" id="nodeTime" data-key="time" onclick="toggleNode('time')" role="button" aria-pressed="false" tabindex="0">
+          <!-- Selection ring -->
+          <circle class="check-mark" cx="252" cy="38" r="56" fill="none" stroke="#4cc9f0" stroke-width="4" stroke-dasharray="8 4" opacity="0"/>
+          <!-- Main circle -->
+          <circle class="node-circle" cx="252" cy="38" r="46" fill="#4cc9f0" stroke="#1a1a2e" stroke-width="4"/>
+          <!-- Inner accent -->
+          <circle cx="252" cy="38" r="36" fill="#72d5f4" opacity="0.4"/>
+          <text class="node-emoji" x="252" y="30">⏱️</text>
+          <text class="node-label" x="252" y="52" style="font-size:16px;">TIME</text>
+        </g>
+
+        <!-- ===== NODE: COST (bottom-left) ===== -->
+        <g class="node" id="nodeCost" data-key="cost" onclick="toggleNode('cost')" role="button" aria-pressed="false" tabindex="0">
+          <circle class="check-mark" cx="32" cy="408" r="56" fill="none" stroke="#06d6a0" stroke-width="4" stroke-dasharray="8 4" opacity="0"/>
+          <circle class="node-circle" cx="32" cy="408" r="46" fill="#06d6a0" stroke="#1a1a2e" stroke-width="4"/>
+          <circle cx="32" cy="408" r="36" fill="#30e8b5" opacity="0.4"/>
+          <text class="node-emoji" x="32" y="400">💰</text>
+          <text class="node-label" x="32" y="418" style="font-size:16px;">COST</text>
+        </g>
+
+        <!-- ===== NODE: QUALITY (bottom-right) ===== -->
+        <g class="node" id="nodeQuality" data-key="quality" onclick="toggleNode('quality')" role="button" aria-pressed="false" tabindex="0">
+          <circle class="check-mark" cx="472" cy="408" r="56" fill="none" stroke="#ef233c" stroke-width="4" stroke-dasharray="8 4" opacity="0"/>
+          <circle class="node-circle" cx="472" cy="408" r="46" fill="#ef233c" stroke="#1a1a2e" stroke-width="4"/>
+          <circle cx="472" cy="408" r="36" fill="#f44f68" opacity="0.4"/>
+          <text class="node-emoji" x="472" y="400">⭐</text>
+          <text class="node-label" x="472" y="418" style="font-size:16px;">QUALITY</text>
+        </g>
+
+        <!-- ===== BADGE LABELS BELOW NODES ===== -->
+        <text x="252" y="97" text-anchor="middle" style="font-family:'Comic Neue',cursive; font-weight:700; font-size:11px; fill:#555;">(Speed)</text>
+        <text x="32"  y="464" text-anchor="middle" style="font-family:'Comic Neue',cursive; font-weight:700; font-size:11px; fill:#555;">(Budget)</text>
+        <text x="472" y="464" text-anchor="middle" style="font-family:'Comic Neue',cursive; font-weight:700; font-size:11px; fill:#555;">(Scope)</text>
+      </svg>
+    </div>
+
+    <!-- ===== RESULT AREA ===== -->
+    <div class="result-panel" style="margin-top:8px;">
+      <div class="result-card" id="resultNone">
+        <div class="pick-prompt">☝️ Select two constraints above to discover your fate...</div>
+      </div>
+
+      <!-- Result: Time + Cost (Fast & Cheap → Bad Quality) -->
+      <div class="result-card" id="resultTC" style="background:#fff9c4; border-color:#1a1a2e;">
+        <span class="result-emoji">😬</span>
+        <div class="result-title">FAST &amp; CHEAP</div>
+        <div class="result-desc">
+          You've got speed and you've kept costs down… but something had to give.
+          The result? A product that might technically <em>work</em>, but definitely won't <em>wow</em>.
+        </div>
+        <div class="sacrifice-label" style="background:#ef233c;">⭐ Quality SACRIFICED</div>
+      </div>
+
+      <!-- Result: Time + Quality (Fast & Good → Expensive) -->
+      <div class="result-card" id="resultTQ" style="background:#e0f7fa; border-color:#1a1a2e;">
+        <span class="result-emoji">💸</span>
+        <div class="result-title">FAST &amp; FABULOUS</div>
+        <div class="result-desc">
+          Lightning-fast AND top-notch quality? Oh you fancy! Just make sure someone has
+          a very, <em>very</em> large wallet ready. Premium results come at a premium price.
+        </div>
+        <div class="sacrifice-label" style="background:#06d6a0;">💰 Budget SACRIFICED</div>
+      </div>
+
+      <!-- Result: Cost + Quality (Cheap & Good → Slow) -->
+      <div class="result-card" id="resultCQ" style="background:#f3e5f5; border-color:#1a1a2e;">
+        <span class="result-emoji">🐌</span>
+        <div class="result-title">CHEAP &amp; CHEERFUL</div>
+        <div class="result-desc">
+          High quality at a low price? Absolutely possible… if you have all the time in the world.
+          Grab a coffee. Or ten. This is going to take a <em>while</em>.
+        </div>
+        <div class="sacrifice-label" style="background:#4cc9f0;">⏱️ Timeline SACRIFICED</div>
+      </div>
+    </div>
+
+  </div><!-- /.panel -->
+
+  <!-- ===== CONSTRAINT CARDS ===== -->
+  <div class="cards-row">
+
+    <div class="constraint-card" id="cardTime" style="background:#ddf4fd;" onclick="toggleNode('time')" tabindex="0" role="button" aria-pressed="false">
+      <div class="card-icon">⏱️</div>
+      <div class="card-title">TIME</div>
+      <div class="card-alt">Speed · Schedule · Deadline</div>
+      <div class="card-desc">How quickly the project needs to be delivered. Tight deadlines leave little room for anything else.</div>
+      <div class="card-badge" style="background:#4cc9f0;">Fast</div>
+    </div>
+
+    <div class="constraint-card" id="cardCost" style="background:#d4f5ec;" onclick="toggleNode('cost')" tabindex="0" role="button" aria-pressed="false">
+      <div class="card-icon">💰</div>
+      <div class="card-title">COST</div>
+      <div class="card-alt">Budget · Resources · Money</div>
+      <div class="card-desc">The budget available for the project. Less money means tradeoffs have to be made somewhere.</div>
+      <div class="card-badge" style="background:#06d6a0;">Cheap</div>
+    </div>
+
+    <div class="constraint-card" id="cardQuality" style="background:#fde8ec;" onclick="toggleNode('quality')" tabindex="0" role="button" aria-pressed="false">
+      <div class="card-icon">⭐</div>
+      <div class="card-title">QUALITY</div>
+      <div class="card-alt">Scope · Standards · Excellence</div>
+      <div class="card-desc">The standard and scope of deliverables. Higher quality needs more time, more money, or both.</div>
+      <div class="card-badge" style="background:#ef233c; color:white;">Good</div>
+    </div>
+
+  </div>
+
+  <!-- ===== FOOTER NOTE ===== -->
+  <p class="footer-note">
+    ⚠️ Every project must balance all three. Optimize two and the third always pays the price.
+  </p>
+
+</div><!-- /.page -->
+
+<script>
+  // ============================================================
+  //  STATE
+  // ============================================================
+  const MAX_PICKS = 2;
+  let selected = new Set(); // 'time' | 'cost' | 'quality'
+
+  // ============================================================
+  //  TOGGLE
+  // ============================================================
+  function toggleNode(key) {
+    if (selected.has(key)) {
+      selected.delete(key);
+    } else {
+      if (selected.size >= MAX_PICKS) {
+        // Remove the oldest selection (first in set iteration order)
+        const first = selected.values().next().value;
+        selected.delete(first);
+      }
+      selected.add(key);
+    }
+    render();
+  }
+
+  // Keyboard support for SVG nodes
+  document.querySelectorAll('.node').forEach(node => {
+    node.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggleNode(node.dataset.key);
+      }
+    });
+  });
+
+  // Keyboard support for constraint cards
+  document.querySelectorAll('.constraint-card').forEach(card => {
+    card.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        const key = card.id.replace('card', '').toLowerCase();
+        toggleNode(key);
+      }
+    });
+  });
+
+  // ============================================================
+  //  RENDER
+  // ============================================================
+  function render() {
+    const all = ['time', 'cost', 'quality'];
+    const picked = [...selected];
+    const dimmed = all.filter(k => !selected.has(k));
+
+    // --- Update SVG nodes ---
+    all.forEach(key => {
+      const node = document.getElementById('node' + cap(key));
+      const card = document.getElementById('card' + cap(key));
+      const isDimmed = selected.size === MAX_PICKS && !selected.has(key);
+
+      node.classList.toggle('selected', selected.has(key));
+      node.classList.toggle('dimmed',   isDimmed);
+      node.setAttribute('aria-pressed', selected.has(key).toString());
+
+      card.classList.toggle('selected', selected.has(key));
+      card.classList.toggle('dimmed',   isDimmed);
+      card.setAttribute('aria-pressed', selected.has(key).toString());
+    });
+
+    // --- Update pick dots ---
+    for (let i = 0; i < MAX_PICKS; i++) {
+      document.getElementById('dot' + i).classList.toggle('filled', i < selected.size);
+    }
+
+    // --- Update instruction bubble ---
+    const bubble = document.getElementById('instructionBubble');
+    if (selected.size === 0) {
+      bubble.innerHTML = '👆 Click any <strong>TWO</strong> constraints to see what happens!';
+    } else if (selected.size === 1) {
+      bubble.innerHTML = '✅ Good pick! Now choose <strong>ONE MORE</strong> constraint...';
+    } else {
+      bubble.innerHTML = '🎯 Your fate is sealed! Click to change your choices.';
+    }
+
+    // --- Update triangle fill color ---
+    const triFill = document.getElementById('triFill');
+    const colorMap = {
+      time:    '#ddf4fd',
+      cost:    '#d4f5ec',
+      quality: '#fde8ec',
+    };
+    if (picked.length === 2) {
+      // Blend: use a mix of the two selected colors
+      const comboColors = { 'cost+time': '#e8faf4', 'quality+time': '#ecf6fa', 'cost+quality': '#f5ecf5' };
+      const comboKey = picked.sort().join('+');
+      triFill.setAttribute('fill', comboColors[comboKey] || '#f8f4e8');
+    } else if (picked.length === 1) {
+      triFill.setAttribute('fill', colorMap[picked[0]]);
+    } else {
+      triFill.setAttribute('fill', '#f8f4e8');
+    }
+
+    // --- Update center text ---
+    const l1 = document.getElementById('triCenterLine1');
+    const l2 = document.getElementById('triCenterLine2');
+    const centerTexts = {
+      '':              ['PICK', 'ANY TWO'],
+      'time':          ['CHOOSE', 'ONE MORE'],
+      'cost':          ['CHOOSE', 'ONE MORE'],
+      'quality':       ['CHOOSE', 'ONE MORE'],
+      'cost+time':     ['FAST &', 'CHEAP'],
+      'quality+time':  ['FAST &', 'GOOD'],
+      'cost+quality':  ['CHEAP &', 'GOOD'],
+    };
+    const stateKey = picked.sort().join('+');
+    const [ct1, ct2] = centerTexts[stateKey] || ['PICK', 'ANY TWO'];
+    l1.textContent = ct1;
+    l2.textContent = ct2;
+
+    // --- Show result card ---
+    ['resultNone','resultTC','resultTQ','resultCQ'].forEach(id => {
+      document.getElementById(id).classList.remove('visible');
+    });
+
+    if (selected.size < MAX_PICKS) {
+      document.getElementById('resultNone').classList.add('visible');
+    } else {
+      const s = [...selected].sort().join('+');
+      const resultMap = {
+        'cost+time':    'resultTC',
+        'quality+time': 'resultTQ',
+        'cost+quality': 'resultCQ',
+      };
+      const rid = resultMap[s];
+      if (rid) document.getElementById(rid).classList.add('visible');
+    }
+  }
+
+  function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+
+  // Initial render
+  render();
+</script>
+</body>
+</html>
